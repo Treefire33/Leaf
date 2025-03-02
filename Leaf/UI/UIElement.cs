@@ -63,6 +63,7 @@ public class UIElement : IUIElement
 
 	public virtual void Update()
 	{
+		DrawRectangleRec(new UIRect(GetPosition(), RelativeRect.Size), Color.Red);
 		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), RelativeRect);
 	}
 

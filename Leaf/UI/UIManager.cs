@@ -75,6 +75,7 @@ public class UIManager
 
 		Container = new UIContainer(
 			new UIRect(0, 0, GameSize),
+			visible: true,
 			isRootContainer: true
 		);
 

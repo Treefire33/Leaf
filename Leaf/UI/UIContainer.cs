@@ -1,3 +1,4 @@
+using System.Numerics;
 using Cattail.UI.Interfaces;
 using Cattail.UI.Theming;
 using Raylib_cs;
@@ -12,8 +13,10 @@ public class UIContainer : UIElement, IUIContainer
         bool visible = true,
         UIContainer? container = null,
         ObjectID id = default,
+        (string, Vector2) anchor = default,
+        Vector2 origin = default,
         bool isRootContainer = false
-    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@container"), isRootContainer: isRootContainer)
+    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@container"), anchor, origin, isRootContainer: isRootContainer)
     {
         
     }
@@ -22,9 +25,14 @@ public class UIContainer : UIElement, IUIContainer
     {
         if (Visible)
         {
+            Raylib.DrawRectangleRec(
+                new UIRect(GetPosition(), RelativeRect.Size),
+                Color.DarkBlue
+            );
             Raylib.BeginScissorMode((int)GetPosition().X, (int)GetPosition().Y, (int)RelativeRect.Width, (int)RelativeRect.Height);
-                foreach (IUIElement element in Elements.Where(e => e.Visible))
+                foreach (UIElement element in Elements.Where(e => e.Visible))
                 {
+                    element.Anchor.Offset = GetPosition();
                     element.Update();
                 }
             Raylib.EndScissorMode();
@@ -42,6 +50,8 @@ public class UIContainer : UIElement, IUIContainer
 
     public void AddElement(UIElement element)
     {
+        element.Container?.RemoveElement(element);
+        element.RelativeRect.Position = GetPosition();
         Elements.Add(element);
         Elements = Elements.OrderBy((x) => x.Layer).ToList();
     }
