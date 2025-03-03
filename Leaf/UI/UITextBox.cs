@@ -39,7 +39,7 @@ public class UITextBox : UIElement
 		string text,
 		bool isMultiline = false,
 		bool visible = true, 
-		UIContainer? container = null,
+		IUIContainer? container = null,
 		ObjectID id = default,
 		(string, Vector2) anchor = default,
 		Vector2 origin = default

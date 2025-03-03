@@ -32,7 +32,7 @@ public class UIButton : UIElement, IUIClickable
 		string style, 
 		string text, 
 		bool visible = true, 
-		UIContainer? container = null,
+		IUIContainer? container = null,
 		ObjectID id = default,
 		(string, Vector2) anchor = default,
 		Vector2 origin = default

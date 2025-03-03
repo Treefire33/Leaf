@@ -1,4 +1,5 @@
 using System.Numerics;
+using Cattail.UI.Interfaces;
 using Cattail.UI.Theming;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
@@ -18,7 +19,7 @@ public class UIImage : UIElement
         bool ninePatch = false, 
         NPatchInfo info = default,
         bool visible = true, 
-        UIContainer? container = null,
+        IUIContainer? container = null,
         ObjectID id = default,
         (string, Vector2) anchor = default,
         Vector2 origin = default
