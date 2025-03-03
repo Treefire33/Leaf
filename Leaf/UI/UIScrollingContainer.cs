@@ -109,10 +109,15 @@ public class UIScrollingContainer : UIElement, IUIContainer
 
     public override void Kill()
     {
-        foreach (UIElement element in Elements)
+        /*foreach (UIElement element in Elements)
         {
             element.Kill();
+        }*/
+        for (int i = 0; i < Elements.Count; i++)
+        {
+            Elements[i].Kill();
         }
+        Elements.Clear();
         base.Kill();
     }
 }
