@@ -11,6 +11,7 @@ public class UIManager
 {
 	public static UIManager? DefaultManager;
 	public static Vector2 GameSize;
+	public static bool DebugMode = false;
 	
 	private static void SetDefaultManager(UIManager manager)
 	{

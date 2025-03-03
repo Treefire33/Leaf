@@ -237,7 +237,7 @@ public class UITextBox : UIElement
 				1,
 				Color.White
 			);
-			RelativeRect.Height = textSize.Y;
+			RelativeRect = RelativeRect with { Height = textSize.Y };
 		}
 	}
 }

@@ -13,10 +13,10 @@ public class UIElement : IUIElement
 	//all positions are, by default, based on the top left
 	public Anchor Anchor;
 	public Vector2 Origin = Vector2.Zero;
-	public UIRect RelativeRect;
+	public UIRect RelativeRect { get; set; }
 	public int Layer = 0;
 
-	public UIContainer? Container;
+	public IUIContainer? Container;
 
 	public bool Visible = true;
 	public bool Active = true;
@@ -25,7 +25,7 @@ public class UIElement : IUIElement
 	public UIElement(
 		UIRect posScale, 
 		bool visible = true, 
-		UIContainer? container = null,
+		IUIContainer? container = null,
 		ObjectID objectID = default,
 		(string, Vector2) anchor = default,
 		Vector2 origin = default,
@@ -34,24 +34,26 @@ public class UIElement : IUIElement
 	{
 		Manager = UIManager.GetDefaultManager();
 		RelativeRect = posScale;
+		if (!isRootContainer)
+		{
+			Container = container ?? Manager.GetDefaultContainer();
+		}
+		else
+		{
+			Container = null;
+		}
+		Container?.AddElement(this);
 		if (anchor == default)
 		{
 			anchor = ("top-left", Vector2.Zero);
 		}
 		Anchor = new Anchor();
-		SetAnchor(anchor.Item1!, anchor.Item2);
 		if (origin == default)
 		{
 			origin = Vector2.Zero;
 		}
 		Origin = origin;
-		if (container == null && !isRootContainer)
-		{
-			Container = Manager.GetDefaultContainer()!;
-		}
-		/*Manager.Elements.Add(this);
-		Manager.Elements = [.. Manager.Elements.OrderBy(element => element.Layer)];*/
-		Container?.AddElement(this);
+		SetAnchor(anchor.Item1!, anchor.Item2);
 		if (objectID == default)
 		{
 			objectID.ID = "default";
@@ -63,7 +65,8 @@ public class UIElement : IUIElement
 
 	public virtual void Update()
 	{
-		DrawRectangleRec(new UIRect(GetPosition(), RelativeRect.Size), Color.Red);
+		if (UIManager.DebugMode)
+			DrawRectangleRec(new UIRect(GetPosition(), RelativeRect.Size), Color.Red);
 		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), RelativeRect);
 	}
 
@@ -76,29 +79,26 @@ public class UIElement : IUIElement
 
 	public void SetAnchor(string anchorPosition, Vector2 anchorOffset)
 	{
-		Vector2 containerSize;
-		containerSize = Container != null ? Container.RelativeRect.Size : UIManager.GameSize;
-
-		Anchor.AnchorPoint = anchorPosition.ToLower() switch
-		{
-			"top-left" => Vector2.Zero,
-			"top-center" => containerSize with { X = containerSize.X / 2 },
-			"top-right" => containerSize with { X = containerSize.X },
-			"left" => containerSize with { Y = containerSize.Y / 2 },
-			"center" => containerSize with { X = containerSize.X / 2, Y = containerSize.Y / 2 },
-			"right" => containerSize with { X = containerSize.X, Y = containerSize.Y / 2 },
-			"bottom-left" => containerSize with { Y = containerSize.Y },
-			"bottom-center" => containerSize with { X = containerSize.X / 2, Y = containerSize.Y },
-			"bottom-right" => containerSize with { X = containerSize.X, Y = containerSize.Y },
-			_ => Anchor.AnchorPoint
-		};
-
+		Anchor.AnchorPosition = anchorPosition;
 		Anchor.Offset = anchorOffset;
+	}
+	
+	public void SetAnchor(string anchorPosition, UIElement anchorElement)
+	{
+		Anchor.AnchorPosition = anchorPosition;
+		Anchor.Offset = anchorElement.GetPosition();
 	}
 
 	public Vector2 GetPosition()
 	{
-		return (RelativeRect.Position + Anchor.GetAnchored()) - RelativeRect.Size * Origin;
+		Vector2 containerOffset = Vector2.Zero;
+		Vector2 containerSize = UIManager.GameSize;
+		if (Container != null)
+		{
+			containerOffset = Container.GetPosition();
+			containerSize = Container.RelativeRect.Size;
+		}
+		return ((RelativeRect.Position + Anchor.GetAnchored(containerSize)) - RelativeRect.Size * Origin) + containerOffset;
 	}
 
 	public void SetVisibility(bool visibilityState)
