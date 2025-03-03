@@ -12,7 +12,7 @@
     
     <PropertyGroup>
         <PackageId>Cattail</PackageId>
-        <Version>0.1.8.1</Version>
+        <Version>0.1.8.3</Version>
         <Authors>Treefire33</Authors>
     </PropertyGroup>
 
