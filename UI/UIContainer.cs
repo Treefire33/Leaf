@@ -25,14 +25,22 @@ public class UIContainer : UIElement, IUIContainer
     {
         if (Visible)
         {
-            Raylib.DrawRectangleRec(
-                new UIRect(GetPosition(), RelativeRect.Size),
-                Color.DarkBlue
-            );
+            if (UIManager.DebugMode)
+            {
+                Raylib.DrawRectangleRec(
+                    new UIRect(GetPosition(), RelativeRect.Size),
+                    Color.DarkBlue
+                );
+                Raylib.DrawRectangleLinesEx(
+                    new UIRect(GetPosition(), RelativeRect.Size),
+                    10,
+                    Color.Black
+                );
+            }
+
             Raylib.BeginScissorMode((int)GetPosition().X, (int)GetPosition().Y, (int)RelativeRect.Width, (int)RelativeRect.Height);
                 foreach (UIElement element in Elements.Where(e => e.Visible))
                 {
-                    element.Anchor.Offset = GetPosition();
                     element.Update();
                 }
             Raylib.EndScissorMode();
@@ -48,15 +56,18 @@ public class UIContainer : UIElement, IUIContainer
         base.Kill();
     }
 
-    public void AddElement(UIElement element)
+    public virtual void AddElement(UIElement element)
     {
         element.Container?.RemoveElement(element);
-        element.RelativeRect.Position = GetPosition();
         Elements.Add(element);
+        var tempAnchor = element.Anchor;
+        element.SetAnchor("top-left", Vector2.Zero);
+        element.SetAnchor(tempAnchor.AnchorPosition, tempAnchor.Offset);
+        element.Container = this;
         Elements = Elements.OrderBy((x) => x.Layer).ToList();
     }
 
-    public void RemoveElement(UIElement element)
+    public virtual void RemoveElement(UIElement element)
     {
         Elements.Remove(element);
     }
