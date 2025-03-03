@@ -11,7 +11,7 @@ public class UIContainer : UIElement, IUIContainer
     public UIContainer(
         UIRect posScale,
         bool visible = true,
-        UIContainer? container = null,
+        IUIContainer? container = null,
         ObjectID id = default,
         (string, Vector2) anchor = default,
         Vector2 origin = default,
