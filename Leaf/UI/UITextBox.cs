@@ -44,7 +44,6 @@ public class UITextBox : UIElement
 	) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@textbox"), anchor, origin)
 	{
 		_text = text;
-		ThemeElement();
 	}
 
 	public HorizontalTextAlignment GetHorizontalAlignmentFromString(string alignment)
