@@ -34,6 +34,12 @@ public class UIElement : IUIElement
 	{
 		Manager = UIManager.GetDefaultManager();
 		RelativeRect = posScale;
+		if (objectID == default)
+		{
+			objectID.ID = "default";
+			objectID.Class = "";
+		}
+		Theme = Manager.Theme.GetFromObjectID(objectID);
 		if (!isRootContainer)
 		{
 			Container = container ?? Manager.GetDefaultContainer();
@@ -54,12 +60,6 @@ public class UIElement : IUIElement
 		}
 		Origin = origin;
 		SetAnchor(anchor.Item1!, anchor.Item2);
-		if (objectID == default)
-		{
-			objectID.ID = "default";
-			objectID.Class = "";
-		}
-		Theme = Manager.Theme.GetFromObjectID(objectID);
 		Visible = visible;
 	}
 
@@ -67,7 +67,7 @@ public class UIElement : IUIElement
 	{
 		if (UIManager.DebugMode)
 			DrawRectangleRec(new UIRect(GetPosition(), RelativeRect.Size), Color.Red);
-		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), RelativeRect);
+		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), new Rectangle(GetPosition(), RelativeRect.Size));
 	}
 
 	public virtual void ThemeElement() { }

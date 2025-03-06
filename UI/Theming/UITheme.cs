@@ -58,6 +58,11 @@ public class UITheme
 		Dictionary<string, dynamic> entries = [];
 		foreach (var entry in element.Misc!)
 		{
+			if (_elementThemes.TryGetValue(_class, out UIElementTheme theme) && theme.Colour!.TryGetValue(entry.Key, out string? value))
+			{
+				entries.Add(entry.Key, value);
+				continue;
+			}
 			entries.Add(entry.Key, entry.Value);
 		}
 		return entries;

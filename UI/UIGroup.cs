@@ -31,7 +31,7 @@ public class UIGroup(params UIElement[] elements)
 
     public void SetVisibility(bool visible)
     {
-        foreach (var element in elements)
+        foreach (var element in _elements)
         {
             element.SetVisibility(visible);
         }
@@ -42,7 +42,7 @@ public class UIGroup(params UIElement[] elements)
 
     public void SetActive(bool active)
     {
-        foreach (var element in elements)
+        foreach (var element in _elements)
         {
             element.SetActive(active);
         }

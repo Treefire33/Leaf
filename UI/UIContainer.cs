@@ -65,6 +65,7 @@ public class UIContainer : UIElement, IUIContainer
         element.SetAnchor(tempAnchor.AnchorPosition, tempAnchor.Offset);
         element.Container = this;
         Elements = Elements.OrderBy((x) => x.Layer).ToList();
+        element.ThemeElement();
     }
 
     public virtual void RemoveElement(UIElement element)
