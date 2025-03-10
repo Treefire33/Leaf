@@ -17,7 +17,7 @@ public struct UIElementTheme
 
 	[JsonProperty("misc", Required = Required.Default)]
 	public Dictionary<string, dynamic>? Misc;
-
+	
 	public override string ToString()
 	{
 		StringBuilder representation = new();

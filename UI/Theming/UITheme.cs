@@ -27,6 +27,7 @@ public class UITheme
 			}*/
 			newTheme._elementThemes[theme.Key] = newTheme.LoadPrototype(theme.Value);
 		}
+		
 		return newTheme;
 	}
 
@@ -43,12 +44,17 @@ public class UITheme
 		Dictionary<string, Color> elementColours = [];
 		foreach (var entry in element.Colour!)
 		{
-			if (_elementThemes.TryGetValue(_class, out UIElementTheme theme) && theme.Colour!.TryGetValue(entry.Key, out string? value))
-			{
-				elementColours.Add(entry.Key, GetColourFromHex(value));
-				continue;
-			}
 			elementColours.Add(entry.Key, GetColourFromHex(entry.Value));
+		}
+		if (_elementThemes.TryGetValue(_class, out UIElementTheme theme))
+		{
+			foreach (var miscEntry in theme.Colour!)
+			{
+				if (!elementColours.ContainsKey(miscEntry.Key))
+				{
+					elementColours.Add(miscEntry.Key, GetColourFromHex(miscEntry.Value));
+				}
+			}
 		}
 		return elementColours;
 	}
@@ -58,12 +64,17 @@ public class UITheme
 		Dictionary<string, dynamic> entries = [];
 		foreach (var entry in element.Misc!)
 		{
-			if (_elementThemes.TryGetValue(_class, out UIElementTheme theme) && theme.Colour!.TryGetValue(entry.Key, out string? value))
-			{
-				entries.Add(entry.Key, value);
-				continue;
-			}
 			entries.Add(entry.Key, entry.Value);
+		}
+		if (_elementThemes.TryGetValue(_class, out UIElementTheme theme))
+		{
+			foreach (var miscEntry in theme.Misc!)
+			{
+				if (!entries.ContainsKey(miscEntry.Key))
+				{
+					entries.Add(miscEntry.Key, miscEntry.Value);
+				}
+			}
 		}
 		return entries;
 	}
@@ -130,23 +141,22 @@ public class UITheme
 		{
 			return value;
 		}
-		else
+
+		
+		var theme = _elementThemes[objectID.ID];
+		
+		LoadPrototype(theme);
+		
+		UIElementAppearance newElementAppearance = new()
 		{
-			var theme = _elementThemes[objectID.ID];
-
-			LoadPrototype(theme);
-
-			UIElementAppearance newElementAppearance = new()
-			{
-				Font = GetElementFontEntry(theme, objectID.Class),
-				Colours = GetElementColours(theme, objectID.Class),
-				Miscellaneous = GetElementMiscEntries(theme, objectID.Class),
-			};
-
-			ElementThemes.Add(objectID, newElementAppearance);
-
-			return newElementAppearance;
-		}
+			Font = GetElementFontEntry(theme, objectID.Class),
+			Colours = GetElementColours(theme, objectID.Class),
+			Miscellaneous = GetElementMiscEntries(theme, objectID.Class),
+		};
+		
+		ElementThemes.Add(objectID, newElementAppearance);
+		
+		return newElementAppearance;
 	}
 
 	public override string ToString()
@@ -161,7 +171,7 @@ public class UITheme
 	}
 }
 
-public struct ObjectID(string id = "default", string _class = "")
+public struct ObjectID(string id = "", string _class = "@default")
 {
 	public string ID = id;
 	public string Class = _class;
@@ -189,6 +199,11 @@ public struct ObjectID(string id = "default", string _class = "")
 	}
 
 	public override readonly int GetHashCode() => base.GetHashCode();
+
+	public override string ToString()
+	{
+		return $"ID: {ID}, Class: {Class}";
+	}
 
 	public static implicit operator ObjectID(string id)
 	{

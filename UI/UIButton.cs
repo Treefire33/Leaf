@@ -36,7 +36,7 @@ public class UIButton : UIElement, IUIClickable
 		ObjectID id = default,
 		(string, Vector2) anchor = default,
 		Vector2 origin = default
-	) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@button"), anchor, origin)
+	) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@button"), anchor, origin)
 	{
 		_text = text;
 		List<Texture2D> images = Resources.GetButtonImagesFromStyle(style);
@@ -54,7 +54,7 @@ public class UIButton : UIElement, IUIClickable
 		base.ThemeElement();
 		_font = Theme.Font.Item1;
 		_fontSize = Theme.Font.Item2 + 5;
-		_textColour = Theme.Colours["text"];
+		_textColour = Theme.GetColour("text");
 	}
 
 	public void SetText(string text)

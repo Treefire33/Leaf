@@ -41,7 +41,7 @@ public class UITextBox : UIElement
 		ObjectID id = default,
 		(string, Vector2) anchor = default,
 		Vector2 origin = default
-	) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@textbox"), anchor, origin)
+	) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@textbox"), anchor, origin)
 	{
 		_text = text;
 	}
@@ -73,7 +73,7 @@ public class UITextBox : UIElement
 		base.ThemeElement();
 		_font = Theme.Font.Item1; //Font resource
 		_fontSize = Theme.Font.Item2 + 5; //Font size
-		_textColour = Theme.Colours["text"];
+		_textColour = Theme.GetColour("text");
 		if (Theme.Miscellaneous.TryGetValue("text_horiz_alignment", out dynamic? horizAlignment))
 		{
 			_horizontalAlignment = GetHorizontalAlignmentFromString(horizAlignment!);

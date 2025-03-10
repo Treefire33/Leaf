@@ -16,7 +16,7 @@ public class UIContainer : UIElement, IUIContainer
         (string, Vector2) anchor = default,
         Vector2 origin = default,
         bool isRootContainer = false
-    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@container"), anchor, origin, isRootContainer: isRootContainer)
+    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@container"), anchor, origin, isRootContainer: isRootContainer)
     {
         
     }
