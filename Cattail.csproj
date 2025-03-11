@@ -12,7 +12,7 @@
     
     <PropertyGroup>
         <PackageId>Cattail</PackageId>
-        <Version>0.1.8.5</Version>
+        <Version>0.1.8.7</Version>
         <Authors>Treefire33</Authors>
     </PropertyGroup>
 
@@ -21,7 +21,15 @@
     </Target>
 
     <ItemGroup>
+      <PackageReference Include="ExCSS" Version="4.3.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Raylib-cs" Version="7.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
     </ItemGroup>
 </Project>
