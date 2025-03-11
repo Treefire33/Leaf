@@ -1,15 +1,17 @@
 ﻿using System.Numerics;
 using Cattail.UI.Interfaces;
 using Cattail.UI.Theming;
+using ExCSS;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
+using Color = Raylib_cs.Color;
 
 namespace Cattail.UI;
 
 public class UIElement : IUIElement
 {
 	protected readonly UIManager Manager;
-	protected UIElementAppearance Theme;
+	protected StyleRule Theme;
 	//all positions are, by default, based on the top left
 	public Anchor Anchor;
 	public Vector2 Origin = Vector2.Zero;
@@ -26,7 +28,9 @@ public class UIElement : IUIElement
 		UIRect posScale, 
 		bool visible = true, 
 		IUIContainer? container = null,
-		ObjectID objectID = default,
+		string id = "",
+		string @class = "",
+		string element = "",
 		(string, Vector2) anchor = default,
 		Vector2 origin = default,
 		bool isRootContainer = false
@@ -34,12 +38,7 @@ public class UIElement : IUIElement
 	{
 		Manager = UIManager.GetDefaultManager();
 		RelativeRect = posScale;
-		if (objectID == default)
-		{
-			objectID.ID = "default";
-			objectID.Class = "";
-		}
-		Theme = Manager.Theme.GetFromObjectID(objectID);
+		Theme = Manager.Theme.GetRuleFromObject(id, @class, element);
 		if (!isRootContainer)
 		{
 			Container = container ?? Manager.GetDefaultContainer();

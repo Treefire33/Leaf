@@ -1,0 +1,44 @@
+{
+  "default": {
+    "colour": {
+      "text": "#000000",
+      "hovered_text": "#000000",
+      "normal_bg": "#FFFFFF",
+      "hovered_bg": "#1E1809",
+      "disabled_bg": "#5C5850",
+      "dark_bg": "#B19D74"
+    },
+    "font": {
+      "name": "default",
+      "size": 14
+    },
+    "misc": {
+      "border_width": 2,
+      "shadow_width": 0
+    }
+  },
+  "@button": {
+    "font": {
+      "size": 5
+    },
+    "colour": {
+      "active_text": "#EFE5CE"
+    },
+    "misc": {
+      "text_horiz_alignment": "center",
+      "text_vert_alignment": "center"
+    }
+  },
+  "@slider": {
+    "colour": {
+      "normal_fill": "#2374FF",
+      "normal_bg": "#D0D0D7",
+      "normal_border": "#676774"
+    }
+  },
+  "textbox_pokestats": {
+    "font": {
+      "size": 5
+    }
+  }
+}

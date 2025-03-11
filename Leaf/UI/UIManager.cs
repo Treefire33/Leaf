@@ -54,7 +54,7 @@ public class UIManager
 
 	public void LoadTheme(string themePath)
 	{
-		Theme = UITheme.LoadThemeFromFile(themePath);
+		Theme = UITheme.LoadTheme(themePath);
 	}
 
 	public void PushEvent(Event newEvent)
