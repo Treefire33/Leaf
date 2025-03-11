@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cattail", "Cattail.csproj", "{8B07205E-4DF6-43C5-9EB9-4056C7962ECF}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CattailTest", "CattailTest", "{AAE4CE1C-460A-4174-9B0F-AEAD35F1CA5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Leaf", "Leaf.csproj", "{8B07205E-4DF6-43C5-9EB9-4056C7962ECF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCattail", "..\Testing\TestCattail\TestCattail.csproj", "{7DAB6F27-5BCF-4AA8-9D49-53E6E6138EBC}"
 EndProject
