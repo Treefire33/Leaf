@@ -46,16 +46,15 @@ public class UIButton : UIElement, IUIClickable
 		_disabled = images[2];
 		_currentTexture = _normal;
 		_currentNPatch = Resources.GenerateNPatchInfoFromButton(_currentTexture);
-		ThemeElement();
 		SetText(text);
 	}
 
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		/*_font = Theme.Font.Item1;
-		_fontSize = Theme.Font.Item2 + 5;
-		_textColour = Theme.GetColour("text");*/
+		_font = Theme.GetProperty("font-family").AsFont();
+		_fontSize = Theme.GetProperty("font-size").AsInt();
+		_textColour = Theme.GetProperty("color").AsColor();
 	}
 
 	public void SetText(string text)
