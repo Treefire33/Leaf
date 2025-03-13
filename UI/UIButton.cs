@@ -33,10 +33,11 @@ public class UIButton : UIElement, IUIClickable
 		string text, 
 		bool visible = true, 
 		IUIContainer? container = null,
-		ObjectID id = default,
+		string id = "",
+		string @class = "",
 		(string, Vector2) anchor = default,
 		Vector2 origin = default
-	) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@button"), anchor, origin)
+	) : base(posScale, visible, container, id, @class, "button", anchor, origin)
 	{
 		_text = text;
 		List<Texture2D> images = Resources.GetButtonImagesFromStyle(style);
@@ -52,9 +53,9 @@ public class UIButton : UIElement, IUIClickable
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		_font = Theme.Font.Item1;
+		/*_font = Theme.Font.Item1;
 		_fontSize = Theme.Font.Item2 + 5;
-		_textColour = Theme.GetColour("text");
+		_textColour = Theme.GetColour("text");*/
 	}
 
 	public void SetText(string text)

@@ -12,7 +12,7 @@
     
     <PropertyGroup>
         <PackageId>Leaf</PackageId>
-        <Version>0.1.8.7</Version>
+        <Version>0.0.1</Version>
         <Authors>Treefire33</Authors>
     </PropertyGroup>
 

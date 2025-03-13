@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Leaf", "Leaf.csproj", "{8B07205E-4DF6-43C5-9EB9-4056C7962ECF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCattail", "..\Testing\TestCattail\TestCattail.csproj", "{7DAB6F27-5BCF-4AA8-9D49-53E6E6138EBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLeaf", "..\Testing\TestLeaf\TestLeaf.csproj", "{7DAB6F27-5BCF-4AA8-9D49-53E6E6138EBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

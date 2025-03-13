@@ -11,7 +11,7 @@ namespace Cattail.UI;
 public class UIElement : IUIElement
 {
 	protected readonly UIManager Manager;
-	protected StyleRule Theme;
+	protected UIThemeData Theme;
 	//all positions are, by default, based on the top left
 	public Anchor Anchor;
 	public Vector2 Origin = Vector2.Zero;
@@ -38,7 +38,7 @@ public class UIElement : IUIElement
 	{
 		Manager = UIManager.GetDefaultManager();
 		RelativeRect = posScale;
-		Theme = Manager.Theme.GetRuleFromObject(id, @class, element);
+		Theme = Manager.Theme.GetThemeDataFromObject(id, @class, element);
 		if (!isRootContainer)
 		{
 			Container = container ?? Manager.GetDefaultContainer();

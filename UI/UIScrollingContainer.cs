@@ -26,10 +26,11 @@ public class UIScrollingContainer : UIElement, IUIContainer
         bool horizontalScroll = false,
         bool visible = true, 
         IUIContainer? container = null,
-        ObjectID id = default,
+        string id = "",
+        string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default
-    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@scroll_container"), anchor, origin)
+    ) : base(posScale, visible, container, id, @class, "scroll_container", anchor, origin)
     {
         _allowVerticalScroll = verticalScroll;
         _allowHorizontalScroll = horizontalScroll;

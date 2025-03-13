@@ -25,10 +25,11 @@ public class UISlider : UIElement, IUIClickable
         float value = 0, 
         bool visible = true, 
         IUIContainer? container = null,
-        ObjectID id = default,
+        string id = "",
+        string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default
-    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@slider"), anchor, origin)
+    ) : base(posScale, visible, container, id, @class, "slider", anchor, origin)
     {
         MinValue = minValue;
         MaxValue = maxValue;
@@ -45,10 +46,10 @@ public class UISlider : UIElement, IUIClickable
     public override void ThemeElement()
     {
         base.ThemeElement();
-        _fillColour = Theme.GetColour("normal_fill");
+        /*_fillColour = Theme.GetColour("normal_fill");
         _backgroundColour = Theme.GetColour("normal_bg");
         _outlineColour = Theme.GetColour("normal_border");
-        _outlineThickness = Theme.GetMiscellaneous("border_width");
+        _outlineThickness = Theme.GetMiscellaneous("border_width");*/
     }
 
     public override void Update()
