@@ -46,10 +46,10 @@ public class UISlider : UIElement, IUIClickable
     public override void ThemeElement()
     {
         base.ThemeElement();
-        /*_fillColour = Theme.GetColour("normal_fill");
-        _backgroundColour = Theme.GetColour("normal_bg");
-        _outlineColour = Theme.GetColour("normal_border");
-        _outlineThickness = Theme.GetMiscellaneous("border_width");*/
+        _fillColour = Theme.GetProperty("fill").AsColor();
+        _backgroundColour = Theme.GetProperty("background-color").AsColor();
+        _outlineColour = Theme.GetProperty("border-color").AsColor();
+        _outlineThickness = Theme.GetProperty("border-width").AsFloat();
     }
 
     public override void Update()

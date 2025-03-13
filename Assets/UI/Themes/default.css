@@ -1,3 +1,16 @@
 * {
-    
+    background-color: #D0D0D7;
+}
+
+button {
+    font-family: vcr_mono;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+}
+
+slider {
+    fill: #2374ff;
+    border-color: #676774;
+    border-width: 2px;
 }

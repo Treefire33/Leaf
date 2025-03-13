@@ -30,7 +30,7 @@ public class UIManager
 	public UITheme Theme;
 	public bool IsFocused = false;
 
-	public UIManager(Vector2 gameSize = default, string theme = "default.json")
+	public UIManager(Vector2 gameSize = default, string theme = "default.css")
 	{
 		if (gameSize == default)
 		{
