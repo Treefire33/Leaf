@@ -27,10 +27,11 @@ public partial class UITextInput : UIElement
         int maxCharacters,
         bool visible = true, 
         IUIContainer? container = null,
-        ObjectID id = default,
+        string id = "",
+        string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default
-    ): base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@textinput"), anchor, origin)
+    ): base(posScale, visible, container, id, @class, "text_input", anchor, origin)
     {
         _text = defaultText;
         _maxCharacters = maxCharacters;
@@ -38,8 +39,8 @@ public partial class UITextInput : UIElement
 
     public override void ThemeElement()
     {
-        _font = Theme.Font.Item1;
-        _fontSize = Theme.Font.Item2;
+        /*_font = Theme.Font.Item1;
+        _fontSize = Theme.Font.Item2;*/
     }
 
     public override void Update()

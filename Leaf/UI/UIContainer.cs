@@ -12,11 +12,12 @@ public class UIContainer : UIElement, IUIContainer
         UIRect posScale,
         bool visible = true,
         IUIContainer? container = null,
-        ObjectID id = default,
+        string id = "",
+        string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default,
         bool isRootContainer = false
-    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "", id.Class ?? "@container"), anchor, origin, isRootContainer: isRootContainer)
+    ) : base(posScale, visible, container, id, @class, "container", anchor, origin, isRootContainer: isRootContainer)
     {
         
     }

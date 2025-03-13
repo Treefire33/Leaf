@@ -16,8 +16,10 @@ public class UITheme
         return theme;
     }
 
-    public StyleRule? GetRuleFromObject(string id, string @class, string element)
+    public UIThemeData GetThemeDataFromObject(string id, string @class, string element)
     {
-        
+        var list = Rules.Find(x => x.SelectorText == id);
+        Console.WriteLine(list);
+        return default;
     }
 }

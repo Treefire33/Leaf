@@ -20,10 +20,11 @@ public class UIImage : UIElement
         NPatchInfo info = default,
         bool visible = true, 
         IUIContainer? container = null,
-        ObjectID id = default,
+        string id = "",
+        string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default
-    ) : base(posScale, visible, container, new ObjectID(id.ID ?? "default", id.Class ?? "@image"), anchor, origin)
+    ) : base(posScale, visible, container, id, @class, "image", anchor, origin)
     {
         Image = image;
         _ninePatch = ninePatch;
