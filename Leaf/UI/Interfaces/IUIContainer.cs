@@ -1,4 +1,4 @@
-﻿namespace Cattail.UI.Interfaces;
+﻿namespace Leaf.UI.Interfaces;
 
 public interface IUIContainer : IUIElement
 {

@@ -1,6 +1,6 @@
 ﻿using Raylib_cs;
 
-namespace Cattail.UI.Events;
+namespace Leaf.UI.Events;
 
 public class Event
 {

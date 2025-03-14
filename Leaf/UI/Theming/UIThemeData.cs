@@ -2,9 +2,8 @@ using System.Text.RegularExpressions;
 using ExCSS;
 using Raylib_cs;
 using Color = Raylib_cs.Color;
-using CSSColor = ExCSS.Color;
 
-namespace Cattail.UI.Theming;
+namespace Leaf.UI.Theming;
 
 public struct UIThemeData
 {

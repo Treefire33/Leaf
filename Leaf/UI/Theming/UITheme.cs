@@ -1,6 +1,6 @@
 using ExCSS;
 
-namespace Cattail.UI.Theming;
+namespace Leaf.UI.Theming;
 
 public class UITheme
 {

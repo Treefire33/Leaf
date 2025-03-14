@@ -1,4 +1,4 @@
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 /// <summary>
 /// A group of UIElements, use in lieu of UIContainer when you want to control a lot of defined elements rather than

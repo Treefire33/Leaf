@@ -1,11 +1,11 @@
 ﻿using System.Numerics;
-using Cattail.UI.Events;
-using Cattail.UI.Interfaces;
-using Cattail.UI.Theming;
+using Leaf.UI.Events;
+using Leaf.UI.Theming;
 using Raylib_cs;
+
 #pragma warning disable CS8618, CS9264
 
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 public class UIManager
 {
