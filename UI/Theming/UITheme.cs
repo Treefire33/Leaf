@@ -7,14 +7,14 @@ public class UITheme
     public Stylesheet Stylesheet { get; init; }
     public static UITheme LoadTheme(string stylesheet)
     {
-        var stylesheetParser = new StylesheetParser(true);
+        var stylesheetParser = new StylesheetParser(true, true, tolerateInvalidValues: true);
         var stylesheetData = stylesheetParser.Parse(File.ReadAllText(stylesheet));
         
         var theme = new UITheme
         {
             Stylesheet = stylesheetData
         };
-
+        
         var defaultRule = stylesheetData.StyleRules.Where(x => x.SelectorText == "*");
         IEnumerable<IStyleRule> styleRules = defaultRule.ToList();
         if (styleRules.Any())

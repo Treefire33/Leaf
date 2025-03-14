@@ -32,6 +32,7 @@ public class UIManager
 
 	public UIManager(Vector2 gameSize = default, string theme = "default.css")
 	{
+		Resources.LoadAssets();
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
@@ -43,8 +44,6 @@ public class UIManager
 			SetDefaultManager(this);
 		}	
 		GetDefaultContainer();
-		
-		Resources.LoadAssets();
 	}
 
 	public void DrawUI()

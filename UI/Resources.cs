@@ -96,10 +96,11 @@ public static class Resources
         }
     }
 
-    private static Font LoadFontUI(string fontName)
+    private static unsafe Font LoadFontUI(string fontName)
     {
-        Font loadedFont = LoadFont(fontName);
-        SetTextureFilter(loadedFont.Texture, TextureFilter.Point);
+        Font loadedFont = LoadFontEx(fontName, 36, null, 0);
+        GenTextureMipmaps(&loadedFont.Texture);
+        SetTextureFilter(loadedFont.Texture, TextureFilter.Anisotropic8X);
         return loadedFont;
     }
 }

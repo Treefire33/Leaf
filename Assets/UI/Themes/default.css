@@ -1,16 +1,29 @@
 * {
     background-color: #D0D0D7;
+    font-family: clear_sans;
+    font-size: 18px;
 }
 
+/*button, container, image, scroll-container, textbox, text-input, slider*/
+/*implemented: button, slider, textbox*/
+
 button {
-    font-family: vcr_mono;
-    font-size: 12px;
+    font-size: 36px;
     color: white;
     text-align: center;
+    text-align-vertical: center;
+    button-style: bottom;
 }
 
 slider {
     fill: #2374ff;
     border-color: #676774;
     border-width: 2px;
+}
+
+textbox {
+    color: black;
+    text-align: left;
+    text-align-vertical: top;
+    word-spacing: 1px;
 }
