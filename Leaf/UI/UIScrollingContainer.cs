@@ -30,7 +30,7 @@ public class UIScrollingContainer : UIElement, IUIContainer
         string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default
-    ) : base(posScale, visible, container, id, @class, "scroll_container", anchor, origin)
+    ) : base(posScale, visible, container, id, @class, "scroll-container", anchor, origin)
     {
         _allowVerticalScroll = verticalScroll;
         _allowHorizontalScroll = horizontalScroll;

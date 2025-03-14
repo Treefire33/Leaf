@@ -13,6 +13,8 @@ public class UIButton : UIElement, IUIClickable
     [MarshalAs(UnmanagedType.LPUTF8Str)] private string _text;
 	private Font _font;
 	private int _fontSize = 2;
+	private string _textAlignmentHorizontal = "center";
+	private string _textAlignmentVertical = "center";
 	private Color _textColour = Color.White;
 
 	private Texture2D _currentTexture;
@@ -29,7 +31,6 @@ public class UIButton : UIElement, IUIClickable
 
 	public UIButton(
 		UIRect posScale, 
-		string style, 
 		string text, 
 		bool visible = true, 
 		IUIContainer? container = null,
@@ -40,13 +41,10 @@ public class UIButton : UIElement, IUIClickable
 	) : base(posScale, visible, container, id, @class, "button", anchor, origin)
 	{
 		_text = text;
-		List<Texture2D> images = Resources.GetButtonImagesFromStyle(style);
-		_normal = images[0];
-		_hover = images[1];
-		_disabled = images[2];
+		ThemeElement();
 		_currentTexture = _normal;
 		_currentNPatch = Resources.GenerateNPatchInfoFromButton(_currentTexture);
-		SetText(text);
+		SetText(_text);
 	}
 
 	public override void ThemeElement()
@@ -55,20 +53,38 @@ public class UIButton : UIElement, IUIClickable
 		_font = Theme.GetProperty("font-family").AsFont();
 		_fontSize = Theme.GetProperty("font-size").AsInt();
 		_textColour = Theme.GetProperty("color").AsColor();
+		_textAlignmentHorizontal = Theme.GetProperty("text-align");
+		_textAlignmentVertical = Theme.GetProperty("text-align-vertical");
+		List<Texture2D> images = Theme.GetProperty("button-style").AsButtonImages();
+		_normal = images[0];
+		_hover = images[1];
+		_disabled = images[2];
 	}
 
 	public void SetText(string text)
 	{
 		_text = text;
+		AlignButtonText();
+	}
+
+	private void AlignButtonText()
+	{
 		_textSize = MeasureTextEx(_font, _text, _fontSize, 1);
-		_textPosition = new Vector2(
-			GetPosition().X
-			+ (RelativeRect.Size.X / 2)
-			- (_textSize.X / 2),
-			GetPosition().Y
-			+ (RelativeRect.Size.Y / 2)
-			- (_textSize.Y / 2)
-		);
+		float textX = _textAlignmentHorizontal switch
+		{
+			"left" => GetPosition().X,
+			"center" => GetPosition().X + (RelativeRect.Size.X / 2) - (_textSize.X / 2),
+			"right" => GetPosition().X + (RelativeRect.Size.X) - (_textSize.X),
+			_ => GetPosition().X
+		};
+		float textY = _textAlignmentVertical switch
+		{
+			"top" => GetPosition().Y,
+			"center" => GetPosition().Y + (RelativeRect.Size.Y / 2) - (_textSize.Y / 2),
+			"bottom" => GetPosition().Y + (RelativeRect.Size.Y) - (_textSize.Y),
+			_ => GetPosition().Y
+		};
+		_textPosition = new Vector2(textX, textY);
 	}
 
 	[DllImport("raylib", CallingConvention = CallingConvention.Cdecl)]
@@ -149,5 +165,17 @@ public class UIButton : UIElement, IUIClickable
 				Manager.PushEvent(newEvent);
 			}
 		}
+	}
+
+	public override void SetAnchor(string anchorPosition, UIElement anchorElement)
+	{
+		base.SetAnchor(anchorPosition, anchorElement);
+		AlignButtonText();
+	}
+
+	public override void SetAnchor(string anchorPosition, Vector2 anchorOffset)
+	{
+		base.SetAnchor(anchorPosition, anchorOffset);
+		AlignButtonText();
 	}
 }

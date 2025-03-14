@@ -28,6 +28,7 @@ public class UITextBox : UIElement
 	private Color _textColour;
 	private Font _font;
 	private float _fontSize;
+	private int _spacing;
 	private HorizontalTextAlignment _horizontalAlignment;
 	private VerticalTextAlignment _verticalAlignment;
 
@@ -45,6 +46,7 @@ public class UITextBox : UIElement
 	) : base(posScale, visible, container, id, @class, "textbox", anchor, origin)
 	{
 		_text = text;
+		ThemeElement();
 	}
 
 	public HorizontalTextAlignment GetHorizontalAlignmentFromString(string alignment)
@@ -72,27 +74,14 @@ public class UITextBox : UIElement
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		/*_font = Theme.Font.Item1; //Font resource
-		_fontSize = Theme.Font.Item2 + 5; //Font size
-		_textColour = Theme.GetColour("text");
-		if (Theme.Miscellaneous.TryGetValue("text_horiz_alignment", out dynamic? horizAlignment))
-		{
-			_horizontalAlignment = GetHorizontalAlignmentFromString(horizAlignment!);
-		}
-		if (Theme.Miscellaneous.TryGetValue("text_vert_alignment", out dynamic? vertAlignment))
-		{
-			_verticalAlignment = GetVerticalAlignmentFromString(vertAlignment!);
-		}*/
-		/*if (Theme.Miscellaneous.TryGetValue("text_horiz_alignment_padding", out dynamic? horizPadding))
-		{
-			_horizontalAlignment = GetHorizontalAlignmentFromString(horizAlignment!);
-		}
-		if (Theme.Miscellaneous.TryGetValue("text_vert_alignment_padding", out dynamic? vertPadding))
-		{
-			_horizontalAlignment = GetHorizontalAlignmentFromString(horizAlignment!);
-		}*/
+		_font = Theme.GetProperty("font-family").AsFont();
+		_fontSize = Theme.GetProperty("font-size").AsInt();
+		_textColour = Theme.GetProperty("color").AsColor();
+		_horizontalAlignment = GetHorizontalAlignmentFromString(Theme.GetProperty("text-align"));
+		_verticalAlignment = GetVerticalAlignmentFromString(Theme.GetProperty("text-align-vertical"));
+		_spacing = Theme.GetProperty("spacing").AsInt();
 	}
-  
+
 	public void SetPadding(Vector2 padding)
 	{
 		_padding = padding;
@@ -104,7 +93,7 @@ public class UITextBox : UIElement
 	)
 	{
 		UIRect newRect = new();
-		Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, 1);
+		Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, _spacing);
 		switch (horizontalAlignment)
 		{
 			default:
@@ -156,7 +145,7 @@ public class UITextBox : UIElement
 			_text,
 			new Rectangle(GetPosition(), RelativeRect.Size),
 			_fontSize,
-			1,
+			_spacing,
 			true,
 			_textColour
 		);

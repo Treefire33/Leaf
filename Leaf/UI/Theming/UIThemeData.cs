@@ -34,6 +34,11 @@ public struct UIThemeData
         var property = idProperty ?? classProperty ?? elementProperty ?? defaultProperty ?? "";
         return property;
     }
+
+    public override string ToString()
+    {
+        return $"{_idRule?.ToCss()}\n{_classRule?.ToCss()}\n{_elementRule?.Style.CssText}";
+    }
 }
 
 public partial struct ThemeProperty
@@ -43,6 +48,11 @@ public partial struct ThemeProperty
     public static implicit operator ThemeProperty(string value)
     {
         return new ThemeProperty { Value = value };
+    }
+    
+    public static implicit operator string(ThemeProperty value)
+    {
+        return value.Value;
     }
     
     public Color AsColor()
@@ -76,10 +86,16 @@ public partial struct ThemeProperty
     public Font AsFont()
     {
         if (string.IsNullOrEmpty(Value)) { return Resources.Fonts["default"]; }
-        return Resources.Fonts[Value];
+        return Resources.Fonts.TryGetValue(Value, out Font font) ? font : Resources.Fonts["default"];
     }
 
-    [GeneratedRegex(@"[0-9]\w+")]
+    public List<Texture2D> AsButtonImages()
+    {
+        if (string.IsNullOrEmpty(Value)) { return Resources.Buttons["default"]; }
+        return Resources.Buttons.TryGetValue(Value, out List<Texture2D> images) ? images : Resources.Buttons["default"];
+    }
+
+    [GeneratedRegex(@"[0-9]\w+|0")]
     private static partial Regex ColorRegexPattern();
     
     [GeneratedRegex(@"[0-9]\d+|[0-9]{1}")]

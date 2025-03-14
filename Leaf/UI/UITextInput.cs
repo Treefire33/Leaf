@@ -14,6 +14,7 @@ public partial class UITextInput : UIElement
     private string _text;
     private Font _font;
     private int _fontSize;
+    private Color _textColour;
     private readonly int _maxCharacters;
     private int _currentCharacters = 0;
 
@@ -31,16 +32,18 @@ public partial class UITextInput : UIElement
         string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default
-    ): base(posScale, visible, container, id, @class, "text_input", anchor, origin)
+    ): base(posScale, visible, container, id, @class, "text-input", anchor, origin)
     {
         _text = defaultText;
         _maxCharacters = maxCharacters;
+        ThemeElement();
     }
 
     public override void ThemeElement()
     {
-        /*_font = Theme.Font.Item1;
-        _fontSize = Theme.Font.Item2;*/
+        _font = Theme.GetProperty("font-family").AsFont();
+        _fontSize = Theme.GetProperty("font-size").AsInt();
+        _textColour = Theme.GetProperty("color").AsColor();
     }
 
     public override void Update()
@@ -49,16 +52,16 @@ public partial class UITextInput : UIElement
         
         HandleElementInteraction();
         
-        DrawRectangleRec(RelativeRect.RelativeRect, Color.White);
+        DrawRectangleRec(new Rectangle(GetPosition(), RelativeRect.Size), Color.White);
         DrawTextPro(
             _font,
             _text,
-            RelativeRect.Position,
+            GetPosition(),
             new Vector2(0),
             0,
             _fontSize,
             0,
-            Color.Black
+            _textColour
         );
 
         if (Hovered && IsMouseButtonPressed(MouseButton.Left))

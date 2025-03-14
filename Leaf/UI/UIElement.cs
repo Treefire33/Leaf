@@ -38,7 +38,7 @@ public class UIElement : IUIElement
 	{
 		Manager = UIManager.GetDefaultManager();
 		RelativeRect = posScale;
-		Theme = Manager.Theme.GetThemeDataFromObject(id, @class, element);
+		Theme = Manager.Theme.GetThemeDataFromObject($"#{id}", $".{@class}", element);
 		if (!isRootContainer)
 		{
 			Container = container ?? Manager.GetDefaultContainer();
@@ -76,13 +76,13 @@ public class UIElement : IUIElement
 		Container?.RemoveElement(this);
 	}
 
-	public void SetAnchor(string anchorPosition, Vector2 anchorOffset)
+	public virtual void SetAnchor(string anchorPosition, Vector2 anchorOffset)
 	{
 		Anchor.AnchorPosition = anchorPosition;
 		Anchor.Offset = anchorOffset;
 	}
 	
-	public void SetAnchor(string anchorPosition, UIElement anchorElement)
+	public virtual void SetAnchor(string anchorPosition, UIElement anchorElement)
 	{
 		Anchor.AnchorPosition = anchorPosition;
 		Anchor.Offset = anchorElement.GetPosition();

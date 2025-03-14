@@ -41,6 +41,7 @@ public class UISlider : UIElement, IUIClickable
             origin: new Vector2(0.5f, 0.5f)
         );
         _handle.SetAnchor("left", this);*/
+        ThemeElement();
     }
 
     public override void ThemeElement()
@@ -48,8 +49,8 @@ public class UISlider : UIElement, IUIClickable
         base.ThemeElement();
         _fillColour = Theme.GetProperty("fill").AsColor();
         _backgroundColour = Theme.GetProperty("background-color").AsColor();
-        _outlineColour = Theme.GetProperty("border-color").AsColor();
-        _outlineThickness = Theme.GetProperty("border-width").AsFloat();
+        _outlineColour = Theme.GetProperty("border-top-color").AsColor();
+        _outlineThickness = Theme.GetProperty("border-top-width").AsFloat();
     }
 
     public override void Update()
