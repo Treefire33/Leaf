@@ -1,9 +1,8 @@
 using System.Numerics;
-using Cattail.UI.Interfaces;
-using Cattail.UI.Theming;
+using Leaf.UI.Interfaces;
 using Raylib_cs;
 
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 public class UISlider : UIElement, IUIClickable
 {

@@ -1,10 +1,9 @@
 using System.Numerics;
-using Cattail.UI.Interfaces;
-using Cattail.UI.Theming;
+using Leaf.UI.Interfaces;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 public class UIImage : UIElement
 {

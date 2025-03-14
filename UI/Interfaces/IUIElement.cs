@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Cattail.UI.Interfaces;
+namespace Leaf.UI.Interfaces;
 
 public interface IUIElement
 {

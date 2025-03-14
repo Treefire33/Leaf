@@ -1,4 +1,4 @@
-﻿namespace Cattail.UI.Events;
+﻿namespace Leaf.UI.Events;
 
 public enum EventType
 {

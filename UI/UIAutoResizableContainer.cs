@@ -1,4 +1,4 @@
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 public class UIAutoResizableContainer
 {

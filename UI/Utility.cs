@@ -1,9 +1,8 @@
 using System.Numerics;
-using System.Text;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 public class Utility
 {

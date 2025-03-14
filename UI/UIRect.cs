@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 
-namespace Cattail.UI;
+namespace Leaf.UI;
 
 /// <summary>
 /// Creates a new UIRect, which is similar to pygame's Rect.
