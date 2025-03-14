@@ -14,6 +14,10 @@
         <PackageId>Leaf</PackageId>
         <Version>0.1.0</Version>
         <Authors>Treefire33</Authors>
+        <Description>Collection of Raylib-cs utilities and libraries</Description>
+        <PackageReleaseNotes>Undistributed build.</PackageReleaseNotes>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <Target Name="PushNuGetPackage" AfterTargets="GenerateNuspec">
@@ -31,5 +35,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 </Project>
