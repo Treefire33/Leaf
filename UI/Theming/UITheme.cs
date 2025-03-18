@@ -52,10 +52,6 @@ public class UITheme
 
     public UIThemeData GetThemeDataFromObject(string id, string @class, string element)
     {
-        foreach (var rule in Stylesheet.StyleRules)
-        {
-            Console.WriteLine(rule.SelectorText);
-        }
         var idRules = Stylesheet.StyleRules.Where(x => x.SelectorText == id).ToList();
         var classRules = Stylesheet.StyleRules.Where(x => x.SelectorText == @class).ToList();
         var elementRules = Stylesheet.StyleRules.Where(x => x.SelectorText == element).ToList();
