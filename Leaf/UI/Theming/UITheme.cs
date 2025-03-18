@@ -5,21 +5,46 @@ namespace Leaf.UI.Theming;
 public class UITheme
 {
     public Stylesheet Stylesheet { get; init; }
-    public static UITheme LoadTheme(string stylesheet)
+    
+    public static UITheme LoadTheme(string stylesheet = "")
     {
         var stylesheetParser = new StylesheetParser(true, true, tolerateInvalidValues: true);
-        var stylesheetData = stylesheetParser.Parse(File.ReadAllText(stylesheet));
-        
-        var theme = new UITheme
-        {
-            Stylesheet = stylesheetData
-        };
-        
+        var stylesheetData = stylesheetParser.Parse(File.ReadAllText(Resources.UIThemesPath + "default.css"));
+
         var defaultRule = stylesheetData.StyleRules.Where(x => x.SelectorText == "*");
         IEnumerable<IStyleRule> styleRules = defaultRule.ToList();
         if (styleRules.Any())
         {
             UIThemeData.DefaultRule = (styleRules.First() as StyleRule)!;
+        }
+
+        var theme = new UITheme
+        {
+            Stylesheet = stylesheetData
+        };
+        
+        // todo: not this
+        if (stylesheet != "")
+        {
+            stylesheetData = stylesheetParser.Parse(File.ReadAllText(Resources.UIThemesPath + stylesheet));
+            var currentStyles = theme.Stylesheet.StyleRules;
+
+            foreach (var styleRule in stylesheetData.StyleRules)
+            {
+                var newRules = styleRule.Style.ToList();
+                var matchedRule = currentStyles.FirstOrDefault(x => x.SelectorText == styleRule.SelectorText);
+                if (matchedRule is not null)
+                {
+                    foreach (var prop in newRules)
+                    {
+                        matchedRule.Style.SetProperty(prop.Name, prop.Value);
+                    }
+                }
+                else
+                {
+                    currentStyles = currentStyles.Concat([styleRule]);
+                }
+            }
         }
 
         return theme;

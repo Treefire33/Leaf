@@ -12,7 +12,7 @@
     
     <PropertyGroup>
         <PackageId>Leaf</PackageId>
-        <Version>0.1.0</Version>
+        <Version>0.1.2</Version>
         <Authors>Treefire33</Authors>
         <Description>Collection of Raylib-cs utilities and libraries</Description>
         <PackageReleaseNotes>Undistributed build.</PackageReleaseNotes>
@@ -32,8 +32,9 @@
 
     <ItemGroup>
         <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
         <None Include="icon.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
