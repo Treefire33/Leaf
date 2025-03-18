@@ -98,7 +98,7 @@ public static class Resources
 
     private static unsafe Font LoadFontUI(string fontName)
     {
-        Font loadedFont = LoadFontEx(fontName, 36, null, 0);
+        Font loadedFont = LoadFontEx(fontName, 64, null, 0);
         GenTextureMipmaps(&loadedFont.Texture);
         SetTextureFilter(loadedFont.Texture, TextureFilter.Anisotropic8X);
         return loadedFont;

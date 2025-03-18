@@ -1,6 +1,6 @@
 * {
     background-color: #D0D0D7;
-    font-family: clear_sans;
+    font-family: m6x11plus;
     font-size: 18px;
 }
 
@@ -12,7 +12,7 @@ button {
     color: white;
     text-align: center;
     text-align-vertical: center;
-    button-style: bottom;
+    button-style: default;
 }
 
 slider {
