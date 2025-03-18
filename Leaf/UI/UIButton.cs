@@ -49,7 +49,6 @@ public class UIButton : UIElement, IUIClickable
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		Console.WriteLine(Theme);
 		_font = Theme.GetProperty("font-family").AsFont();
 		_fontSize = Theme.GetProperty("font-size").AsInt();
 		_textColour = Theme.GetProperty("color").AsColor();
