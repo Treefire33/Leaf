@@ -30,7 +30,7 @@ public class UIManager
 	public UITheme Theme;
 	public bool IsFocused = false;
 
-	public UIManager(Vector2 gameSize = default, string theme = "default.css")
+	public UIManager(Vector2 gameSize = default, string theme = "")
 	{
 		Resources.LoadAssets();
 		if (gameSize == default)
@@ -38,7 +38,7 @@ public class UIManager
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		LoadTheme(Resources.UIThemesPath + theme);
+		LoadTheme(theme);
 		if (DefaultManager == null)
 		{
 			SetDefaultManager(this);
@@ -51,7 +51,7 @@ public class UIManager
 		Container!.Update();
 	}
 
-	public void LoadTheme(string themePath)
+	public void LoadTheme(string themePath = "")
 	{
 		Theme = UITheme.LoadTheme(themePath);
 	}
