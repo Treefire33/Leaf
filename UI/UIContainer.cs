@@ -15,8 +15,9 @@ public class UIContainer : UIElement, IUIContainer
         string @class = "",
         (string, Vector2) anchor = default,
         Vector2 origin = default,
+        string? tooltip = null,
         bool isRootContainer = false
-    ) : base(posScale, visible, container, id, @class, "container", anchor, origin, isRootContainer: isRootContainer)
+    ) : base(posScale, visible, container, id, @class, "container", anchor, origin, tooltip:tooltip, isRootContainer: isRootContainer)
     {
         
     }

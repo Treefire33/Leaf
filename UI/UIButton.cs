@@ -36,8 +36,9 @@ public class UIButton : UIElement, IUIClickable
 		string id = "",
 		string @class = "",
 		(string, Vector2) anchor = default,
-		Vector2 origin = default
-	) : base(posScale, visible, container, id, @class, "button", anchor, origin)
+		Vector2 origin = default,
+		string? tooltip = null
+	) : base(posScale, visible, container, id, @class, "button", anchor, origin, tooltip)
 	{
 		_text = text;
 		ThemeElement();

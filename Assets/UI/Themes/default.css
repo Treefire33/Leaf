@@ -27,3 +27,11 @@ textbox {
     text-align-vertical: top;
     word-spacing: 1px;
 }
+
+tooltip {
+    color: black;
+    border-color: gray;
+    background-color: rgb(123, 123, 123);
+    segments: 5;
+    border-width: 2px;
+}

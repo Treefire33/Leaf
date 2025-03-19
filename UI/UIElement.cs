@@ -18,6 +18,7 @@ public class UIElement : IUIElement
 	public int Layer = 0;
 
 	public IUIContainer? Container;
+	private UITooltip? _tooltip;
 
 	public bool Visible = true;
 	public bool Active = true;
@@ -32,6 +33,7 @@ public class UIElement : IUIElement
 		string element = "",
 		(string, Vector2) anchor = default,
 		Vector2 origin = default,
+		string? tooltip = null,
 		bool isRootContainer = false
 	)
 	{
@@ -59,6 +61,13 @@ public class UIElement : IUIElement
 		Origin = origin;
 		SetAnchor(anchor.Item1!, anchor.Item2);
 		Visible = visible;
+		if (tooltip != null)
+		{
+			_tooltip = new UITooltip(
+				tooltip,
+				this
+			);
+		}
 	}
 
 	public virtual void Update()
@@ -73,6 +82,7 @@ public class UIElement : IUIElement
 	public virtual void Kill()
 	{
 		Container?.RemoveElement(this);
+		_tooltip?.Kill();
 	}
 
 	public virtual void SetAnchor(string anchorPosition, Vector2 anchorOffset)

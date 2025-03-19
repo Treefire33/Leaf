@@ -26,8 +26,9 @@ public class UIScrollingContainer : UIElement, IUIContainer
         string id = "",
         string @class = "",
         (string, Vector2) anchor = default,
-        Vector2 origin = default
-    ) : base(posScale, visible, container, id, @class, "scroll-container", anchor, origin)
+        Vector2 origin = default,
+        string? tooltip = null
+    ) : base(posScale, visible, container, id, @class, "scroll-container", anchor, origin, tooltip)
     {
         _allowVerticalScroll = verticalScroll;
         _allowHorizontalScroll = horizontalScroll;
