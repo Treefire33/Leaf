@@ -12,7 +12,7 @@
     
     <PropertyGroup>
         <PackageId>Leaf</PackageId>
-        <Version>0.1.6</Version>
+        <Version>0.1.10</Version>
         <Authors>Treefire33</Authors>
         <Description>Collection of Raylib-cs utilities and libraries</Description>
         <PackageReleaseNotes>Undistributed build.</PackageReleaseNotes>
