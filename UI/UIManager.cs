@@ -30,15 +30,16 @@ public class UIManager
 	public UITheme Theme;
 	public bool IsFocused = false;
 
-	public UIManager(Vector2 gameSize = default, string theme = "")
+	public UIManager(Vector2 gameSize = default, string theme = "", string uiAssetsPath = "", bool buttonSpritesheet = true)
 	{
-		Resources.LoadAssets();
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
 		LoadTheme(theme);
+		Resources.UIRootPath = uiAssetsPath == "" ? Resources.UIRootPath : uiAssetsPath;
+		Resources.LoadAssets(buttonImagesSpritesheet:buttonSpritesheet);
 		if (DefaultManager == null)
 		{
 			SetDefaultManager(this);

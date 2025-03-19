@@ -73,7 +73,7 @@ public static class Resources
         ];
     }
 
-    public static void LoadAssets()
+    public static void LoadAssets(bool buttonImagesSpritesheet = true)
     {
         if (Directory.Exists(UIFontsPath))
         {
@@ -90,7 +90,7 @@ public static class Resources
                 var name = Path.GetFileNameWithoutExtension(file);
                 if (!Buttons.ContainsKey(name.Replace("_images", "")))
                 {
-                    Buttons.Add(name.Replace("_images", ""), GenButtonsFromName(name.Replace("_images", ""), isSpritesheet: true));
+                    Buttons.Add(name.Replace("_images", ""), GenButtonsFromName(name.Replace("_images", ""), isSpritesheet: buttonImagesSpritesheet));
                 }
             }
         }
