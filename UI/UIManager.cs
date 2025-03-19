@@ -37,9 +37,9 @@ public class UIManager
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		LoadTheme(theme);
-		Resources.UIRootPath = uiAssetsPath == "" ? Resources.UIRootPath : uiAssetsPath;
+		Resources.SetRoot(uiAssetsPath == "" ? Resources.UIRootPath : uiAssetsPath);
 		Resources.LoadAssets(buttonImagesSpritesheet:buttonSpritesheet);
+		LoadTheme(theme);
 		if (DefaultManager == null)
 		{
 			SetDefaultManager(this);

@@ -73,6 +73,14 @@ public static class Resources
         ];
     }
 
+    public static void SetRoot(string rootPath)
+    {
+        UIRootPath = rootPath;
+        UIImagesPath = $@"{UIRootPath}Images\";
+        UIThemesPath = $@"{UIRootPath}Themes\";
+        UIFontsPath = $@"{UIRootPath}Fonts\";
+    }
+
     public static void LoadAssets(bool buttonImagesSpritesheet = true)
     {
         if (Directory.Exists(UIFontsPath))
