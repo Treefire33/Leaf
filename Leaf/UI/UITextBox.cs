@@ -41,8 +41,9 @@ public class UITextBox : UIElement
 		string id = "",
 		string @class = "",
 		(string, Vector2) anchor = default,
-		Vector2 origin = default
-	) : base(posScale, visible, container, id, @class, "textbox", anchor, origin)
+		Vector2 origin = default,
+		string? tooltip = null
+	) : base(posScale, visible, container, id, @class, "textbox", anchor, origin, tooltip)
 	{
 		_text = text;
 		ThemeElement();

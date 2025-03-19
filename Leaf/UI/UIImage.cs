@@ -7,7 +7,7 @@ namespace Leaf.UI;
 
 public class UIImage : UIElement
 {
-    public Texture2D Image;
+    private Texture2D _image;
     private UIRect _imageRect;
     private bool _ninePatch;
     private NPatchInfo _patchInfo;
@@ -22,12 +22,21 @@ public class UIImage : UIElement
         string id = "",
         string @class = "",
         (string, Vector2) anchor = default,
-        Vector2 origin = default
-    ) : base(posScale, visible, container, id, @class, "image", anchor, origin)
+        Vector2 origin = default,
+        string? tooltip = null
+    ) : base(posScale, visible, container, id, @class, "image", anchor, origin, tooltip)
     {
-        Image = image;
+        _image = image;
         _ninePatch = ninePatch;
-        _imageRect = new(0, 0, new Vector2(image.Width, image.Height));
+        _imageRect = new UIRect(0, 0, image.Width, image.Height);
+        _patchInfo = info.Top == default(NPatchInfo).Top ? Resources.GenerateNPatchInfoFromButton(image) : info;
+    }
+
+    public void SetImage(Texture2D image, bool ninePatch = false, NPatchInfo info = default)
+    {
+        _image = image;
+        _ninePatch = ninePatch;
+        _imageRect = new UIRect(0, 0, image.Width, image.Height);
         _patchInfo = info.Top == default(NPatchInfo).Top ? Resources.GenerateNPatchInfoFromButton(image) : info;
     }
 
@@ -38,7 +47,7 @@ public class UIImage : UIElement
         if (_ninePatch)
         {
             DrawTextureNPatch(
-                Image,
+                _image,
                 _patchInfo,
                 new Rectangle(GetPosition(), RelativeRect.Size),
                 Vector2.Zero,
@@ -48,7 +57,7 @@ public class UIImage : UIElement
         }
         else
         {
-            DrawTexturePro(Image, _imageRect, new Rectangle(GetPosition(), RelativeRect.Size), Vector2.Zero, 0, Color.White);
+            DrawTexturePro(_image, _imageRect, new Rectangle(GetPosition(), RelativeRect.Size), Vector2.Zero, 0, Color.White);
         }
     }
 }
