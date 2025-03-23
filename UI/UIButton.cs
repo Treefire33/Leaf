@@ -1,6 +1,6 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
-using Leaf.UI.Events;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
@@ -27,6 +27,10 @@ public class UIButton : UIElement, IUIClickable
 
 	private Vector2 _textSize = Vector2.Zero;
 	private Vector2 _textPosition = Vector2.Zero;
+	
+	public Action? OnLeftClick;
+	public Action? OnRightClick;
+	public Action? OnClick;
 
 	public UIButton(
 		UIRect posScale, 
@@ -164,6 +168,21 @@ public class UIButton : UIElement, IUIClickable
 			{
 				Manager.PushEvent(newEvent);
 			}
+		}
+	}
+
+	public override void ProcessEvent(Event evnt)
+	{
+		base.ProcessEvent(evnt);
+		if (evnt.Element == this && evnt.EventType == EventType.LeftMouseClick)
+		{
+			OnLeftClick?.Invoke();
+			OnClick?.Invoke();
+		}
+		if (evnt.Element == this && evnt.EventType == EventType.RightMouseClick)
+		{
+			OnRightClick?.Invoke();
+			OnClick?.Invoke();
 		}
 	}
 

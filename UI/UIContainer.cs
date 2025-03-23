@@ -1,4 +1,5 @@
 using System.Numerics;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
 
@@ -71,5 +72,17 @@ public class UIContainer : UIElement, IUIContainer
     public virtual void RemoveElement(UIElement element)
     {
         Elements.Remove(element);
+    }
+
+    public override void ProcessEvent(Event evnt)
+    {
+        base.ProcessEvent(evnt);
+        if (Elements.Count > 0)
+        {
+            foreach (UIElement element in Elements)
+            {
+                element.ProcessEvent(evnt);
+            }
+        }
     }
 }

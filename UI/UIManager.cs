@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using Leaf.UI.Events;
+using Leaf.Events;
 using Leaf.UI.Theming;
 using Raylib_cs;
 
@@ -30,14 +30,13 @@ public class UIManager
 	public UITheme Theme;
 	public bool IsFocused = false;
 
-	public UIManager(Vector2 gameSize = default, string theme = "", string uiAssetsPath = "", bool buttonSpritesheet = true)
+	public UIManager(Vector2 gameSize = default, string theme = "", string uiRootPath = "", bool buttonSpritesheet = true)
 	{
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		Resources.SetRoot(uiAssetsPath == "" ? Resources.UIRootPath : uiAssetsPath);
 		Resources.LoadAssets(buttonImagesSpritesheet:buttonSpritesheet);
 		LoadTheme(theme);
 		if (DefaultManager == null)
@@ -50,6 +49,31 @@ public class UIManager
 	public void DrawUI()
 	{
 		Container!.Update();
+	}
+
+	private void ProcessEvents()
+	{
+		foreach (Event evnt in UIEvents)
+			Container!.ProcessEvent(evnt);
+	}
+	
+	private int _lastKey = 0;
+	public void Update()
+	{
+		DrawUI();
+		
+		int keyPressed = Raylib.GetKeyPressed();
+		if (keyPressed != 0 || !Raylib.IsKeyDown((KeyboardKey)_lastKey))
+		{
+			PushEvent(new Event(keyPressed, EventType.KeyPressed));
+			_lastKey = keyPressed;
+		}
+		else
+		{
+			PushEvent(new Event(_lastKey, EventType.KeyDown));
+		}
+
+		ProcessEvents();
 	}
 
 	public void LoadTheme(string themePath = "")
