@@ -12,8 +12,8 @@
     
     <PropertyGroup>
         <PackageId>Leaf</PackageId>
-        <Version>0.1.10</Version>
-        <Authors>Treefire33</Authors>
+        <Version>0.1.11</Version>
+        <Authors>treefire33</Authors>
         <Description>Collection of Raylib-cs utilities and libraries</Description>
         <PackageReleaseNotes>Undistributed build.</PackageReleaseNotes>
         <PackageIcon>icon.png</PackageIcon>
@@ -29,9 +29,13 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Raylib-cs" Version="7.0.1" />
     </ItemGroup>
+    
+    <PropertyGroup>
+        <AssetsPath Condition=" '$(AssetsPath)' == '' ">Assets\</AssetsPath>
+    </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
+        <Content Include="Assets/**" Link="$(AssetsPath)/%(RecursiveDir)/%(Filename)%(Extension)">
             <PackageCopyToOutput>true</PackageCopyToOutput>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>Always</CopyToPublishDirectory>

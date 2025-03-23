@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Leaf.UI.Theming;
 using Raylib_cs;
@@ -84,6 +85,8 @@ public class UIElement : IUIElement
 		Container?.RemoveElement(this);
 		_tooltip?.Kill();
 	}
+
+	public virtual void ProcessEvent(Event evnt) { }
 
 	public virtual void SetAnchor(string anchorPosition, Vector2 anchorOffset)
 	{
