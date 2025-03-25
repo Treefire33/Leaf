@@ -7,9 +7,9 @@ namespace Leaf.UI;
 public static class Resources
 {
     public static string UIRootPath = @".\Assets\UI\";
-    public static string UIImagesPath = $@"{UIRootPath}Images\";
-    public static string UIThemesPath = $@"{UIRootPath}Themes\";
-    public static string UIFontsPath = $@"{UIRootPath}Fonts\";
+    public static string UIImagesPath => $@"{UIRootPath}Images\";
+    public static string UIThemesPath => $@"{UIRootPath}Themes\";
+    public static string UIFontsPath => $@"{UIRootPath}Fonts\";
     
     public static readonly Dictionary<string, Font> Fonts = new()
     {
@@ -76,9 +76,6 @@ public static class Resources
     public static void SetRoot(string rootPath)
     {
         UIRootPath = rootPath;
-        UIImagesPath = $@"{UIRootPath}Images\";
-        UIThemesPath = $@"{UIRootPath}Themes\";
-        UIFontsPath = $@"{UIRootPath}Fonts\";
     }
 
     public static void LoadAssets(bool buttonImagesSpritesheet = true)
