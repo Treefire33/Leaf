@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -29,16 +28,12 @@
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Raylib-cs" Version="7.0.1" />
     </ItemGroup>
-    
-    <PropertyGroup>
-        <AssetsPath Condition=" '$(AssetsPath)' == '' ">Assets\</AssetsPath>
-    </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="Assets/**" Link="$(AssetsPath)/%(RecursiveDir)/%(Filename)%(Extension)">
-            <PackageCopyToOutput>true</PackageCopyToOutput>
+        <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
+            <PackagePath>Assets/</PackagePath>
+            <Pack>true</Pack>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
         </Content>
         <None Include="icon.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
