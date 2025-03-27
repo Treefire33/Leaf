@@ -7,6 +7,7 @@ namespace Leaf.UI;
 public static class Resources
 {
     public static string UIRootPath = @".\Assets\UI\";
+
     public static string UIImagesPath => $@"{UIRootPath}Images\";
     public static string UIThemesPath => $@"{UIRootPath}Themes\";
     public static string UIFontsPath => $@"{UIRootPath}Fonts\";
@@ -45,9 +46,9 @@ public static class Resources
         {
             List<Texture2D> buttonTextures = [];
             Image spritesheet = LoadImage($@"{UIImagesPath}{name}_images.png");
-            Vector2 spritesheetSize = new(96, 96);
-            int rows = (int)(spritesheet.Height / spritesheetSize.Y);
-            int columns = (int)(spritesheet.Width / spritesheetSize.X);
+            int rows = 2;
+            int columns = 2;
+            Vector2 spritesheetSize = new(spritesheet.Width / columns, spritesheet.Height / rows);
             for (int y = 0; y < rows; y++)
             {
                 for (int x = 0; x < columns; x++)

@@ -11,7 +11,7 @@
     
     <PropertyGroup>
         <PackageId>Leaf</PackageId>
-        <Version>0.1.11</Version>
+        <Version>0.1.14</Version>
         <Authors>treefire33</Authors>
         <Description>Collection of Raylib-cs utilities and libraries</Description>
         <PackageReleaseNotes>Undistributed build.</PackageReleaseNotes>

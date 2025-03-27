@@ -4,12 +4,13 @@ namespace Leaf.UI.Theming;
 
 public class UITheme
 {
+    private static readonly StylesheetParser _stylesheetParser = new(true, true, tolerateInvalidValues: true);
+    private static Stylesheet _defaultStylesheet;
     public Stylesheet Stylesheet { get; init; }
-    
-    public static UITheme LoadTheme(string stylesheet = "")
+
+    public static void LoadDefaultTheme()
     {
-        var stylesheetParser = new StylesheetParser(true, true, tolerateInvalidValues: true);
-        var stylesheetData = stylesheetParser.Parse(File.ReadAllText(".\\Assets\\UI\\Themes\\default.css"));
+        var stylesheetData = _stylesheetParser.Parse(File.ReadAllText($"{Resources.UIThemesPath}default.css"));
 
         var defaultRule = stylesheetData.StyleRules.Where(x => x.SelectorText == "*");
         IEnumerable<IStyleRule> styleRules = defaultRule.ToList();
@@ -17,16 +18,21 @@ public class UITheme
         {
             UIThemeData.DefaultRule = (styleRules.First() as StyleRule)!;
         }
-
+        
+        _defaultStylesheet = stylesheetData;
+    }
+    
+    public static UITheme LoadTheme(string stylesheet = "")
+    {
         var theme = new UITheme
         {
-            Stylesheet = stylesheetData
+            Stylesheet = _defaultStylesheet
         };
         
         // todo: not this
         if (stylesheet != "")
         {
-            stylesheetData = stylesheetParser.Parse(File.ReadAllText(Resources.UIThemesPath + stylesheet));
+            var stylesheetData = _stylesheetParser.Parse(File.ReadAllText(Resources.UIThemesPath + stylesheet));
             var currentStyles = theme.Stylesheet.StyleRules;
 
             foreach (var styleRule in stylesheetData.StyleRules)

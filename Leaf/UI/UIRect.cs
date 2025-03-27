@@ -129,6 +129,16 @@ public struct UIRect(Vector2 position, Vector2 scale)
 		);
 	}
 
+	public static UIRect operator +(UIRect a, UIRect b)
+	{
+		return new UIRect(a.X + b.X, a.Y + b.Y, a.Width + b.Width, a.Height + b.Height);
+	}
+	
+	public static UIRect operator -(UIRect a, UIRect b)
+	{
+		return new UIRect(a.X - b.X, a.Y - b.Y, a.Width - b.Width, a.Height - b.Height);
+	}
+
 	public static implicit operator Rectangle(UIRect rect)
 	{
 		return rect.RelativeRect;
