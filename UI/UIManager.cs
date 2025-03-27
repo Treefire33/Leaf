@@ -37,7 +37,13 @@ public class UIManager
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		Resources.LoadAssets(buttonImagesSpritesheet:buttonSpritesheet);
+		Resources.LoadAssets(); // Load defaults
+		UITheme.LoadDefaultTheme(); // Load default theme
+		if (uiRootPath != "")
+		{
+			Resources.SetRoot(uiRootPath);
+			Resources.LoadAssets(buttonImagesSpritesheet: buttonSpritesheet);
+		}
 		LoadTheme(theme);
 		if (DefaultManager == null)
 		{
