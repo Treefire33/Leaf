@@ -40,6 +40,8 @@ public class UITooltip : UIElement
 		_tooltipText = text;
 		ThemeElement();
 		CalculateSize();
+
+		Layer = 999;
 	}
 
 	public override void ThemeElement()

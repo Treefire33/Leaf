@@ -93,6 +93,12 @@ public partial struct ThemeProperty
         if (string.IsNullOrEmpty(Value)) { return Resources.Buttons["default"]; }
         return Resources.Buttons.TryGetValue(Value, out List<Texture2D> images) ? images : Resources.Buttons["default"];
     }
+    
+    public List<Texture2D> AsCheckboxImages()
+    {
+        if (string.IsNullOrEmpty(Value)) { return Resources.Buttons["checkbox"]; }
+        return Resources.Buttons.TryGetValue(Value, out List<Texture2D> images) ? images : Resources.Buttons["checkbox"];
+    }
 
     [GeneratedRegex(@"[0-9]\w+|0")]
     private static partial Regex ColorRegexPattern();
