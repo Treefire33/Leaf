@@ -4,18 +4,30 @@ using Raylib_cs;
 
 namespace Leaf.UI;
 
-public class UISlider : UIElement, IUIClickable
+public class UISlider : UIElement
 {
     public float MinValue { get; private set; } = 0;
     public float MaxValue { get; private set; } = 1;
-    public float Value { get; set; } = 0;
     
+    private float _value = 0;
+    public float Value
+    {
+        get => _value;
+        set
+        {
+            OnValueChanged?.Invoke(_value - value);
+            _value = Math.Clamp(value, MinValue, MaxValue);
+        }
+    }
+
     //private UIButton _handle;
     
     private float _outlineThickness = 1f;
     private Color _outlineColour = Color.Black;
     private Color _fillColour = Color.White;
     private Color _backgroundColour = Color.Gray;
+    
+    public Action<float>? OnValueChanged;
 
     public UISlider(
         UIRect posScale, 
@@ -56,7 +68,7 @@ public class UISlider : UIElement, IUIClickable
     public override void Update()
     {
         base.Update();
-        HandleElementInteraction();
+        //HandleElementInteraction();
         
         Raylib.DrawRectangleRec(
             new Rectangle(GetPosition(), RelativeRect.Size),
@@ -71,10 +83,5 @@ public class UISlider : UIElement, IUIClickable
             _outlineThickness,
             _outlineColour
         );
-    }
-
-    public void HandleElementInteraction()
-    {
-        
     }
 }
