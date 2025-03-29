@@ -10,12 +10,14 @@
     </PropertyGroup>
     
     <PropertyGroup>
+        <Title>Leaf</Title>
         <PackageId>treefire33.Leaf</PackageId>
         <Version>0.2.0</Version>
         <Authors>treefire33</Authors>
         <Description>Random Raylib-cs stuff.</Description>
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>LGPL-2.0-or-later</PackageLicenseExpression>
     </PropertyGroup>
 
     <Target Name="PushNuGetPackage" AfterTargets="GenerateNuspec">
