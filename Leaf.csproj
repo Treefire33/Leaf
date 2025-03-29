@@ -18,6 +18,7 @@
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>LGPL-2.0-or-later</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/Treefire33/Leaf</PackageProjectUrl>
     </PropertyGroup>
 
     <Target Name="PushNuGetPackage" AfterTargets="GenerateNuspec">
@@ -36,7 +37,7 @@
             <Pack>true</Pack>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <None Include="icon.png" Pack="true" PackagePath="\" />
+        <None Include="old_icon.png" Pack="true" PackagePath="\" />
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
 </Project>
