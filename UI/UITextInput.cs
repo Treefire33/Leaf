@@ -15,9 +15,22 @@ public partial class UITextInput : UIElement
     private readonly int _maxCharacters;
     private int _currentCharacters = 0;
 
-    public bool Focused = false;
+    public bool Focused;
+
+    public string Text
+    {
+        get => _text;
+        set
+        {
+            _text = value;
+            _currentCharacters = _text.Length;
+            OnTextChanged?.Invoke();
+        }
+    }
 
     private readonly Regex _inputRegex = DefaultInputRegex();
+    
+    public Action? OnTextChanged { get; set; }
 
     public UITextInput(
         UIRect posScale, 
@@ -101,23 +114,9 @@ public partial class UITextInput : UIElement
         }
     }
 
-    public void SetText(string text)
-    {
-        _text = text;
-        _currentCharacters = _text.Length;
-    }
-
-    public string GetText()
-    {
-        return _text;
-    }
-
-    public void ChangeTexture() { } //UITextInput shouldn't change texture.
-
     private int _framesCount = 0;
     public void HandleElementInteraction()
     {
-        ChangeTexture();
         if (Focused)
         {
             _framesCount++;

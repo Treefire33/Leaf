@@ -8,6 +8,9 @@ using Color = Raylib_cs.Color;
 
 namespace Leaf.UI;
 
+/// <summary>
+/// Base UI element.
+/// </summary>
 public class UIElement : IUIElement
 {
 	protected readonly UIManager Manager;
@@ -23,7 +26,24 @@ public class UIElement : IUIElement
 
 	public bool Visible = true;
 	public bool Active = true;
-	public bool Hovered;
+
+	private bool _hovered;
+	public bool Hovered
+	{
+		get => _hovered;
+		private set
+		{
+			if (!_hovered && value)
+				OnHover?.Invoke();
+			_hovered = value;
+		}
+	}
+	
+	/// <summary>
+	/// An action fired *once* when the element is hovered.
+	/// Does not fire when the element is unhovered.
+	/// </summary>
+	public Action? OnHover { get; set;}
 
 	public UIElement(
 		UIRect posScale, 

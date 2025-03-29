@@ -10,9 +10,9 @@ public enum EventType
 	RightMouseDown,
 	RightMouseUp,
 	RightMouseClick,
-	MouseDown, // Applies to both left, right, middle, etc. down
-	MouseUp, // Applies to both left, right, middle, etc. up
-	MouseClick, // Applies to both left, right, middle, etc. click
+	MiddleMouseDown,
+	MiddleMouseUp,
+	MiddleMouseClick,
 	KeyDown,
 	KeyPressed,
 	KeyUp

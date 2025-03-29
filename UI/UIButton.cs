@@ -28,9 +28,11 @@ public class UIButton : UIElement, IUIClickable
 	private Vector2 _textSize = Vector2.Zero;
 	private Vector2 _textPosition = Vector2.Zero;
 	
-	public Action? OnLeftClick;
-	public Action? OnRightClick;
-	public Action? OnClick;
+	/// <summary>
+	/// An action fired when the button is clicked in *any* way.
+	///	Provides an integer representing the button clicked.
+	/// </summary>
+	public Action<int>? OnClick { get; set; }
 
 	public UIButton(
 		UIRect posScale, 
@@ -159,6 +161,16 @@ public class UIButton : UIElement, IUIClickable
 				newEvent.EventType = _pressed ? EventType.RightMouseClick : EventType.RightMouseUp;
 				_pressed = false;
 			}
+			else if (IsMouseButtonDown(MouseButton.Middle))
+			{
+				newEvent.EventType = EventType.MiddleMouseDown;
+				_pressed = true;
+			}
+			else if (IsMouseButtonReleased(MouseButton.Middle))
+			{
+				newEvent.EventType = _pressed ? EventType.MiddleMouseClick : EventType.MiddleMouseUp;
+				_pressed = false;
+			}
 			else
 			{
 				_pressed = false;
@@ -176,13 +188,15 @@ public class UIButton : UIElement, IUIClickable
 		base.ProcessEvent(evnt);
 		if (evnt.Element == this && evnt.EventType == EventType.LeftMouseClick)
 		{
-			OnLeftClick?.Invoke();
-			OnClick?.Invoke();
+			OnClick?.Invoke(0);
 		}
 		if (evnt.Element == this && evnt.EventType == EventType.RightMouseClick)
 		{
-			OnRightClick?.Invoke();
-			OnClick?.Invoke();
+			OnClick?.Invoke(1);
+		}
+		if (evnt.Element == this && evnt.EventType == EventType.MiddleMouseClick)
+		{
+			OnClick?.Invoke(2);
 		}
 	}
 
