@@ -89,18 +89,21 @@ public class UIScrollingContainer : UIElement, IUIContainer
     
     private void HandleScroll()
     {
-        if ((IsKeyDown(KeyboardKey.LeftShift) || IsKeyDown(KeyboardKey.RightShift)) && _allowHorizontalScroll)
+        if (Hovered)
         {
-            if (_allowHorizontalScroll)
+            if ((IsKeyDown(KeyboardKey.LeftShift) || IsKeyDown(KeyboardKey.RightShift)) && _allowHorizontalScroll)
             {
-                _scrollOffset.X -= (int)GetMouseWheelMove() * _scrollSpeedX;
-                _scrollOffset.X = Math.Clamp(_scrollOffset.X, 0, _maxScroll.X);
+                if (_allowHorizontalScroll)
+                {
+                    _scrollOffset.X -= (int)GetMouseWheelMove() * _scrollSpeedX;
+                    _scrollOffset.X = Math.Clamp(_scrollOffset.X, 0, _maxScroll.X);
+                }
             }
-        }
-        else if (_allowVerticalScroll)
-        {
-            _scrollOffset.Y += (int)GetMouseWheelMove() * _scrollSpeedY;
-            _scrollOffset.Y = Math.Clamp(_scrollOffset.Y, _maxScroll.Y, 0);
+            else if (_allowVerticalScroll)
+            {
+                _scrollOffset.Y += (int)GetMouseWheelMove() * _scrollSpeedY;
+                _scrollOffset.Y = Math.Clamp(_scrollOffset.Y, _maxScroll.Y, 0);
+            }
         }
         //_scrollOffset = Vector2.Clamp(_scrollOffset, _maxScroll, Vector2.Zero);
         //Console.WriteLine(_scrollOffset);
