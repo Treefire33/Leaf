@@ -11,10 +11,9 @@
     
     <PropertyGroup>
         <PackageId>Leaf</PackageId>
-        <Version>0.1.14</Version>
+        <Version>0.2.0</Version>
         <Authors>treefire33</Authors>
-        <Description>Collection of Raylib-cs utilities and libraries</Description>
-        <PackageReleaseNotes>Undistributed build.</PackageReleaseNotes>
+        <Description>Random Raylib-cs stuff.</Description>
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
