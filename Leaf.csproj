@@ -10,7 +10,7 @@
     </PropertyGroup>
     
     <PropertyGroup>
-        <PackageId>Leaf</PackageId>
+        <PackageId>Roots.Trunk.Branch.Leaf</PackageId>
         <Version>0.2.0</Version>
         <Authors>treefire33</Authors>
         <Description>Random Raylib-cs stuff.</Description>
