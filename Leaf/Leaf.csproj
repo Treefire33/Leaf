@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include=".github\build.yml" />
+        <Content Include=".github\workflows\build.yml" />
         <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
             <PackagePath>Assets/</PackagePath>
             <Pack>true</Pack>
