@@ -12,7 +12,7 @@
     <PropertyGroup>
         <Title>Leaf</Title>
         <PackageId>treefire33.Leaf</PackageId>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <Authors>treefire33</Authors>
         <Description>Random Raylib-cs stuff.</Description>
         <PackageIcon>icon.png</PackageIcon>
