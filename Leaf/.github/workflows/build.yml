@@ -2,6 +2,9 @@ name: Build and Upload Leaf
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - main
     
 jobs:
   publish:
