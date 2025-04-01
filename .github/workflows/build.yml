@@ -32,8 +32,5 @@ jobs:
       - name: add nuget source
         run: dotnet nuget add source --username treefire33 --password ${{secrets.NUGETPASS}} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/treefire33/index.json"
     
-      - name: echo current directory
-        run: ls -R
-    
       - name: publish to nuget
-        run: dotnet nuget push nuget/* --api-key ${{secrets.APIKEY}} --source "github"
+        run: dotnet nuget push nuget/* --api-key ${{secrets.GITHUBPAT}} --source "github"
