@@ -17,6 +17,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
+          
+      - name: build project
+        run: dotnet build -c Release
   
       - name: create nuget package
         run: dotnet pack Leaf.csproj -c Release --output nuget
@@ -28,6 +31,4 @@ jobs:
   
       - name: publish to nuget
         run: |
-          dotnet nuget push \
-            nuget/* \
-            --api-key ${{secrets.APIKEY}}
+          dotnet nuget push nuget/* --api-key ${{secrets.APIKEY}}
