@@ -2,9 +2,6 @@ name: Build and Upload Leaf
 on:
   release:
     types: [published]
-  push:
-    branches:
-      - main
     
 jobs:
   publish:
@@ -28,12 +25,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: nuget/*
-          
-      - name: add nuget source
-        run: dotnet nuget add source --username treefire33 --password ${{secrets.GITHUBPAT}} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/treefire33/index.json"
-    
-      - name: publish to repository
-        run: dotnet nuget push nuget/* --api-key ${{secrets.GITHUBPAT}} --source "github" --skip-duplicate
         
       - name: publish to nuget
         run: dotnet nuget push nuget/* --api-key ${{secrets.APIKEY}} --source https://api.nuget.org/v3/index.json
