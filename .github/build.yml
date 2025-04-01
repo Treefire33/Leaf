@@ -1,0 +1,30 @@
+name: Build and Upload Leaf
+on:
+  release:
+    types: [published]
+    
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+          
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+  
+      - name: create nuget package
+        run: dotnet pack Leaf -c Release --output nuget
+  
+      - name: upload nuget package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: nuget/*
+  
+      - name: publish to nuget
+        run: |
+          dotnet nuget push \
+            nuget/* \
+            --api-key ${{secrets.APIKEY}}
