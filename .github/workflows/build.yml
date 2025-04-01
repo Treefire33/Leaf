@@ -36,4 +36,4 @@ jobs:
         run: dotnet nuget push nuget/* --api-key ${{secrets.GITHUBPAT}} --source "github" --skip-duplicate
         
       - name: publish to nuget
-        run: dotnet nuget push nuget/* --api-key ${{secrets.APIKEY}} --skip-duplicate
+        run: dotnet nuget push nuget/* --api-key ${{secrets.APIKEY}}
