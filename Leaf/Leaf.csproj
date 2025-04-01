@@ -21,10 +21,6 @@
         <PackageProjectUrl>https://github.com/Treefire33/Leaf</PackageProjectUrl>
     </PropertyGroup>
 
-    <Target Name="PushNuGetPackage" AfterTargets="GenerateNuspec">
-        <Exec Command="dotnet nuget push .\bin\Release\$(PackageId).$(version).nupkg -s C:\LocalNuget" />
-    </Target>
-
     <ItemGroup>
       <PackageReference Include="ExCSS" Version="4.3.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
