@@ -18,7 +18,7 @@
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>LGPL-2.0-or-later</PackageLicenseExpression>
-        <PackageProjectUrl>https://github.com/Treefire33/Leaf</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Treefire33/Leaf</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
