@@ -19,7 +19,7 @@ jobs:
         run: dotnet build -c Release
   
       - name: create nuget package
-        run: dotnet pack Leaf.csproj -c Release --output nuget
+        run: dotnet pack Leaf/Leaf.csproj -c Release --output nuget
   
       - name: upload nuget package artifact
         uses: actions/upload-artifact@v4
