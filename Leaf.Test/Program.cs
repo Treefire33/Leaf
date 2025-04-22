@@ -14,29 +14,7 @@ class Program
 
         var manager = new UIManager(theme: "style.css", uiRootPath:".\\Resources\\");
         
-        //UIManager.DebugMode = true;
-
-        /*var tempElement = new UIScrollingContainer(new UIRect(20, 20, 400, 200), true, true);
-        var containedElement = new UIElement(new UIRect(10, 10, 100, 450), container: tempElement);
-        var contained2Element = new UIElement(new UIRect(150, 10, 100, 450), container: tempElement);
-        contained2Element.SetAnchor("top-left", containedElement);
-        /*var container = new UIContainer(new UIRect(0, 0, 300, 300), origin:Vector2.One/2, anchor:("center", Vector2.Zero));
-        var temp2Element = new UIElement(new UIRect(0, 0, 100, 100), origin:Vector2.One/2, anchor:("center", Vector2.Zero));
-        Console.WriteLine(container.GetPosition());
-        container.AddElement(temp2Element);
-        Console.WriteLine(temp2Element.GetPosition());#1#
-        
-        Console.WriteLine(containedElement.GetPosition());*/
-        
-        /*var _effectivenessContainer = new UIScrollingContainer(
-            new UIRect(30, 60, 740, 240),
-            verticalScroll: true
-        );
-        var _interactions = new UITextBox(
-            new UIRect(0, 0, 740, 900),
-            "qwertyuiopefwguhfebwhfehbwfewhjfkewhjfew",
-            container: _effectivenessContainer
-        );*/
+        UIManager.DebugMode = true;
 
         var slider = new UISlider(
             new UIRect(10, 10, 150, 50),
