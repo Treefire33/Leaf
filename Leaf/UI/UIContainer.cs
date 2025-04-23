@@ -77,12 +77,11 @@ public class UIContainer : UIElement, IUIContainer
     public override void ProcessEvent(Event evnt)
     {
         base.ProcessEvent(evnt);
-        if (Elements.Count > 0)
+        
+        // Uses a for loop because elements can be added through processed events.
+        for (int i = 0; i < Elements.Count; i++)
         {
-            foreach (UIElement element in Elements)
-            {
-                element.ProcessEvent(evnt);
-            }
+            Elements[i].ProcessEvent(evnt);
         }
     }
 }

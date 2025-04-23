@@ -10,11 +10,8 @@ namespace Leaf.UI;
 public class UIButton : UIElement, IUIClickable
 {
     [MarshalAs(UnmanagedType.LPUTF8Str)] private string _text;
-	private Font _font;
-	private int _fontSize = 2;
 	private string _textAlignmentHorizontal = "center";
 	private string _textAlignmentVertical = "center";
-	private Color _textColour = Color.White;
 
 	private Texture2D _currentTexture;
 	private NPatchInfo _currentNPatch;
@@ -56,9 +53,6 @@ public class UIButton : UIElement, IUIClickable
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		_font = Theme.GetProperty("font-family").AsFont();
-		_fontSize = Theme.GetProperty("font-size").AsInt();
-		_textColour = Theme.GetProperty("color").AsColor();
 		_textAlignmentHorizontal = Theme.GetProperty("text-align");
 		_textAlignmentVertical = Theme.GetProperty("text-align-vertical");
 		List<Texture2D> images = Theme.GetProperty("button-style").AsButtonImages();
@@ -108,6 +102,7 @@ public class UIButton : UIElement, IUIClickable
 		base.Update();
 		
 		HandleElementInteraction();
+		AlignButtonText();
 		
 		DrawTextureNPatch(
 			_currentTexture,
@@ -122,7 +117,7 @@ public class UIButton : UIElement, IUIClickable
 			_text,
 			_textPosition,
 			_fontSize,
-			1,
+			_textSpacing,
 			_textColour
 		);
 	}

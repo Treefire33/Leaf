@@ -64,22 +64,27 @@ public class UIManager
 	}
 	
 	private int _lastKey = 0;
-	public void Update()
+	public void Update(bool flushEvents = false)
 	{
 		DrawUI();
 		
 		int keyPressed = Raylib.GetKeyPressed();
-		if (keyPressed != 0 || !Raylib.IsKeyDown((KeyboardKey)_lastKey))
+		if (keyPressed != 0 && !Raylib.IsKeyDown((KeyboardKey)_lastKey))
 		{
 			PushEvent(new Event(keyPressed, EventType.KeyPressed));
 			_lastKey = keyPressed;
 		}
-		else
+		else if (_lastKey != 0 && Raylib.IsKeyDown((KeyboardKey)_lastKey))
 		{
 			PushEvent(new Event(_lastKey, EventType.KeyDown));
 		}
 
 		ProcessEvents();
+
+		if (flushEvents)
+		{
+			ResetEvents();
+		}
 	}
 
 	public void LoadTheme(string themePath = "")

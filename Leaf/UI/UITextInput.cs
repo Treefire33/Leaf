@@ -9,9 +9,6 @@ namespace Leaf.UI;
 public partial class UITextInput : UIElement
 {
     private string _text;
-    private Font _font;
-    private int _fontSize;
-    private Color _textColour;
     private readonly int _maxCharacters;
     private int _currentCharacters = 0;
 
@@ -45,97 +42,87 @@ public partial class UITextInput : UIElement
         string? tooltip = null
     ): base(posScale, visible, container, id, @class, "text-input", anchor, origin, tooltip)
     {
-        _text = defaultText;
+        Text = defaultText;
         _maxCharacters = maxCharacters;
-        ThemeElement();
-    }
-
-    public override void ThemeElement()
-    {
-        _font = Theme.GetProperty("font-family").AsFont();
-        _fontSize = Theme.GetProperty("font-size").AsInt();
-        _textColour = Theme.GetProperty("color").AsColor();
     }
 
     public override void Update()
     {
         base.Update();
-        
-        HandleElementInteraction();
-        
-        DrawRectangleRec(new Rectangle(GetPosition(), RelativeRect.Size), Color.White);
-        DrawTextPro(
-            _font,
-            _text,
-            GetPosition(),
-            new Vector2(0),
-            0,
-            _fontSize,
-            0,
-            _textColour
-        );
 
-        if (Hovered && IsMouseButtonPressed(MouseButton.Left))
+        if (IsMouseButtonPressed(MouseButton.Left))
         {
-            Focused = true;
+            Focused = Hovered;
         }
-        else if (IsMouseButtonPressed(MouseButton.Right))
+
+        if (Focused && IsKeyPressed(KeyboardKey.Enter))
         {
             Focused = false;
         }
 
+        SetMouseCursor(Hovered ? MouseCursor.IBeam : MouseCursor.Default);
+
+        HandleElementInteraction();
+        
+        DrawRectangleRec(new Rectangle(GetPosition(), RelativeRect.Size), Color.Gray);
+        Utility.DrawTextBoxed(
+            _font,
+            Text,
+            new Rectangle(GetPosition(), RelativeRect.Size),
+            _fontSize,
+            _textSpacing,
+            true,
+            _textColour
+        );
+
         if (Focused)
         {
-            SetMouseCursor(MouseCursor.IBeam);
-
+            //Draw text cursor
+            var textSize = MeasureTextEx(_font, Text, _fontSize, _textSpacing);
+            var textPosition = new Vector2(
+                GetPosition().X + (textSize.X % RelativeRect.Size.X), 
+                GetPosition().Y + (textSize.Y * (int)(textSize.X / RelativeRect.Size.X)) * 1.5f
+            );
+            // remove characters until it fits in box.
+            // max characters is ignored.
+            if (textPosition.Y > GetPosition().Y + RelativeRect.Size.Y && Text.Length - 1 >= 0)
+            {
+                Text = Text.Remove(Text.Length - 1, 1);
+            }
+            Utility.DrawTextBoxed(
+                _font,
+                "|",
+                new Rectangle(textPosition, RelativeRect.Size),
+                _fontSize,
+                _textSpacing,
+                true,
+                Color.Black
+            );
+        }
+    }
+    
+    public void HandleElementInteraction()
+    {
+        if (Focused)
+        {
             int key = GetCharPressed();
 
             while (key > 0)
             {
-                if (key >= 32 && key <= 125 && _currentCharacters <= _maxCharacters)
+                if (key is >= 32 and <= 125 && Text.Length <= _maxCharacters)
                 {
-                    _text += (char)key;
-                    _currentCharacters++;
+                    Text += (char)key;
                 }
 
                 key = GetCharPressed();
             }
 
-            if (IsKeyDown(KeyboardKey.Backspace) && _currentCharacters >= 0)
+            if (IsKeyPressed(KeyboardKey.Backspace) && Text.Length - 1 >= 0)
             {
-                _currentCharacters--;
-                if (_currentCharacters < 0) { _currentCharacters = 0; }
-                _text = _text.Remove(_currentCharacters);
+                Text = Text.Remove(Text.Length - 1, 1);
             }
-        }
-        else
-        {
-            SetMouseCursor(MouseCursor.Default);
-        }
-    }
-
-    private int _framesCount = 0;
-    public void HandleElementInteraction()
-    {
-        if (Focused)
-        {
-            _framesCount++;
-            if (_currentCharacters < _maxCharacters)
-            {
-                if (_framesCount / 20 % 2 == 0)
-                {
-                    DrawTextPro(
-                        _font,
-                        "|",
-                        new Vector2(RelativeRect.X + MeasureTextEx(_font, _text, _fontSize, 0).X, RelativeRect.Y),
-                        new Vector2(0),
-                        0,
-                        25,
-                        0,
-                        Color.Black
-                    );
-                }
-            }
+            
+            Text = _inputRegex.Replace(Text, string.Empty);
         }
     }
 

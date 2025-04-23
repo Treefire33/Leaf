@@ -24,20 +24,26 @@ public class UIElement : IUIElement
 	public IUIContainer? Container;
 	private UITooltip? _tooltip;
 
-	public bool Visible = true;
+	public bool Visible;
 	public bool Active = true;
 
 	private bool _hovered;
 	public bool Hovered
 	{
 		get => _hovered;
-		private set
+		protected set
 		{
 			if (!_hovered && value)
 				OnHover?.Invoke();
 			_hovered = value;
 		}
 	}
+	
+	// Theming parameters
+	protected Font _font;
+	protected int _fontSize = 2;
+	protected int _textSpacing;
+	protected Color _textColour = Color.White;
 	
 	/// <summary>
 	/// An action fired *once* when the element is hovered.
@@ -89,6 +95,7 @@ public class UIElement : IUIElement
 				this
 			);
 		}
+		ThemeElement();
 	}
 
 	public virtual void Update()
@@ -98,7 +105,13 @@ public class UIElement : IUIElement
 		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), new Rectangle(GetPosition(), RelativeRect.Size));
 	}
 
-	public virtual void ThemeElement() { }
+	public virtual void ThemeElement()
+	{
+		_font = Theme.GetProperty("font-family").AsFont();
+		_fontSize = Theme.GetProperty("font-size").AsInt();
+		_textSpacing = Theme.GetProperty("spacing").AsInt();
+		_textColour = Theme.GetProperty("color").AsColor();
+	}
 
 	public virtual void Kill()
 	{

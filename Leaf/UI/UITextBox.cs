@@ -24,10 +24,6 @@ public class UITextBox : UIElement
 	private string _text;
 
 	//Theme Attributes
-	private Color _textColour;
-	private Font _font;
-	private float _fontSize;
-	private int _spacing;
 	private HorizontalTextAlignment _horizontalAlignment;
 	private VerticalTextAlignment _verticalAlignment;
 
@@ -74,12 +70,8 @@ public class UITextBox : UIElement
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		_font = Theme.GetProperty("font-family").AsFont();
-		_fontSize = Theme.GetProperty("font-size").AsInt();
-		_textColour = Theme.GetProperty("color").AsColor();
 		_horizontalAlignment = GetHorizontalAlignmentFromString(Theme.GetProperty("text-align"));
 		_verticalAlignment = GetVerticalAlignmentFromString(Theme.GetProperty("text-align-vertical"));
-		_spacing = Theme.GetProperty("spacing").AsInt();
 	}
 
 	public void SetPadding(Vector2 padding)
@@ -93,7 +85,7 @@ public class UITextBox : UIElement
 	)
 	{
 		UIRect newRect = new();
-		Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, _spacing);
+		Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, _textSpacing);
 		switch (horizontalAlignment)
 		{
 			default:
@@ -145,7 +137,7 @@ public class UITextBox : UIElement
 			_text,
 			new Rectangle(GetPosition(), RelativeRect.Size),
 			_fontSize,
-			_spacing,
+			_textSpacing,
 			true,
 			_textColour
 		);

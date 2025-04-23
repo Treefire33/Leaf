@@ -1,14 +1,13 @@
 using System.Numerics;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 
 namespace Leaf.UI;
 
-public class UIScrollingContainer : UIElement, IUIContainer
+public class UIScrollingContainer : UIContainer
 {
-    public List<UIElement> Elements = [];
-    
     private float _scrollSpeedX = 12.0f;
     private float _scrollSpeedY = 12.0f;
     private Vector2 _maxScroll = Vector2.Zero;
@@ -16,7 +15,7 @@ public class UIScrollingContainer : UIElement, IUIContainer
     
     private bool _allowVerticalScroll;
     private bool _allowHorizontalScroll;
-
+    
     public UIScrollingContainer(
         UIRect posScale,
         bool verticalScroll = true,
@@ -28,31 +27,26 @@ public class UIScrollingContainer : UIElement, IUIContainer
         (string, Vector2) anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, "scroll-container", anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, @class, anchor, origin, tooltip)
     {
         _allowVerticalScroll = verticalScroll;
         _allowHorizontalScroll = horizontalScroll;
     }
-
-    public void AddElement(UIElement element)   
+    
+    public void SetScrollSpeed(float scrollX = 12.0f, float scrollY = 12.0f)
     {
-        element.Container?.RemoveElement(element);
-        Elements.Add(element);
-        var tempAnchor = element.Anchor;
-        element.SetAnchor("top-left", Vector2.Zero);
-        element.SetAnchor(tempAnchor.AnchorPosition, tempAnchor.Offset);
-        element.Container = this;
-        Elements = Elements.OrderBy((x) => x.Layer).ToList();
-        SetMaxScroll();
+        _scrollSpeedX = scrollX;
+        _scrollSpeedY = scrollY;
     }
-
+    
     private void SetMaxScroll()
     {
         foreach (var element in Elements)
         {
             if (element.GetPosition().Y + element.RelativeRect.Height > _maxScroll.Y)
             {
-                _maxScroll.Y = (element.GetPosition().Y + element.RelativeRect.Height - RelativeRect.Height) * -1.5f;
+                // Should this somehow not be negative, just set the max scroll to 0.
+                _maxScroll.Y = MathF.Min((element.GetPosition().Y + element.RelativeRect.Height - RelativeRect.Height) * -1.5f, 0);
             }
             if (element.GetPosition().X + element.RelativeRect.Width > _maxScroll.X)
             {
@@ -61,14 +55,21 @@ public class UIScrollingContainer : UIElement, IUIContainer
         }
     }
 
-    public void RemoveElement(UIElement element)
+    public override void AddElement(UIElement element)
     {
-        Elements.Remove(element);
+        base.AddElement(element);
+        SetMaxScroll();
+    }
+
+    public override void RemoveElement(UIElement element)
+    {
+        base.RemoveElement(element);
+        SetMaxScroll();
     }
 
     public override void Update()
     {
-        base.Update();
+        Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), new Rectangle(GetPosition(), RelativeRect.Size));
         HandleScroll();
         if (Visible)
         {
@@ -107,19 +108,5 @@ public class UIScrollingContainer : UIElement, IUIContainer
         }
         //_scrollOffset = Vector2.Clamp(_scrollOffset, _maxScroll, Vector2.Zero);
         //Console.WriteLine(_scrollOffset);
-    }
-
-    public override void Kill()
-    {
-        /*foreach (UIElement element in Elements)
-        {
-            element.Kill();
-        }*/
-        for (int i = 0; i < Elements.Count; i++)
-        {
-            Elements[i].Kill();
-        }
-        Elements.Clear();
-        base.Kill();
     }
 }

@@ -226,12 +226,12 @@ public class Utility
 
 	public static Vector2 GetVirtualMousePosition()
 	{
-		Vector2 mousePos = Raylib.GetMousePosition();
-		Vector2 scaleFactor = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight()) / UIManager.GameSize;
+		Vector2 mousePos = GetMousePosition();
+		Vector2 scaleFactor = new Vector2(GetScreenWidth(), GetScreenHeight()) / UIManager.GameSize;
 		Vector2 virtualMouse = new(0)
 		{
-			X = (mousePos.X-((Raylib.GetScreenWidth()-(UIManager.GameSize.X * scaleFactor.X)) * 0.5f))/scaleFactor.X,
-			Y = (mousePos.Y-((Raylib.GetScreenHeight()-(UIManager.GameSize.Y * scaleFactor.Y)) * 0.5f))/scaleFactor.Y
+			X = (mousePos.X-(GetScreenWidth()-UIManager.GameSize.X * scaleFactor.X) * 0.5f)/scaleFactor.X,
+			Y = (mousePos.Y-(GetScreenHeight()-UIManager.GameSize.Y * scaleFactor.Y) * 0.5f)/scaleFactor.Y
 		};
 		virtualMouse = Vector2.Clamp(virtualMouse, new Vector2(0), UIManager.GameSize);
 

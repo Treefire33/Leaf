@@ -2,6 +2,8 @@
     background-color: #D0D0D7;
     font-family: m6x11plus;
     font-size: 18px;
+    spacing: 1px;
+    color: white;
 }
 
 /*button, container, image, scroll-container, textbox, text-input, slider*/
@@ -25,7 +27,7 @@ textbox {
     color: black;
     text-align: left;
     text-align-vertical: top;
-    word-spacing: 1px;
+    spacing: 1px;
 }
 
 tooltip {

@@ -1,4 +1,5 @@
 using System.Numerics;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
 
@@ -20,7 +21,7 @@ public class UISlider : UIElement
         }
     }
 
-    //private UIButton _handle;
+    //private UIPanel _handle = null;
     
     private float _outlineThickness = 1f;
     private Color _outlineColour = Color.Black;
@@ -46,13 +47,6 @@ public class UISlider : UIElement
         MinValue = minValue;
         MaxValue = maxValue;
         Value = value;
-        /*_handle = new UIButton(
-            new UIRect(0, 0, 32, 32),
-            "default",
-            "",
-            origin: new Vector2(0.5f, 0.5f)
-        );
-        _handle.SetAnchor("left", this);*/
         ThemeElement();
     }
 
@@ -68,7 +62,7 @@ public class UISlider : UIElement
     public override void Update()
     {
         base.Update();
-        //HandleElementInteraction();
+        HandleElementInteraction();
         
         Raylib.DrawRectangleRec(
             new Rectangle(GetPosition(), RelativeRect.Size),
@@ -83,5 +77,15 @@ public class UISlider : UIElement
             _outlineThickness,
             _outlineColour
         );
+    }
+
+    public void HandleElementInteraction()
+    {
+        if (Hovered && Raylib.IsMouseButtonDown(MouseButton.Left))
+        {
+            var scaledDist = (Utility.GetVirtualMousePosition().X - GetPosition().X) / RelativeRect.Size.X;
+            var value = scaledDist * MaxValue + MinValue;
+            Value = value;
+        }
     }
 }
