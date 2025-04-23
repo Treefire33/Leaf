@@ -19,9 +19,12 @@ public partial class UITextInput : UIElement
         get => _text;
         set
         {
-            _text = value;
-            _currentCharacters = _text.Length;
-            OnTextChanged?.Invoke();
+            if (_text != value)
+            {
+                _text = value;
+                _currentCharacters = _text.Length;
+                OnTextChanged?.Invoke();
+            }
         }
     }
 

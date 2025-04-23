@@ -17,9 +17,16 @@ button {
     button-style: default;
 }
 
+panel {
+    background-color: #676774;
+    border-color: #FFFFFF;
+    border-width: 2px;
+}
+
 slider {
     fill: #2374ff;
-    border-color: #676774;
+    background-color: #E9E9ED;
+    border-color: #9696A2;
     border-width: 2px;
 }
 

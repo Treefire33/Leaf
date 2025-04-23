@@ -1,7 +1,8 @@
 using System.Numerics;
-using Leaf.Events;
+using System.Text.RegularExpressions;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
+using static Raylib_cs.Raylib;
 
 namespace Leaf.UI;
 
@@ -16,12 +17,14 @@ public class UISlider : UIElement
         get => _value;
         set
         {
-            OnValueChanged?.Invoke(_value - value);
+            OnValueChanged?.Invoke(value - _value);
             _value = Math.Clamp(value, MinValue, MaxValue);
         }
     }
+    
+    public bool Focused;
 
-    //private UIPanel _handle = null;
+    private UIPanel? _handle;
     
     private float _outlineThickness = 1f;
     private Color _outlineColour = Color.Black;
@@ -29,7 +32,7 @@ public class UISlider : UIElement
     private Color _backgroundColour = Color.Gray;
     
     public Action<float>? OnValueChanged;
-
+ 
     public UISlider(
         UIRect posScale, 
         float minValue, 
@@ -47,6 +50,11 @@ public class UISlider : UIElement
         MinValue = minValue;
         MaxValue = maxValue;
         Value = value;
+        _handle = new UIPanel(
+            new UIRect(0, 0, 32, RelativeRect.Size.Y),
+            origin: new Vector2(0.5f, 0)
+        );
+        _handle.SetAnchor("top-left", this);
         ThemeElement();
     }
 
@@ -62,7 +70,18 @@ public class UISlider : UIElement
     public override void Update()
     {
         base.Update();
+        
+        if (IsMouseButtonPressed(MouseButton.Left))
+        {
+            Focused = Hovered || _handle!.Hovered;
+        }
+        
         HandleElementInteraction();
+
+        _handle!.RelativeRect = _handle!.RelativeRect with
+        {
+            X = (Value / MaxValue) * (GetPosition().X + RelativeRect.Size.X),
+        };
         
         Raylib.DrawRectangleRec(
             new Rectangle(GetPosition(), RelativeRect.Size),
@@ -81,7 +100,7 @@ public class UISlider : UIElement
 
     public void HandleElementInteraction()
     {
-        if (Hovered && Raylib.IsMouseButtonDown(MouseButton.Left))
+        if (Focused && Raylib.IsMouseButtonDown(MouseButton.Left))
         {
             var scaledDist = (Utility.GetVirtualMousePosition().X - GetPosition().X) / RelativeRect.Size.X;
             var value = scaledDist * MaxValue + MinValue;

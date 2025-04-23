@@ -25,6 +25,7 @@ public class UIContainer : UIElement, IUIContainer
 
     public override void Update()
     {
+        Elements = Elements.OrderBy(x => x.Layer).ToList();
         if (Visible)
         {
             if (UIManager.DebugMode)
@@ -66,7 +67,7 @@ public class UIContainer : UIElement, IUIContainer
         element.SetAnchor("top-left", Vector2.Zero);
         element.SetAnchor(tempAnchor.AnchorPosition, tempAnchor.Offset);
         element.Container = this;
-        Elements = Elements.OrderBy((x) => x.Layer).ToList();
+        Elements = Elements.OrderBy(x => x.Layer).ToList();
     }
 
     public virtual void RemoveElement(UIElement element)
