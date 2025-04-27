@@ -8,9 +8,6 @@ using Color = Raylib_cs.Color;
 
 namespace Leaf.UI;
 
-/// <summary>
-/// Base UI element.
-/// </summary>
 public class UIElement : IUIElement
 {
 	protected readonly UIManager Manager;
@@ -50,7 +47,18 @@ public class UIElement : IUIElement
 	/// Does not fire when the element is unhovered.
 	/// </summary>
 	public Action? OnHover { get; set;}
-
+	
+	/// <summary>Base UI element.</summary>
+	/// <param name="posScale">The relative position and scale of the element.</param>
+	/// <param name="visible">The visibility of the element.</param>
+	/// <param name="container">The parent container of the element, defaults to the default container.</param>
+	/// <param name="id">The style ID of the element.</param>
+	/// <param name="class">The style class of the element.</param>
+	/// <param name="element">The base style for an element.</param>
+	/// <param name="anchor">The anchor point for an element.</param>
+	/// <param name="origin">A point in the element where positioning is based on.</param>
+	/// <param name="tooltip">A string that creates a tooltip.</param>
+	/// <param name="isRootContainer">Is the element the root container?</param>
 	public UIElement(
 		UIRect posScale, 
 		bool visible = true, 

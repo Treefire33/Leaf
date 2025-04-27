@@ -5,6 +5,12 @@ using static Raylib_cs.Raylib;
 
 namespace Leaf.UI.GraphData;
 
+/// <summary>
+/// Unfinished implementation of a scatter plot.
+/// </summary>
+/// <param name="xLabel">The label of the x-axis.</param>
+/// <param name="yLabel">The label of the y-axis.</param>
+/// <param name="entries">An array of points on the scatter plot.</param>
 public class ScatterPlot(string xLabel, string yLabel, params Vector2[] entries) : IGraphData
 {
     public string XLabel = xLabel;

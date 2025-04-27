@@ -7,6 +7,9 @@ using static Raylib_cs.Raylib;
 
 namespace Leaf.UI;
 
+/// <summary>
+/// A button.
+/// </summary>
 public class UIButton : UIElement, IUIClickable
 {
     [MarshalAs(UnmanagedType.LPUTF8Str)] private string _text;
@@ -31,6 +34,7 @@ public class UIButton : UIElement, IUIClickable
 	/// </summary>
 	public Action<int>? OnClick { get; set; }
 
+	/// <inheritdoc cref="UIElement"/>
 	public UIButton(
 		UIRect posScale, 
 		string text, 

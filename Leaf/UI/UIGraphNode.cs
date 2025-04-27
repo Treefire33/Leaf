@@ -3,6 +3,10 @@ using Leaf.UI.Interfaces;
 
 namespace Leaf.UI;
 
+/// <summary>
+/// Unfinished implementation of a UIElement that displays
+/// graphs through a custom defined class that implements IGraphData.
+/// </summary>
 public class UIGraphNode : UIElement
 {
     private IGraphData _graphData;

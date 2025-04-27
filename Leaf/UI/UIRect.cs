@@ -4,9 +4,7 @@ using Raylib_cs;
 namespace Leaf.UI;
 
 /// <summary>
-/// Creates a new UIRect, which is similar to pygame's Rect.
-/// This was originally created for ClanGenDotNet, so that's why it's like pygame's Rect.
-/// Has 9 coordinates that correspond to the top, center and bottom left, center, and right.
+/// A rectangle.
 /// </summary>
 /// <param name="position">The x and y of the rect.</param>
 /// <param name="scale">The width and height of the rect.</param>
