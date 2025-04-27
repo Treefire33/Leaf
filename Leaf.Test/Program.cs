@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Leaf.UI;
+using Leaf.UI.GraphData;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 
@@ -55,6 +56,13 @@ class Program
         // Containers
         var scrollContainer = new UIScrollingContainer(
             new UIRect(210, 410, 300, 300)
+        );
+        
+        // Graph Data
+        var scatterPlot = new ScatterPlot("x axis", "y axis", [new Vector2(10, 25), new Vector2(25, 30)]);
+        var graphNode = new UIGraphNode(
+            new UIRect(310, 260, 300, 200),
+            scatterPlot
         );
         
         // Actions

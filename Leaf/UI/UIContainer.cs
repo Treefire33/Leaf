@@ -52,9 +52,9 @@ public class UIContainer : UIElement, IUIContainer
 
     public override void Kill()
     {
-        foreach (UIElement element in Elements)
+        for (int i = 0; i < Elements.Count; i++)
         {
-            element.Kill();
+            Elements[i].Kill();
         }
         base.Kill();
     }
