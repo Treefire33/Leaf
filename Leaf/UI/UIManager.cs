@@ -37,7 +37,8 @@ public class UIManager
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		Resources.LoadAssets(); // Load defaults
+		if (uiRootPath != Resources.UIRootPath && uiRootPath != "") // prevent double loading of default assets
+			Resources.LoadAssets(); // Load defaults
 		UITheme.LoadDefaultTheme(); // Load default theme
 		if (uiRootPath != "")
 		{
@@ -74,7 +75,7 @@ public class UIManager
 			PushEvent(new Event(keyPressed, EventType.KeyPressed));
 			_lastKey = keyPressed;
 		}
-		else if (_lastKey != 0 && Raylib.IsKeyDown((KeyboardKey)_lastKey))
+		else
 		{
 			PushEvent(new Event(_lastKey, EventType.KeyDown));
 		}

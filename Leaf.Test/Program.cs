@@ -35,6 +35,7 @@ class Program
         var slider = new UISlider(
             new UIRect(0, 60, 200, 50),
             0, 100,
+            valueStep: 25,
             anchor: ("top-left", textInput.GetPosition())
         );
         
@@ -55,15 +56,16 @@ class Program
         
         // Containers
         var scrollContainer = new UIScrollingContainer(
-            new UIRect(210, 410, 300, 300)
+            new UIRect(210, 410, 300, 300),
+            enableScrollbars: true
         );
         
         // Graph Data
-        var scatterPlot = new ScatterPlot("x axis", "y axis", [new Vector2(10, 25), new Vector2(25, 30)]);
+        /*var scatterPlot = new ScatterPlot("x axis", "y axis", [new Vector2(10, 25), new Vector2(25, 30)]);
         var graphNode = new UIGraphNode(
             new UIRect(310, 260, 300, 200),
             scatterPlot
-        );
+        );*/
         
         // Actions
         int lastMouseButton = -1;
@@ -88,7 +90,7 @@ class Program
             foreach (char c in textInput.Text)
             {
                 _ = new UITextBox(
-                    new UIRect(0, 60 * scrollContainer.Elements.Count - 1, 300, 50),
+                    new UIRect(0, 20 * scrollContainer.Elements.Count - 1, 300, 20),
                     c.ToString(),
                     container: scrollContainer
                 );

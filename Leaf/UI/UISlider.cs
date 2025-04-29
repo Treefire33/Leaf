@@ -8,10 +8,10 @@ namespace Leaf.UI;
 
 public class UISlider : UIElement
 {
-    public float MinValue { get; private set; } = 0;
-    public float MaxValue { get; private set; } = 1;
+    public float MinValue { get; set; }
+    public float MaxValue { get; set; }
     
-    private float _value = 0;
+    private float _value;
     public float Value
     {
         get => _value;
@@ -21,8 +21,11 @@ public class UISlider : UIElement
             _value = Math.Clamp(value, MinValue, MaxValue);
         }
     }
+
+    private float _step;
     
     public bool Focused;
+    private bool _scrollDirection;
 
     private UIPanel? _handle;
     
@@ -35,9 +38,11 @@ public class UISlider : UIElement
  
     public UISlider(
         UIRect posScale, 
-        float minValue, 
-        float maxValue, 
+        float minValue = 0, 
+        float maxValue = 1, 
         float value = 0, 
+        float valueStep = 0.0001f,
+        string scrollDirection = "horizontal",
         bool visible = true, 
         IUIContainer? container = null,
         string id = "",
@@ -50,9 +55,20 @@ public class UISlider : UIElement
         MinValue = minValue;
         MaxValue = maxValue;
         Value = value;
+        _step = valueStep;
+        _scrollDirection = scrollDirection.ToLower() switch
+        {
+            "horizontal" => false,
+            "vertical" => true,
+        };
+        var handleRect = new UIRect(0, 0, 32, RelativeRect.Size.Y);
+        if (_scrollDirection)
+        {
+            handleRect = new UIRect(0, 0, RelativeRect.Size.X, 32);
+        }
         _handle = new UIPanel(
-            new UIRect(0, 0, 32, RelativeRect.Size.Y),
-            origin: new Vector2(0.5f, 0)
+            handleRect,
+            origin: _scrollDirection ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0)
         );
         _handle.SetAnchor("top-left", this);
         ThemeElement();
@@ -67,31 +83,57 @@ public class UISlider : UIElement
         _outlineThickness = Theme.GetProperty("border-top-width").AsFloat();
     }
 
+    private void UpdateHandle()
+    {
+        
+    }
+
     public override void Update()
     {
         base.Update();
-        
+
         if (IsMouseButtonPressed(MouseButton.Left))
         {
             Focused = Hovered || _handle!.Hovered;
         }
-        
-        HandleElementInteraction();
 
-        _handle!.RelativeRect = _handle!.RelativeRect with
+        if (IsMouseButtonReleased(MouseButton.Left))
         {
-            X = (Value / MaxValue) * (GetPosition().X + RelativeRect.Size.X),
-        };
+            Focused = false;
+        }
+
+        HandleElementInteraction();
         
-        Raylib.DrawRectangleRec(
+        UpdateHandle();
+        
+        Vector2 fillSize;
+        if (!_scrollDirection)
+        {
+            _handle!.RelativeRect = _handle!.RelativeRect with
+            {
+                X = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.X),
+            };
+            fillSize = RelativeRect.Size with { X = RelativeRect.Size.X * (Value / MaxValue) };
+        }
+        else
+        {
+            _handle!.RelativeRect = _handle!.RelativeRect with
+            {
+                Y = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.Y),
+            };
+            fillSize = RelativeRect.Size with { Y = RelativeRect.Size.Y * (Value / MaxValue) };
+        }
+
+        DrawRectangleRec(
             new Rectangle(GetPosition(), RelativeRect.Size),
             _backgroundColour
         );
-        Raylib.DrawRectangleRec(
-            new Rectangle(GetPosition(), RelativeRect.Size with { X = RelativeRect.Size.X * (Value / MaxValue) }),
+        
+        DrawRectangleRec(
+            new Rectangle(GetPosition(), fillSize),
             _fillColour
         );
-        Raylib.DrawRectangleLinesEx(
+        DrawRectangleLinesEx(
             new Rectangle(GetPosition(), RelativeRect.Size),
             _outlineThickness,
             _outlineColour
@@ -100,11 +142,20 @@ public class UISlider : UIElement
 
     public void HandleElementInteraction()
     {
-        if (Focused && Raylib.IsMouseButtonDown(MouseButton.Left))
+        if (Focused && IsMouseButtonDown(MouseButton.Left))
         {
-            var scaledDist = (Utility.GetVirtualMousePosition().X - GetPosition().X) / RelativeRect.Size.X;
+            float scaledDist;
+            if (!_scrollDirection)
+            {
+                scaledDist = (Utility.GetVirtualMousePosition().X - GetPosition().X) / RelativeRect.Size.X;
+            }
+            else
+            {
+                scaledDist = (Utility.GetVirtualMousePosition().Y - GetPosition().Y) / RelativeRect.Size.Y;
+            }
+
             var value = scaledDist * MaxValue + MinValue;
-            Value = value;
+            Value = MathF.Floor(value/_step) * _step;
         }
     }
 }
