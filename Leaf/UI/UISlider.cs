@@ -17,7 +17,7 @@ public class UISlider : UIElement
         get => _value;
         set
         {
-            OnValueChanged?.Invoke(value - _value);
+            OnValueChanged?.Invoke(0);
             _value = Math.Clamp(value, MinValue, MaxValue);
         }
     }
