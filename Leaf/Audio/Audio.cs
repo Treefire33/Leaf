@@ -9,50 +9,80 @@ public class Audio(Music clip)
     private Music _clip = clip;
     public Music Clip => _clip;
     public AudioState State = AudioState.None;
+
+    public AudioGroup AudioGroup;
     
-    public float ClipLength => GetMusicTimeLength(Clip);
+    public float Length => GetMusicTimeLength(Clip);
     public float Position => GetMusicTimePlayed(Clip);
 
-    public void Play(bool loops = false)
+    public bool Looping
+    {
+        get => _clip.Looping;
+        set => _clip.Looping = value;
+    }
+
+    public Action? Played;
+    public Action? Stopped;
+    public Action? Paused;
+    public Action? Finished;
+
+    public void Play()
     {
         State = AudioState.Playing;
         
-        _clip.Looping = loops;
-        
         if (State == AudioState.Paused)
         {
-            ResumeMusicStream(Clip);
+            ResumeMusicStream(_clip);
             return;
         }
 
-        PlayMusicStream(Clip);
+        PlayMusicStream(_clip);
+        Played?.Invoke();
     }
 
     public void Pause()
     {
         State = AudioState.Paused;
         
-        PauseMusicStream(Clip);
+        PauseMusicStream(_clip);
+        Paused?.Invoke();
     }
 
     public void Stop()
     {
+        if (State == AudioState.Paused)
+        {
+            ResumeMusicStream(_clip);
+        }
+        
         State = AudioState.Stopped;
         
-        StopMusicStream(Clip);
+        StopMusicStream(_clip);
+        Stopped?.Invoke();
     }
 
     public void Seek(float position)
     {
         if (position < 0) position = 0;
-        if (position > ClipLength) position = ClipLength;
+        if (position > Length) position = Length;
         
         SeekMusicStream(Clip, position);
     }
-    
-    public void SetLooping(bool loop)
+
+    public void Update()
     {
-        _clip.Looping = loop;
+        if ((!IsMusicStreamPlaying(_clip) || Position >= Length) && State == AudioState.Playing)
+        {
+            State = AudioState.None;
+            Finished?.Invoke();
+            return;
+        }
+        
+        SetMusicVolume(_clip, AudioGroup.Volume);
+        SetMusicPitch(_clip, AudioGroup.Pitch);
+        SetMusicPan(_clip, AudioGroup.Pan);
+        
+        UpdateMusicStream(_clip);
     }
 
     public static implicit operator Music(Audio clip)

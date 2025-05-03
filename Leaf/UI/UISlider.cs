@@ -17,7 +17,7 @@ public class UISlider : UIElement
         get => _value;
         set
         {
-            OnValueChanged?.Invoke(0);
+            OnValueChanged?.Invoke();
             _value = Math.Clamp(value, MinValue, MaxValue);
         }
     }
@@ -25,7 +25,7 @@ public class UISlider : UIElement
     private float _step;
     
     public bool Focused;
-    private bool _scrollDirection;
+    private ScrollDirection _scrollDirection;
 
     private UIPanel? _handle;
     
@@ -34,7 +34,9 @@ public class UISlider : UIElement
     private Color _fillColour = Color.White;
     private Color _backgroundColour = Color.Gray;
     
-    public Action<float>? OnValueChanged;
+    public Action? OnValueChanged;
+    public Action<int> OnMouseDown;
+    public Action<int> OnMouseUp;
  
     public UISlider(
         UIRect posScale, 
@@ -42,7 +44,7 @@ public class UISlider : UIElement
         float maxValue = 1, 
         float value = 0, 
         float valueStep = 0.0001f,
-        string scrollDirection = "horizontal",
+        ScrollDirection scrollDirection = ScrollDirection.HorizontalLeft,
         bool visible = true, 
         IUIContainer? container = null,
         string id = "",
@@ -56,19 +58,16 @@ public class UISlider : UIElement
         MaxValue = maxValue;
         Value = value;
         _step = valueStep;
-        _scrollDirection = scrollDirection.ToLower() switch
-        {
-            "horizontal" => false,
-            "vertical" => true,
-        };
+        _scrollDirection = scrollDirection;
         var handleRect = new UIRect(0, 0, 32, RelativeRect.Size.Y);
-        if (_scrollDirection)
+        if (_scrollDirection is ScrollDirection.VerticalTop or ScrollDirection.VerticalBottom)
         {
             handleRect = new UIRect(0, 0, RelativeRect.Size.X, 32);
         }
         _handle = new UIPanel(
             handleRect,
-            origin: _scrollDirection ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0)
+            origin: _scrollDirection is ScrollDirection.VerticalTop or ScrollDirection.VerticalBottom
+                ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0)
         );
         _handle.SetAnchor("top-left", this);
         ThemeElement();
@@ -95,10 +94,12 @@ public class UISlider : UIElement
         if (IsMouseButtonPressed(MouseButton.Left))
         {
             Focused = Hovered || _handle!.Hovered;
+            if (Hovered) OnMouseDown?.Invoke(0);
         }
 
         if (IsMouseButtonReleased(MouseButton.Left))
         {
+            if (Focused) OnMouseUp?.Invoke(0);
             Focused = false;
         }
 
@@ -106,22 +107,45 @@ public class UISlider : UIElement
         
         UpdateHandle();
         
-        Vector2 fillSize;
-        if (!_scrollDirection)
+        Rectangle fillRect = new(GetPosition(), RelativeRect.Size);
+        switch (_scrollDirection)
         {
-            _handle!.RelativeRect = _handle!.RelativeRect with
-            {
-                X = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.X),
-            };
-            fillSize = RelativeRect.Size with { X = RelativeRect.Size.X * (Value / MaxValue) };
-        }
-        else
-        {
-            _handle!.RelativeRect = _handle!.RelativeRect with
-            {
-                Y = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.Y),
-            };
-            fillSize = RelativeRect.Size with { Y = RelativeRect.Size.Y * (Value / MaxValue) };
+            case ScrollDirection.HorizontalLeft:
+                _handle!.RelativeRect = _handle!.RelativeRect with
+                {
+                    X = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.X),
+                };
+                fillRect.Width = RelativeRect.Size.X * (Value / MaxValue);
+                break;
+            case ScrollDirection.HorizontalRight:
+                _handle!.RelativeRect = _handle!.RelativeRect with
+                {
+                    X = (RelativeRect.Size.X) - MathF.Abs((Value * RelativeRect.Size.X) / MaxValue),
+                };
+                fillRect = fillRect with
+                { 
+                    X = fillRect.X + fillRect.Width - RelativeRect.Size.X * (Value / MaxValue),
+                    Width = RelativeRect.Size.X * (Value / MaxValue)
+                };
+                break;
+            case ScrollDirection.VerticalTop:
+                _handle!.RelativeRect = _handle!.RelativeRect with
+                {
+                    Y = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.Y),
+                };
+                fillRect.Height = RelativeRect.Size.Y * (Value / MaxValue);
+                break;
+            case ScrollDirection.VerticalBottom:
+                _handle!.RelativeRect = _handle!.RelativeRect with
+                {
+                    Y = (RelativeRect.Size.Y) - MathF.Abs((Value * RelativeRect.Size.Y) / MaxValue),
+                };
+                fillRect = fillRect with
+                { 
+                    Y = fillRect.Y + fillRect.Height - RelativeRect.Size.Y * (Value / MaxValue),
+                    Height = RelativeRect.Size.Y * (Value / MaxValue)
+                };
+                break;
         }
 
         DrawRectangleRec(
@@ -130,7 +154,7 @@ public class UISlider : UIElement
         );
         
         DrawRectangleRec(
-            new Rectangle(GetPosition(), fillSize),
+            fillRect,
             _fillColour
         );
         DrawRectangleLinesEx(
@@ -145,7 +169,8 @@ public class UISlider : UIElement
         if (Focused && IsMouseButtonDown(MouseButton.Left))
         {
             float scaledDist;
-            if (!_scrollDirection)
+            bool direction = _scrollDirection is ScrollDirection.VerticalBottom or ScrollDirection.HorizontalRight;
+            if (_scrollDirection is ScrollDirection.HorizontalLeft or ScrollDirection.HorizontalRight)
             {
                 scaledDist = (Utility.GetVirtualMousePosition().X - GetPosition().X) / RelativeRect.Size.X;
             }
@@ -154,8 +179,28 @@ public class UISlider : UIElement
                 scaledDist = (Utility.GetVirtualMousePosition().Y - GetPosition().Y) / RelativeRect.Size.Y;
             }
 
-            var value = scaledDist * MaxValue + MinValue;
-            Value = MathF.Floor(value/_step) * _step;
+            scaledDist = Math.Clamp(scaledDist, 0, 1);
+
+            float value;
+            
+            if (!direction)
+            {
+                value = scaledDist * MaxValue + MinValue;
+            }
+            else
+            {
+                value = MaxValue - scaledDist * MaxValue;
+            }
+
+            Value = MathF.Floor(value / _step) * _step;
         }
     }
+}
+
+public enum ScrollDirection
+{
+    HorizontalLeft,
+    HorizontalRight,
+    VerticalTop,
+    VerticalBottom
 }

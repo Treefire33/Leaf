@@ -9,7 +9,7 @@ public static class AudioManager
     public static string AudioPath => "Resources\\Audio\\";
     
     private static readonly List<Audio> _audios = [];
-
+    
     public static void InitAudio()
     {
         InitAudioDevice();
@@ -28,7 +28,7 @@ public static class AudioManager
     {
         foreach (Audio audio in _audios.Where(audio => audio.State == AudioState.Playing))
         {
-            UpdateMusicStream(audio);
+            audio.Update();
         }
     }
 }

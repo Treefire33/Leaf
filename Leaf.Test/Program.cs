@@ -74,9 +74,8 @@ class Program
 
             // Actions
             int lastMouseButton = -1;
-            float sliderDelta = 0;
             string textboxText =
-                $"Last clicked button with: {lastMouseButton}\nSlider delta: {sliderDelta}\nSlider value: {slider.Value}";
+                $"Last clicked button with: {lastMouseButton}\nSlider value: {slider.Value}";
             button.OnClick += (int mouseButton) => { lastMouseButton = mouseButton; };
             checkbox.OnClick += (int mouseButton) => { textbox.SetVisibility(!checkbox.Checked); };
             textInput.OnTextChanged += () =>
@@ -97,13 +96,12 @@ class Program
                     );
                 }
             };
-            slider.OnValueChanged += (float delta) => { sliderDelta = delta; };
             
             while (!WindowShouldClose())
             {
                 BeginDrawing();
                     ClearBackground(Color.White);
-                    textboxText = $"Last clicked button with: {lastMouseButton}\nSlider delta: {sliderDelta}\nSlider value: {slider.Value}";
+                    textboxText = $"Last clicked button with: {lastMouseButton}\nSlider value: {slider.Value}";
                     manager.Update(true);
                     textbox.SetText(textboxText);
                 EndDrawing();
@@ -112,8 +110,16 @@ class Program
 
         // Audio
         AudioManager.InitAudio();
-        var audio = AudioManager.LoadAudioFile("Clouds May Come - The Weather Channel.mp3");
-        audio.Play(true);
+        var musicGroup = new AudioGroup(0.85f);
+        List<Audio.Audio> songs =
+        [
+            AudioManager.LoadAudioFile("clouds_may_come.mp3"),
+            AudioManager.LoadAudioFile("buildings_have_eyes.mp3")
+        ];
+        int currentSong = 0;
+
+        songs[currentSong].AudioGroup = musicGroup;
+        songs[currentSong].Play();
         
         // Audio Controls
         var pausePlay = new UIButton(
@@ -127,44 +133,88 @@ class Program
             "Stop"
         );
         stopPlay.SetAnchor("top-left", pausePlay);
+        var loop = new UICheckbox(
+            new UIRect(-120, 0, 100, 100)
+        );
+        loop.SetAnchor("top-left", pausePlay);
+        loop.Checked = songs[currentSong].Clip.Looping;
 
         var songPosition = new UISlider(
             new UIRect(0, 120, 500, 24),
             origin: new Vector2(0.5f, 0.5f),
             anchor: ("center", new Vector2(0, 40))
         );
+        var songTime = new UITextBox(
+            new UIRect(0, 155, 800, 150),
+            "00:00/00:00",
+            origin: new Vector2(0.5f, 0.5f),
+            anchor: ("center", new Vector2(0, 40)),
+            @class: "time-tracker"
+        );
         
         pausePlay.OnClick = (int mouseButton) =>
         {
-            switch (audio.State)
+            switch (songs[currentSong].State)
             {
                 case AudioState.Playing:
                     pausePlay.SetText("Play");
-                    audio.Pause();
+                    songs[currentSong].Pause();
                     break;
                 case AudioState.Stopped:
                 case AudioState.Paused:
                     pausePlay.SetText("Pause");
-                    audio.Play();
+                    songs[currentSong].Play();
                     break;
             }
         };
 
         stopPlay.OnClick = (int mouseButton) =>
         {
-            audio.Stop();
+            songs[currentSong].Stop();
             pausePlay.SetText("Play");
+        };
+
+        loop.OnClick += (int mouseButton) =>
+        {
+            songs[currentSong].Looping = loop.Checked;
         };
 
 
         songPosition.MinValue = 0;
-        songPosition.MaxValue = audio.ClipLength;
-        songPosition.OnValueChanged = delta =>
+        songPosition.MaxValue = songs[currentSong].Length;
+
+        var volumeSlider = new UISlider(
+            new UIRect(0, 300, 32, 150),
+            value: musicGroup.Volume,
+            valueStep: 0.05f,
+            scrollDirection: ScrollDirection.VerticalBottom
+        );
+        var pitchSlider = new UISlider(
+            new UIRect(32, 300, 32, 150),
+            minValue: -2,
+            maxValue: 2,
+            value: musicGroup.Pitch,
+            valueStep: 0.05f,
+            scrollDirection: ScrollDirection.VerticalBottom
+        );
+        var panSlider = new UISlider(
+            new UIRect(0, 268, 100, 32),
+            value: musicGroup.Pan,
+            valueStep: 0.1f
+        );
+
+        float timeToSeekTo = 0f;
+        songPosition.OnValueChanged = () =>
         {
-            if (songPosition.Focused)
-            {
-                audio.Seek(songPosition.Value);
-            }
+            timeToSeekTo = songPosition.Value;
+            
+            songTime.SetText($"{songPosition.Value}/{songs[currentSong].Length}\nVolume: {volumeSlider.Value}\nPitch: {pitchSlider.Value}\nPan: {panSlider.Value}");
+        };
+
+        songPosition.OnMouseUp = (int mouseButton) =>
+        {
+            songs[currentSong].Seek(timeToSeekTo);
+            timeToSeekTo = 0f;
         };
         
         while (!WindowShouldClose())
@@ -173,7 +223,32 @@ class Program
                 ClearBackground(Color.White);
                 AudioManager.Update();
                 manager.Update(true);
-                songPosition.Value = audio.Position;
+                musicGroup.Volume = volumeSlider.Value;
+                musicGroup.Pitch = pitchSlider.Value;
+                musicGroup.Pan = 1 - panSlider.Value;
+                
+                if (!songPosition.Focused)
+                {
+                    songPosition.Value = songs[currentSong].Position;
+                }
+
+                if (songs[currentSong].State == AudioState.None)
+                {
+                    if (currentSong + 1 >= songs.Count)
+                    {
+                        currentSong = 0;
+                    }
+                    else
+                    {
+                        currentSong++;
+                    }
+            
+                    songs[currentSong].AudioGroup = musicGroup;
+                    songs[currentSong].Looping = loop.Checked;
+                    songs[currentSong].Play();
+            
+                    songPosition!.MaxValue = songs[currentSong].Length;
+                }
             EndDrawing();
         }
     }

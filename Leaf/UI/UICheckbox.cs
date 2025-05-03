@@ -35,14 +35,6 @@ public class UICheckbox : UIElement, IUIClickable
         string? tooltip = null
     ) : base(posScale, visible, container, id, @class, "checkbox", anchor, origin, tooltip)
     {
-        OnClick += i =>
-        {
-            if (i == 0)
-            {
-                Checked = !Checked;
-            }
-        };
-        
         ThemeElement();
         _currentTexture = _normal;
         _currentNPatch = Resources.GenerateNPatchInfoFromButton(_normal);
@@ -85,6 +77,7 @@ public class UICheckbox : UIElement, IUIClickable
 	    base.ProcessEvent(evnt);
 	    if (evnt.Element == this && evnt.EventType == EventType.LeftMouseClick)
 	    {
+		    Checked = !Checked;
 		    OnClick?.Invoke(0);
 	    }
 	    if (evnt.Element == this && evnt.EventType == EventType.RightMouseClick)

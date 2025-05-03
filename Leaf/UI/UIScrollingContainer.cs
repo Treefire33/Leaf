@@ -38,7 +38,7 @@ public class UIScrollingContainer : UIContainer
         {
             _scrollBarY = new UISlider(
                 new UIRect(posScale.X+posScale.Width, posScale.Y, 32, posScale.Height),
-                scrollDirection: "vertical",
+                scrollDirection: ScrollDirection.VerticalTop,
                 origin: new Vector2(1, 0)
             );
         }
@@ -47,7 +47,7 @@ public class UIScrollingContainer : UIContainer
         {
             _scrollBarX = new UISlider(
                 new UIRect(posScale.X, posScale.Y + posScale.Height, posScale.Width, 32),
-                scrollDirection: "horizontal",
+                scrollDirection: ScrollDirection.HorizontalLeft,
                 origin: new Vector2(0, 1)
             );
         }
