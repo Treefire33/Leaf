@@ -4,7 +4,7 @@ using static Raylib_cs.Raylib;
 
 namespace Leaf.UI;
 
-public class Utility
+public static class Utility
 {
     public static UIRect AddRectangles(UIRect rect1, UIRect rect2)
     {
@@ -222,6 +222,28 @@ public class Utility
                 textOffsetX += glyphWidth;
             }
         }
+    }
+    
+    public static HorizontalTextAlignment GetHorizontalAlignmentFromString(string alignment)
+    {
+        return alignment switch
+        {
+            "left" => HorizontalTextAlignment.Left,
+            "center" => HorizontalTextAlignment.Center,
+            "right" => HorizontalTextAlignment.Right,
+            _ => HorizontalTextAlignment.Left
+        };
+    }
+
+    public static VerticalTextAlignment GetVerticalAlignmentFromString(string alignment)
+    {
+        return alignment switch
+        {
+            "top" => VerticalTextAlignment.Top,
+            "center" => VerticalTextAlignment.Center,
+            "bottom" => VerticalTextAlignment.Bottom,
+            _ => VerticalTextAlignment.Top
+        };
     }
 
 	public static Vector2 GetVirtualMousePosition()

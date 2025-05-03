@@ -41,6 +41,8 @@ public class UIElement : IUIElement
 	protected int _fontSize = 2;
 	protected int _textSpacing;
 	protected Color _textColour = Color.White;
+	protected HorizontalTextAlignment _horizontalTextAlignment = HorizontalTextAlignment.Left;
+	protected VerticalTextAlignment _verticalTextAlignment = VerticalTextAlignment.Top;
 	
 	/// <summary>
 	/// An action fired *once* when the element is hovered.
@@ -119,6 +121,28 @@ public class UIElement : IUIElement
 		_fontSize = Theme.GetProperty("font-size").AsInt();
 		_textSpacing = Theme.GetProperty("spacing").AsInt();
 		_textColour = Theme.GetProperty("color").AsColor();
+		_horizontalTextAlignment = Utility.GetHorizontalAlignmentFromString(Theme.GetProperty("text-align", "left"));
+		_verticalTextAlignment = Utility.GetVerticalAlignmentFromString(Theme.GetProperty("text-align-vertical", "top"));
+	}
+	
+	public Vector2 AlignText(string text)
+	{
+		var textSize = MeasureTextEx(_font, text, _fontSize, _textSpacing);
+		float textX = _horizontalTextAlignment switch
+		{
+			HorizontalTextAlignment.Left => GetPosition().X,
+			HorizontalTextAlignment.Center => GetPosition().X + (RelativeRect.Size.X / 2) - (textSize.X / 2),
+			HorizontalTextAlignment.Right => GetPosition().X + (RelativeRect.Size.X) - (textSize.X),
+			_ => GetPosition().X
+		};
+		float textY = _verticalTextAlignment switch
+		{
+			VerticalTextAlignment.Top => GetPosition().Y,
+			VerticalTextAlignment.Center => GetPosition().Y + (RelativeRect.Size.Y / 2) - (textSize.Y / 2),
+			VerticalTextAlignment.Bottom => GetPosition().Y + (RelativeRect.Size.Y) - (textSize.Y),
+			_ => GetPosition().Y
+		};
+		return new Vector2(textX, textY);
 	}
 
 	public virtual void Kill()

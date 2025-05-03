@@ -42,81 +42,11 @@ public class UITextBox : UIElement
 	) : base(posScale, visible, container, id, @class, "textbox", anchor, origin, tooltip)
 	{
 		_text = text;
-		ThemeElement();
-	}
-
-	public HorizontalTextAlignment GetHorizontalAlignmentFromString(string alignment)
-	{
-		return alignment switch
-		{
-			"left" => HorizontalTextAlignment.Left,
-			"center" => HorizontalTextAlignment.Center,
-			"right" => HorizontalTextAlignment.Right,
-			_ => HorizontalTextAlignment.Left
-		};
-	}
-
-	public VerticalTextAlignment GetVerticalAlignmentFromString(string alignment)
-	{
-		return alignment switch
-		{
-			"top" => VerticalTextAlignment.Top,
-			"center" => VerticalTextAlignment.Center,
-			"bottom" => VerticalTextAlignment.Bottom,
-			_ => VerticalTextAlignment.Top
-		};
-	}
-
-	public override void ThemeElement()
-	{
-		base.ThemeElement();
-		_horizontalAlignment = GetHorizontalAlignmentFromString(Theme.GetProperty("text-align"));
-		_verticalAlignment = GetVerticalAlignmentFromString(Theme.GetProperty("text-align-vertical"));
 	}
 
 	public void SetPadding(Vector2 padding)
 	{
 		_padding = padding;
-	}
-
-	private UIRect AlignTextRec(
-		HorizontalTextAlignment horizontalAlignment = HorizontalTextAlignment.Left,
-		VerticalTextAlignment verticalAlignment = VerticalTextAlignment.Top
-	)
-	{
-		UIRect newRect = new();
-		Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, _textSpacing);
-		switch (horizontalAlignment)
-		{
-			default:
-			case HorizontalTextAlignment.Left:
-				break;
-
-			case HorizontalTextAlignment.Center:
-				newRect.X = GetPosition().X + RelativeRect.Size.X / 2 - textSize.X / 2;
-				break;
-
-			case HorizontalTextAlignment.Right:
-				newRect.X = GetPosition().X + RelativeRect.Size.X - textSize.X;
-				break;
-		}
-
-		switch (verticalAlignment)
-		{
-			default:
-			case VerticalTextAlignment.Top:
-				break;
-
-			case VerticalTextAlignment.Center:
-				newRect.Y = GetPosition().Y + RelativeRect.Size.Y / 2 - textSize.Y / 2;
-				break;
-
-			case VerticalTextAlignment.Bottom:
-				newRect.Y = GetPosition().Y + RelativeRect.Size.Y - textSize.Y;
-				break;
-		}
-    
-		return newRect;
 	}
 	
 	/// <summary>
@@ -135,7 +65,7 @@ public class UITextBox : UIElement
 		Utility.DrawTextBoxed(
 			_font,
 			_text,
-			new Rectangle(GetPosition(), RelativeRect.Size),
+			new Rectangle(AlignText(_text), RelativeRect.Size),
 			_fontSize,
 			_textSpacing,
 			true,

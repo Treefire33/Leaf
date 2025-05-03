@@ -19,7 +19,7 @@ public struct UIThemeData
         _idRule = idRule;
     }
 
-    public ThemeProperty GetProperty(string propertyName)
+    public ThemeProperty GetProperty(string propertyName, string defaultValue = "")
     {
         var idProperty = _idRule?.Style.GetPropertyValue(propertyName);
         if (idProperty == string.Empty) { idProperty = null; }
@@ -30,7 +30,7 @@ public struct UIThemeData
         var defaultProperty = DefaultRule.Style.GetPropertyValue(propertyName);
         if (defaultProperty == string.Empty) { defaultProperty = null; }
 
-        var property = idProperty ?? classProperty ?? elementProperty ?? defaultProperty ?? "";
+        var property = idProperty ?? classProperty ?? elementProperty ?? defaultProperty ?? defaultValue;
         return property;
     }
 

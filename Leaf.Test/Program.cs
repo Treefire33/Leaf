@@ -106,6 +106,8 @@ class Program
                     textbox.SetText(textboxText);
                 EndDrawing();
             }
+
+            return;
         }
 
         // Audio
@@ -147,9 +149,9 @@ class Program
         var songTime = new UITextBox(
             new UIRect(0, 155, 800, 150),
             "00:00/00:00",
-            origin: new Vector2(0.5f, 0.5f),
+            origin: new Vector2(0.5f, 0),
             anchor: ("center", new Vector2(0, 40)),
-            @class: "time-tracker"
+            id: "time-tracker"
         );
         
         pausePlay.OnClick = (int mouseButton) =>
@@ -248,6 +250,24 @@ class Program
                     songs[currentSong].Play();
             
                     songPosition!.MaxValue = songs[currentSong].Length;
+                }
+
+                if (IsKeyPressed(KeyboardKey.A))
+                {
+                    panSlider.Value -= 0.1f;
+                }
+                else if (IsKeyPressed(KeyboardKey.D))
+                {
+                    panSlider.Value += 0.1f;
+                }
+
+                if (IsKeyPressed(KeyboardKey.W))
+                {
+                    volumeSlider.Value += 0.05f;
+                }
+                else if (IsKeyPressed(KeyboardKey.S))
+                {
+                    volumeSlider.Value -= 0.05f;
                 }
             EndDrawing();
         }

@@ -13,8 +13,6 @@ namespace Leaf.UI;
 public class UIButton : UIElement, IUIClickable
 {
     [MarshalAs(UnmanagedType.LPUTF8Str)] private string _text;
-	private string _textAlignmentHorizontal = "center";
-	private string _textAlignmentVertical = "center";
 
 	private Texture2D _currentTexture;
 	private NPatchInfo _currentNPatch;
@@ -57,8 +55,6 @@ public class UIButton : UIElement, IUIClickable
 	public override void ThemeElement()
 	{
 		base.ThemeElement();
-		_textAlignmentHorizontal = Theme.GetProperty("text-align");
-		_textAlignmentVertical = Theme.GetProperty("text-align-vertical");
 		List<Texture2D> images = Theme.GetProperty("button-style").AsButtonImages();
 		_normal = images[0];
 		_hover = images[1];
@@ -68,27 +64,7 @@ public class UIButton : UIElement, IUIClickable
 	public void SetText(string text)
 	{
 		_text = text;
-		AlignButtonText();
-	}
-
-	private void AlignButtonText()
-	{
-		_textSize = MeasureTextEx(_font, _text, _fontSize, 1);
-		float textX = _textAlignmentHorizontal switch
-		{
-			"left" => GetPosition().X,
-			"center" => GetPosition().X + (RelativeRect.Size.X / 2) - (_textSize.X / 2),
-			"right" => GetPosition().X + (RelativeRect.Size.X) - (_textSize.X),
-			_ => GetPosition().X
-		};
-		float textY = _textAlignmentVertical switch
-		{
-			"top" => GetPosition().Y,
-			"center" => GetPosition().Y + (RelativeRect.Size.Y / 2) - (_textSize.Y / 2),
-			"bottom" => GetPosition().Y + (RelativeRect.Size.Y) - (_textSize.Y),
-			_ => GetPosition().Y
-		};
-		_textPosition = new Vector2(textX, textY);
+		_textPosition = AlignText(_text);
 	}
 
 	[DllImport("raylib", CallingConvention = CallingConvention.Cdecl)]
@@ -106,7 +82,7 @@ public class UIButton : UIElement, IUIClickable
 		base.Update();
 		
 		HandleElementInteraction();
-		AlignButtonText();
+		_textPosition = AlignText(_text);
 		
 		DrawTextureNPatch(
 			_currentTexture,
@@ -202,12 +178,12 @@ public class UIButton : UIElement, IUIClickable
 	public override void SetAnchor(string anchorPosition, UIElement anchorElement)
 	{
 		base.SetAnchor(anchorPosition, anchorElement);
-		AlignButtonText();
+		_textPosition = AlignText(_text);
 	}
 
 	public override void SetAnchor(string anchorPosition, Vector2 anchorOffset)
 	{
 		base.SetAnchor(anchorPosition, anchorOffset);
-		AlignButtonText();
+		_textPosition = AlignText(_text);
 	}
 }
