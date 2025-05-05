@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpriteAtlases>
+    <SpriteAtlas image="default_images.png" name="default" cellX="96" cellY="96">
+        <SubTexture name="normal" x="0" y="0"/>
+        <SubTexture name="hovered" x="1" y="0"/>
+        <SubTexture name="disabled" x="0" y="1"/>
+    </SpriteAtlas>
+    <SpriteAtlas image="corner_left_images.png" name="corner-left" cellX="96" cellY="96">
+        <SubTexture name="normal" x="0" y="0"/>
+        <SubTexture name="hovered" x="1" y="0"/>
+        <SubTexture name="disabled" x="0" y="1"/>
+    </SpriteAtlas>
+    <SpriteAtlas image="corner_right_images.png" name="corner-right" cellX="96" cellY="96">
+        <SubTexture name="normal" x="0" y="0"/>
+        <SubTexture name="hovered" x="1" y="0"/>
+        <SubTexture name="disabled" x="0" y="1"/>
+    </SpriteAtlas>
+    <SpriteAtlas image="bottom_images.png" name="bottom" cellX="96" cellY="96">
+        <SubTexture name="normal" x="0" y="0"/>
+        <SubTexture name="hovered" x="1" y="0"/>
+        <SubTexture name="disabled" x="0" y="1"/>
+    </SpriteAtlas>
+    <SpriteAtlas image="checkbox.png" name="checkbox" cellX="96" cellY="96">
+        <SubTexture name="normal" x="0" y="0"/>
+        <SubTexture name="hovered" x="1" y="0"/>
+        <SubTexture name="disabled" x="0" y="1"/>
+    </SpriteAtlas>
+</SpriteAtlases>

@@ -24,26 +24,23 @@ public class UIManager
 		return DefaultManager;
 	}
 	
-	public List<UIElement> Elements = [];
 	public UIContainer? Container;
 	public List<Event> UIEvents = [];
 	public UITheme Theme;
-	public bool IsFocused = false;
 
-	public UIManager(Vector2 gameSize = default, string theme = "", string uiRootPath = "", bool buttonSpritesheet = true)
+	public UIManager(Vector2 gameSize = default, string theme = "", string uiRootPath = "")
 	{
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		if (uiRootPath != Resources.UIRootPath && uiRootPath != "") // prevent double loading of default assets
-			Resources.LoadAssets(); // Load defaults
+		Resources.LoadDefault(); // Load defaults
 		UITheme.LoadDefaultTheme(); // Load default theme
 		if (uiRootPath != "")
 		{
 			Resources.SetRoot(uiRootPath);
-			Resources.LoadAssets(buttonImagesSpritesheet: buttonSpritesheet);
+			Resources.LoadAssets();
 		}
 		LoadTheme(theme);
 		if (DefaultManager == null)

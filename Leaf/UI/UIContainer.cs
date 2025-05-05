@@ -28,22 +28,11 @@ public class UIContainer : UIElement, IUIContainer
         Elements = Elements.OrderBy(x => x.Layer).ToList();
         if (Visible)
         {
-            if (UIManager.DebugMode)
-            {
-                Raylib.DrawRectangleRec(
-                    new UIRect(GetPosition(), RelativeRect.Size),
-                    Color.DarkBlue
-                );
-                Raylib.DrawRectangleLinesEx(
-                    new UIRect(GetPosition(), RelativeRect.Size),
-                    10,
-                    Color.Black
-                );
-            }
-
             Raylib.BeginScissorMode((int)GetPosition().X, (int)GetPosition().Y, (int)RelativeRect.Width, (int)RelativeRect.Height);
                 foreach (UIElement element in Elements.Where(e => e.Visible))
                 {
+                    if (UIManager.DebugMode)
+                        element.DebugDraw();
                     element.Update();
                 }
             Raylib.EndScissorMode();

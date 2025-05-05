@@ -98,11 +98,6 @@ public class UIScrollingContainer : UIContainer
         HandleScroll();
         if (Visible)
         {
-            if (UIManager.DebugMode)
-                DrawRectangleRec(
-                    new UIRect(GetPosition(), RelativeRect.Size),
-                    Color.SkyBlue
-                );
             BeginScissorMode((int)GetPosition().X, (int)GetPosition().Y, (int)RelativeRect.Width, (int)RelativeRect.Height);
                 foreach (UIElement element in Elements.Where(e => e.Visible))
                 {

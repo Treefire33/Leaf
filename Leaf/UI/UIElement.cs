@@ -108,10 +108,17 @@ public class UIElement : IUIElement
 		ThemeElement();
 	}
 
+	public virtual void DebugDraw()
+	{
+		DrawRectangleLinesEx(
+			new Rectangle(GetPosition(), RelativeRect.Size),
+			1f,
+			Color.Red
+		);
+	}	
+	
 	public virtual void Update()
 	{
-		if (UIManager.DebugMode)
-			DrawRectangleRec(new UIRect(GetPosition(), RelativeRect.Size), Color.Red);
 		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), new Rectangle(GetPosition(), RelativeRect.Size));
 	}
 

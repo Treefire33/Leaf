@@ -1,14 +1,14 @@
 using System.Numerics;
+using System.Xml;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 
-namespace Leaf.UI;
+namespace Leaf;
 
-public static class Resources
+public static partial class Resources
 {
-    public static string UIRootPath = @".\Assets\UI\";
-
     public static string UIImagesPath => $@"{UIRootPath}Images\";
+    public static string UISpritesheetsPath => $@"{UIRootPath}Spritesheets\";
     public static string UIThemesPath => $@"{UIRootPath}Themes\";
     public static string UIFontsPath => $@"{UIRootPath}Fonts\";
     
@@ -17,10 +17,7 @@ public static class Resources
         {"default", GetFontDefault()}
     };
 
-    public static readonly Dictionary<string, List<Texture2D>> Buttons = new()
-    {
-        {"default", GenButtonsFromName("default", true)}
-    };
+    public static readonly Dictionary<string, List<Texture2D>> Buttons = [];
     
     public static NPatchInfo GenerateNPatchInfoFromButton(Texture2D button)
     {
@@ -35,51 +32,12 @@ public static class Resources
         };
     }
 
-    public static List<Texture2D> GetButtonImagesFromStyle(string style)
-    {
-        return Buttons[style];
-    }
-    
-    public static List<Texture2D> GenButtonsFromName(string name, bool isSpritesheet)
-    {
-        if (isSpritesheet)
-        {
-            List<Texture2D> buttonTextures = [];
-            Image spritesheet = LoadImage($@"{UIImagesPath}{name}_images.png");
-            int rows = 2;
-            int columns = 2;
-            Vector2 spritesheetSize = new(spritesheet.Width / columns, spritesheet.Height / rows);
-            for (int y = 0; y < rows; y++)
-            {
-                for (int x = 0; x < columns; x++)
-                {
-                    buttonTextures.Add(LoadTextureFromImage(ImageFromImage(spritesheet, new Rectangle(
-                        new Vector2(x, y) * spritesheetSize,
-                        spritesheetSize
-                    ))));
-                }
-            }
-            
-            return buttonTextures;
-        }
-
-        Texture2D loadedNormal = LoadTexture($@"{UIImagesPath}{name}.png");
-        Texture2D loadedHover = LoadTexture($@"{UIImagesPath}{name}_hovered.png");
-        Texture2D loadedDisabled = LoadTexture($@"{UIImagesPath}{name}_disabled.png");
-            
-        return [
-            loadedNormal,
-            loadedHover,
-            loadedDisabled
-        ];
-    }
-
     public static void SetRoot(string rootPath)
     {
         UIRootPath = rootPath;
     }
 
-    public static void LoadAssets(bool buttonImagesSpritesheet = true)
+    public static void LoadUIAssets()
     {
         if (Directory.Exists(UIFontsPath))
         {
@@ -89,17 +47,49 @@ public static class Resources
                 Fonts.Add(name, LoadFontUI(file));
             }
         }
-        if (Directory.Exists(UIImagesPath))
+        if (Directory.Exists(UISpritesheetsPath) && Directory.Exists(UIImagesPath))
         {
-            foreach (var file in Directory.GetFiles(UIImagesPath))
+            var spritesheetXml = new XmlDocument();
+            foreach (var file in Directory.GetFiles(UISpritesheetsPath))
             {
-                var name = Path.GetFileNameWithoutExtension(file);
-                if (!Buttons.ContainsKey(name.Replace("_images", "")))
+                spritesheetXml.Load(file);
+                if (spritesheetXml.DocumentElement!.Name == "SpriteAtlases")
                 {
-                    Buttons.Add(name.Replace("_images", ""), GenButtonsFromName(name.Replace("_images", ""), isSpritesheet: buttonImagesSpritesheet));
+                    foreach (XmlElement sprAtlas in spritesheetXml.DocumentElement!.GetElementsByTagName("SpriteAtlas"))
+                    {
+                        LoadSpritesheetXml(sprAtlas);
+                    }
+                }
+                else
+                {
+                    LoadSpritesheetXml((XmlElement)spritesheetXml.GetElementsByTagName("SpriteAtlas")[0]!);
                 }
             }
         }
+    }
+
+    private static void LoadSpritesheetXml(XmlElement spritesheetXml)
+    {
+        var imagePath = UIImagesPath + spritesheetXml.GetAttribute("image");
+        var name = spritesheetXml.GetAttribute("name");
+        Vector2 cellSize = new(
+            float.Parse(spritesheetXml.GetAttribute("cellX")),
+            float.Parse(spritesheetXml.GetAttribute("cellY"))
+        );
+        
+        List<Texture2D> buttonTextures = [];
+        Image spritesheet = LoadImage(imagePath);
+        foreach (XmlNode subTex in spritesheetXml.GetElementsByTagName("SubTexture"))
+        {
+            var x = int.Parse(subTex.Attributes?["x"]?.Value ?? "0");
+            var y = int.Parse(subTex.Attributes?["y"]?.Value ?? "0");
+            buttonTextures.Add(LoadTextureFromImage(ImageFromImage(spritesheet, new Rectangle(
+                new Vector2(x, y) * cellSize,
+                cellSize
+            ))));
+        }
+        
+        Buttons.Add(name, buttonTextures);
     }
 
     private static unsafe Font LoadFontUI(string fontName)
