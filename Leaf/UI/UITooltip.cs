@@ -53,7 +53,7 @@ public class UITooltip : UIElement
 		_backgroundColour = Theme.GetProperty("background-color").AsColor();
 		_borderColour = Theme.GetProperty("border-top-color").AsColor();
 		_borderThickness = Theme.GetProperty("border-top-width").AsInt();
-		_segments = Theme.GetProperty("segments").AsInt();
+		_segments = Theme.GetProperty("border-radius").AsInt();
 	}
 
 	private void CalculateSize()

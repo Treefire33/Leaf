@@ -20,7 +20,7 @@
         <SubTexture name="hovered" x="1" y="0"/>
         <SubTexture name="disabled" x="0" y="1"/>
     </SpriteAtlas>
-    <SpriteAtlas image="checkbox.png" name="checkbox" cellX="96" cellY="96">
+    <SpriteAtlas image="checkbox_images.png" name="checkbox" cellX="96" cellY="96">
         <SubTexture name="normal" x="0" y="0"/>
         <SubTexture name="hovered" x="1" y="0"/>
         <SubTexture name="disabled" x="0" y="1"/>

@@ -6,8 +6,6 @@ namespace Leaf.Audio;
 
 public static class AudioManager
 {
-    public static string AudioPath => "Resources\\Audio\\";
-    
     private static readonly List<Audio> _audios = [];
     
     public static void InitAudio()
@@ -17,7 +15,7 @@ public static class AudioManager
 
     public static Audio LoadAudioFile(string fileName)
     {
-        Music music = LoadMusicStream(AudioPath + fileName);
+        Music music = LoadMusicStream(Resources.AudioRootPath + fileName);
 
         Audio audio = new(music);
         _audios.Add(audio);

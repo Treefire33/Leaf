@@ -9,15 +9,17 @@ namespace Leaf.Test;
 
 class Program
 {
-    private static int _testType = 1;
+    private static int _testType = 0;
     static void Main(string[] args)
     {
         SetTraceLogLevel(TraceLogLevel.Error);
         InitWindow(800, 800, "Leaf UI Testing");
         
         SetTargetFPS(60);
-
-        var manager = new UIManager(theme: "style.css", uiRootPath:".\\Resources\\UI\\");
+        
+        Resources.SetResourcesPath(ResourcesPath.Root, ".\\Resources\\");
+        Resources.SetResourcesPath(ResourcesPath.UIImages, "Sprites\\");
+        var manager = new UIManager(theme: "style.css");
         
         // Tests for UIElements
         if (_testType == 0)
@@ -55,7 +57,7 @@ class Program
             panel.Layer = -1;
             var imageWithTooltip = new UIImage(
                 new UIRect(10, 410, 200, 200),
-                LoadTexture(".\\Resources\\Sprites\\weird_cat_i_found_on_the_sidewalk.png"),
+                Resources.LoadSprite("weird_cat_i_found_on_the_sidewalk.png"),
                 tooltip: "weird cat I found on the sidewalk"
             );
 
