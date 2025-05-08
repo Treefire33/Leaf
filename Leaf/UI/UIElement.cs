@@ -38,11 +38,15 @@ public class UIElement : IUIElement
 	
 	// Theming parameters
 	protected Font _font;
-	protected int _fontSize = 2;
-	protected int _textSpacing;
+	protected int _fontSize = 5;
+	protected int _textSpacing = 1;
 	protected Color _textColour = Color.White;
 	protected HorizontalTextAlignment _horizontalTextAlignment = HorizontalTextAlignment.Left;
 	protected VerticalTextAlignment _verticalTextAlignment = VerticalTextAlignment.Top;
+	protected Color _backgroundColour = Color.White;
+	protected Color _borderColour = Color.White;
+	protected float _borderThickness;
+	protected float _borderRadius;
 	
 	/// <summary>
 	/// An action fired *once* when the element is hovered.
@@ -130,6 +134,10 @@ public class UIElement : IUIElement
 		_textColour = Theme.GetProperty("color").AsColor();
 		_horizontalTextAlignment = Utility.GetHorizontalAlignmentFromString(Theme.GetProperty("text-align", "left"));
 		_verticalTextAlignment = Utility.GetVerticalAlignmentFromString(Theme.GetProperty("text-align-vertical", "top"));
+		_backgroundColour = Theme.GetProperty("background-color").AsColor();
+		_borderColour = Theme.GetProperty("border-top-color").AsColor();
+		_borderThickness = Theme.GetProperty("border-top-width").AsFloat();
+		_borderRadius = Theme.GetProperty("border-top-left-radius").AsFloat()/100;
 	}
 	
 	public Vector2 AlignText(string text)

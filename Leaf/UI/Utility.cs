@@ -259,4 +259,27 @@ public static class Utility
 
 		return virtualMouse;
 	}
+    
+    public static void DrawRectangle(
+        Rectangle rect, 
+        float borderRadius, 
+        float borderThickness, 
+        Color backgroundColour, 
+        Color borderColour
+    )
+    {
+        DrawRectangleRounded(
+            rect,
+            borderRadius,
+            0,
+            backgroundColour
+        );
+        DrawRectangleRoundedLinesEx(
+            rect,
+            borderRadius,
+            0,
+            borderThickness,
+            borderColour
+        );
+    }
 }

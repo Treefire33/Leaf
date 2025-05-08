@@ -67,7 +67,13 @@ public partial class UITextInput : UIElement
 
         HandleElementInteraction();
         
-        DrawRectangleRec(new Rectangle(GetPosition(), RelativeRect.Size), Color.Gray);
+        Utility.DrawRectangle(
+            new Rectangle(GetPosition(), RelativeRect.Size),
+            _borderRadius,
+            _borderThickness,
+            _backgroundColour,
+            _borderColour
+        );
         Utility.DrawTextBoxed(
             _font,
             Text,
@@ -99,7 +105,7 @@ public partial class UITextInput : UIElement
                 _fontSize,
                 _textSpacing,
                 true,
-                Color.Black
+                _textColour
             );
         }
     }

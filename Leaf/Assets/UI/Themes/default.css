@@ -1,9 +1,34 @@
+/*
+    #222831 - Background
+    #393e46 - Borders
+    #948979 - Background 2
+    #dfd0b8 - Borders 2
+*/
+
+/*
+    Default props:
+    protected Font _font;
+	protected int _fontSize = 5;
+	protected int _textSpacing = 1;
+	protected Color _textColour = Color.White;
+	protected HorizontalTextAlignment _horizontalTextAlignment = HorizontalTextAlignment.Left;
+	protected VerticalTextAlignment _verticalTextAlignment = VerticalTextAlignment.Top;
+	protected Color _backgroundColour = Color.White;
+	protected Color _borderColour = Color.White;
+	protected float _borderRadius = 0f;
+*/
+
 * {
-    background-color: #D0D0D7;
     font-family: m6x11plus;
     font-size: 18px;
     spacing: 1px;
     color: white;
+    text-align: left;
+    text-align-vertical: top;
+    background-color: #222831;
+    border-color: #393e46;
+    border-width: 5px;
+    border-radius: 0;
 }
 
 button {
@@ -15,15 +40,13 @@ button {
 }
 
 panel {
-    background-color: #676774;
-    border-color: #FFFFFF;
-    border-width: 2px;
+    background-color: #948979;
+    border-color: #dfd0b8;
+    border-width: 5px;
 }
 
 slider {
-    fill: #2374ff;
-    background-color: #E9E9ED;
-    border-color: #9696A2;
+    fill: #393e46;
     border-width: 2px;
 }
 
@@ -34,10 +57,12 @@ textbox {
     spacing: 1px;
 }
 
+text-input {
+    border-width: 0;
+    border-radius: 15%;
+}
+
 tooltip {
-    color: black;
-    border-color: gray;
-    background-color: rgb(123, 123, 123);
-    border-radius: 5;
-    border-width: 2px;
+    border-radius: 15%;
+    border-width: 5px;
 }

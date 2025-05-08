@@ -9,13 +9,6 @@ namespace Leaf.UI;
 
 public class UITooltip : UIElement
 {
-	private Font _font;
-	private int _fontSize;
-	private Color _textColour;
-	private Color _backgroundColour;
-	private Color _borderColour;
-	private int _borderThickness;
-	private int _segments;
 	private string _tooltipText;
 	private Vector2 _padding = new(5, 5);
 
@@ -38,27 +31,14 @@ public class UITooltip : UIElement
 		}
 		_parentElement = parentElement;
 		_tooltipText = text;
-		ThemeElement();
 		CalculateSize();
 
 		Layer = 999;
 	}
 
-	public override void ThemeElement()
-	{
-		base.ThemeElement();
-		_font = Theme.GetProperty("font-family").AsFont();
-		_fontSize = Theme.GetProperty("font-size").AsInt();
-		_textColour = Theme.GetProperty("color").AsColor();
-		_backgroundColour = Theme.GetProperty("background-color").AsColor();
-		_borderColour = Theme.GetProperty("border-top-color").AsColor();
-		_borderThickness = Theme.GetProperty("border-top-width").AsInt();
-		_segments = Theme.GetProperty("border-radius").AsInt();
-	}
-
 	private void CalculateSize()
 	{
-		Vector2 textSize = MeasureTextEx(_font, FormatTooltip(_tooltipText), _fontSize, 1);
+		Vector2 textSize = MeasureTextEx(_font, FormatTooltip(_tooltipText), _fontSize, _textSpacing);
 		//_padding = textSize / 8;
 		RelativeRect = new UIRect(
 			GetPosition(),
@@ -96,17 +76,11 @@ public class UITooltip : UIElement
 		if (_parentElement.Hovered)
 		{
 			var pos = Utility.GetVirtualMousePosition() - new Vector2(0, RelativeRect.Height + _padding.Y);
-			DrawRectangleRounded(
+			Utility.DrawRectangle(
 				new Rectangle(pos, RelativeRect.Width, RelativeRect.Height),
-				0.3f,
-				_segments,
-				_backgroundColour
-			);
-			DrawRectangleRoundedLinesEx(
-				new Rectangle(pos, RelativeRect.Width, RelativeRect.Height),
-				0.3f,
-				_segments,
+				_borderRadius,
 				_borderThickness,
+				_backgroundColour,
 				_borderColour
 			);
 			Utility.DrawTextBoxed(

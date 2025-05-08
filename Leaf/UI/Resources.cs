@@ -83,7 +83,7 @@ public static partial class Resources
             foreach (var file in Directory.GetFiles(UIFontsPath))
             {
                 var name = Path.GetFileNameWithoutExtension(file);
-                Fonts.Add(name, LoadFontUI(file));
+                Fonts[name] = LoadFontUI(file);
             }
         }
         if (Directory.Exists(UISpritesheetsPath) && Directory.Exists(UIImagesPath))
@@ -131,8 +131,8 @@ public static partial class Resources
         }
         
         UnloadImage(spritesheet);
-        
-        Buttons.Add(name, buttonTextures);
+
+        Buttons[name] = buttonTextures;
     }
     public static Texture2D LoadSprite(string file)
     {
@@ -142,7 +142,7 @@ public static partial class Resources
     private static unsafe Font LoadFontUI(string fontName)
     {
         Font loadedFont = LoadFontEx(fontName, 64, null, 0);
-        GenTextureMipmaps(&loadedFont.Texture);
+        //GenTextureMipmaps(&loadedFont.Texture);
         SetTextureFilter(loadedFont.Texture, TextureFilter.Anisotropic8X);
         return loadedFont;
     }

@@ -6,10 +6,6 @@ namespace Leaf.UI;
 
 public class UIPanel : UIElement
 {
-    private Color _backgroundColor;
-    private Color _outlineColour;
-    private float _outlineThickness;
-    
     public UIPanel(
         UIRect posScale,
         bool visible = true, 
@@ -20,29 +16,17 @@ public class UIPanel : UIElement
         Vector2 origin = default,
         string? tooltip = null
     ) : base(posScale, visible, container, id, @class, "panel", anchor, origin, tooltip)
-    {
-        ThemeElement();
-    }
-
-    public override void ThemeElement()
-    {
-        base.ThemeElement();
-        _backgroundColor = Theme.GetProperty("background-color").AsColor();
-        _outlineColour = Theme.GetProperty("border-top-color").AsColor();
-        _outlineThickness = Theme.GetProperty("border-top-width").AsFloat();
-    }
+    { }
 
     public override void Update()
     {
         base.Update();
-        Raylib.DrawRectangleRec(
+        Utility.DrawRectangle(
             new Rectangle(GetPosition(), RelativeRect.Size),
-            _backgroundColor
-        );
-        Raylib.DrawRectangleLinesEx(
-            new Rectangle(GetPosition(), RelativeRect.Size),
-            _outlineThickness,
-            _outlineColour
+            _borderRadius,
+            _borderThickness,
+            _backgroundColour,
+            _borderColour
         );
     }
 }

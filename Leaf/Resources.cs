@@ -63,12 +63,12 @@ public static partial class Resources
 
             foreach (var file in curDir.GetFiles())
             {
-                if (File.Exists(copyTo + file.Name))
+                /*if (File.Exists(copyTo + file.Name))
                 {
                     file.Delete();
                     continue;
-                }
-                file.MoveTo(copyTo+file.Name);
+                }*/
+                file.MoveTo(copyTo+file.Name, true);
             }
             Directory.Delete(dir);
         }

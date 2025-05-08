@@ -29,10 +29,7 @@ public class UISlider : UIElement
 
     private UIPanel? _handle;
     
-    private float _outlineThickness = 1f;
-    private Color _outlineColour = Color.Black;
     private Color _fillColour = Color.White;
-    private Color _backgroundColour = Color.Gray;
     
     public Action? OnValueChanged;
     public Action<int> OnMouseDown;
@@ -77,9 +74,6 @@ public class UISlider : UIElement
     {
         base.ThemeElement();
         _fillColour = Theme.GetProperty("fill").AsColor();
-        _backgroundColour = Theme.GetProperty("background-color").AsColor();
-        _outlineColour = Theme.GetProperty("border-top-color").AsColor();
-        _outlineThickness = Theme.GetProperty("border-top-width").AsFloat();
     }
 
     private void UpdateHandle()
@@ -148,20 +142,15 @@ public class UISlider : UIElement
                 break;
         }
 
-        DrawRectangleRec(
+        Utility.DrawRectangle(
             new Rectangle(GetPosition(), RelativeRect.Size),
-            _backgroundColour
+            _borderRadius,
+            _borderThickness,
+            _backgroundColour,
+            _borderColour
         );
-        
-        DrawRectangleRec(
-            fillRect,
-            _fillColour
-        );
-        DrawRectangleLinesEx(
-            new Rectangle(GetPosition(), RelativeRect.Size),
-            _outlineThickness,
-            _outlineColour
-        );
+
+        DrawRectangleRounded(fillRect, _borderRadius, 0, _fillColour);
     }
 
     public void HandleElementInteraction()
