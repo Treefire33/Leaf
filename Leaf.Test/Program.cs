@@ -82,12 +82,7 @@ class Program
             checkbox.OnClick += (int mouseButton) => { textbox.SetVisibility(!checkbox.Checked); };
             textInput.OnTextChanged += () =>
             {
-                for (int i = scrollContainer.Elements.Count - 1; i >= 0; i--)
-                {
-                    scrollContainer.Elements.ElementAt(i).Kill();
-                }
-
-                scrollContainer.Elements.Clear();
+                scrollContainer.ClearElements();
 
                 foreach (char c in textInput.Text)
                 {

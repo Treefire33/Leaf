@@ -92,6 +92,12 @@ public class UIScrollingContainer : UIContainer
         SetMaxScroll();
     }
 
+    public override void ClearElements()
+    {
+        base.ClearElements();
+        SetMaxScroll();
+    }
+
     public override void Update()
     {
         Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), new Rectangle(GetPosition(), RelativeRect.Size));

@@ -10,7 +10,7 @@ public class UITheme
 
     public static void LoadDefaultTheme()
     {
-        var stylesheetData = _stylesheetParser.Parse(File.ReadAllText($".\\Assets\\UI\\Themes\\default.css"));
+        var stylesheetData = _stylesheetParser.Parse(File.ReadAllText($"{Resources.UIThemesPath}default.css"));
 
         var defaultRule = stylesheetData.StyleRules.Where(x => x.SelectorText == "*");
         IEnumerable<IStyleRule> styleRules = defaultRule.ToList();

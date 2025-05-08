@@ -64,6 +64,14 @@ public class UIContainer : UIElement, IUIContainer
         Elements.Remove(element);
     }
 
+    public virtual void ClearElements()
+    {
+        for (int i = Elements.Count - 1; i >= 0; i--)
+        {
+            Elements[i].Kill();
+        }
+    }
+
     public override void ProcessEvent(Event evnt)
     {
         base.ProcessEvent(evnt);

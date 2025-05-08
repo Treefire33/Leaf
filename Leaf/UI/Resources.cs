@@ -77,6 +77,7 @@ public static partial class Resources
 
     public static void LoadUIAssets()
     {
+        MoveDefaultAssets();
         if (Directory.Exists(UIFontsPath))
         {
             foreach (var file in Directory.GetFiles(UIFontsPath))
@@ -133,7 +134,6 @@ public static partial class Resources
         
         Buttons.Add(name, buttonTextures);
     }
-
     public static Texture2D LoadSprite(string file)
     {
         return LoadTexture($"{UIImagesPath}{file}");

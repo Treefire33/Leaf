@@ -35,13 +35,9 @@ public class UIManager
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		Resources.LoadDefaultUIAssets(); // Load defaults
+		if (uiRootPath != "") Resources.SetResourcesPath(ResourcesPath.UI, uiRootPath);
+		Resources.LoadUIAssets();
 		UITheme.LoadDefaultTheme(); // Load default theme
-		if (uiRootPath != "")
-		{
-			Resources.SetResourcesPath(ResourcesPath.UI, uiRootPath);
-			Resources.LoadUIAssets(); // Reload assets from new paths
-		}
 		LoadTheme(theme);
 		if (DefaultManager == null)
 		{
