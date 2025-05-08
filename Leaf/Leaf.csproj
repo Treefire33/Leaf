@@ -17,7 +17,7 @@
         <Authors>treefire33</Authors>
 
         <RepositoryUrl>https://github.com/Treefire33/Leaf</RepositoryUrl>
-        <Version>0.2.5</Version>
+        <Version>0.2.6</Version>
 
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
