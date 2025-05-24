@@ -28,17 +28,19 @@ public class UIManager
 	public List<Event> UIEvents = [];
 	public UITheme Theme;
 
-	public UIManager(Vector2 gameSize = default, string theme = "", string uiRootPath = "")
+	public UIManager(Vector2 gameSize = default, params string[] themes)
 	{
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
 		GameSize = gameSize;
-		if (uiRootPath != "") Resources.SetResourcesPath(ResourcesPath.UI, uiRootPath);
-		Resources.LoadUIAssets();
 		UITheme.LoadDefaultTheme(); // Load default theme
-		LoadTheme(theme);
+		if (themes.Length > 0)
+			foreach (var theme in themes)
+			{
+				LoadTheme(theme);
+			}
 		if (DefaultManager == null)
 		{
 			SetDefaultManager(this);

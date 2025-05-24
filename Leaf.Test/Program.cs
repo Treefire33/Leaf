@@ -18,8 +18,9 @@ class Program
         SetTargetFPS(60);
         
         Resources.SetResourcesPath(ResourcesPath.Root, ".\\Resources\\");
-        Resources.SetResourcesPath(ResourcesPath.UIImages, "Sprites\\");
-        var manager = new UIManager(theme: "style.css");
+        Resources.SetResourcesPath(ResourcesPath.Images, "Sprites\\");
+        Resources.InitResources();
+        var manager = new UIManager(themes: "style.css");
         
         // Tests for UIElements
         if (_testType == 0)

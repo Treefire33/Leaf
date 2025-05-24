@@ -90,11 +90,3 @@ public class Audio(Music clip)
         return clip.Clip;
     }
 }
-
-public enum AudioState
-{
-    None,
-    Stopped,
-    Paused,
-    Playing
-}
