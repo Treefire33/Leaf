@@ -64,8 +64,12 @@ class Program
 
             // Containers
             var scrollContainer = new UIScrollingContainer(
-                new UIRect(210, 410, 300, 300),
+                new UIRect(210, 410, 100, 300),
                 enableScrollbars: true
+            );
+            var dropdown = new UIDropdown(
+                new UIRect(310, 410, 200, 80),
+                ["option 1", "option 2"]
             );
 
             // Graph Data
@@ -88,7 +92,7 @@ class Program
                 foreach (char c in textInput.Text)
                 {
                     _ = new UITextBox(
-                        new UIRect(0, 20 * scrollContainer.Elements.Count - 1, 300, 20),
+                        new UIRect(0, 20 * scrollContainer.Elements.Count - 1, 100, 20),
                         c.ToString(),
                         container: scrollContainer
                     );

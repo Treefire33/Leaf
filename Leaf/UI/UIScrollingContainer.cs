@@ -67,13 +67,13 @@ public class UIScrollingContainer : UIContainer
             if (element.GetPosition().Y + element.RelativeRect.Height > _maxScroll.Y)
             {
                 // Should this somehow not be negative, just set the max scroll to 0.
-                _maxScroll.Y = MathF.Min((element.GetPosition().Y + element.RelativeRect.Height - RelativeRect.Height) * -1.5f, 0);
+                _maxScroll.Y = MathF.Min(-element.RelativeRect.Y + RelativeRect.Height, 0);
                 if (_scrollBarY != null) _scrollBarY.MinValue = 0;
                 if (_scrollBarY != null) _scrollBarY.MaxValue = -_maxScroll.Y;
             }
             if (element.GetPosition().X + element.RelativeRect.Width > _maxScroll.X)
             {
-                _maxScroll.X = element.GetPosition().X + element.RelativeRect.Width + RelativeRect.Width;
+                _maxScroll.X = MathF.Max(element.RelativeRect.X - element.RelativeRect.Width, 0);
                 if (_scrollBarX != null) _scrollBarX.MinValue = 0;
                 if (_scrollBarX != null) _scrollBarX.MaxValue = _maxScroll.X;
             }

@@ -13,6 +13,7 @@ namespace Leaf.UI;
 public class UIButton : UIElement, IUIClickable
 {
     [MarshalAs(UnmanagedType.LPUTF8Str)] private string _text;
+    public string Text => _text;
 
 	private Texture2D _currentTexture;
 	private NPatchInfo _currentNPatch;
