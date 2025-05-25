@@ -8,7 +8,7 @@ namespace Leaf;
 public static partial class Resources
 {
     
-    private static string _uiButtonsPath = @"Spritesheets\";
+    private static string _uiButtonsPath = @"Buttons\";
     public static string UIButtonsPath => $@"{UIRootPath}{_uiButtonsPath}";
     
     private static string _uiThemesPath = @"Themes\";
