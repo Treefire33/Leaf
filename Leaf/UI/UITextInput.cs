@@ -40,7 +40,7 @@ public partial class UITextInput : UIElement
         IUIContainer? container = null,
         string id = "",
         string @class = "",
-        (string, Vector2) anchor = default,
+        Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
     ): base(posScale, visible, container, id, @class, "text-input", anchor, origin, tooltip)
@@ -118,14 +118,14 @@ public partial class UITextInput : UIElement
 
             while (key > 0)
             {
-                if (key is >= 32 and <= 125 && Text.Length <= _maxCharacters)
+                if (Text.Length <= _maxCharacters)
                 {
                     Text += (char)key;
                 }
 
                 key = GetCharPressed();
             }
-
+            
             if (IsKeyPressed(KeyboardKey.Backspace) && Text.Length - 1 >= 0)
             {
                 Text = Text.Remove(Text.Length - 1, 1);

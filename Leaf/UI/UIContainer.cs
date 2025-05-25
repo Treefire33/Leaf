@@ -14,7 +14,7 @@ public class UIContainer : UIElement, IUIContainer
         IUIContainer? container = null,
         string id = "",
         string @class = "",
-        (string, Vector2) anchor = default,
+        Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null,
         bool isRootContainer = false
@@ -52,9 +52,9 @@ public class UIContainer : UIElement, IUIContainer
     {
         element.Container?.RemoveElement(element);
         Elements.Add(element);
-        var tempAnchor = element.Anchor;
-        element.SetAnchor("top-left", Vector2.Zero);
-        element.SetAnchor(tempAnchor.AnchorPosition, tempAnchor.Offset);
+        /*var tempAnchor = element.Anchor;
+        element.SetAnchor(AnchorPosition.TopLeft, this);
+        element.SetAnchor(tempAnchor.AnchorPoint);*/
         element.Container = this;
         Elements = Elements.OrderBy(x => x.Layer).ToList();
     }

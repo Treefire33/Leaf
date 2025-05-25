@@ -18,13 +18,13 @@ public class UIDropdown : UIElement
         IUIContainer? container = null,
         string id = "",
         string @class = "",
-        (string, Vector2) anchor = default,
+        Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
     ) : base(posScale, visible, container, id, @class, "dropdown", anchor, origin, tooltip)
     {
         _optionsContainer = new UIScrollingContainer(
-            posScale with { Y = posScale.Height + posScale.Y },
+            posScale with { Y = posScale.Height + posScale.Y, Height = posScale.Height * 2},
             visible: false
         );
         foreach (var option in options)
@@ -73,22 +73,14 @@ public class UIDropdown : UIElement
             };
             y += option.RelativeRect.Height;
         }
-
-        _optionsContainer.RelativeRect = _optionsContainer.RelativeRect with
-        {
-            Height = _optionsContainer!.Elements.Count * RelativeRect.Height
-        };
+        
+        _optionsContainer.SetMaxScroll();
     }
 
     public override void Update()
     {
         _selectedButton!.SetText(SelectedOption);
         base.Update();
-    }
-
-    public override void ProcessEvent(Event evnt)
-    {
-        base.ProcessEvent(evnt);
     }
 
     public override void Kill()

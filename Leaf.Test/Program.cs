@@ -9,7 +9,7 @@ namespace Leaf.Test;
 
 class Program
 {
-    private static int _testType = 0;
+    private static int _testType = 1;
     static void Main(string[] args)
     {
         SetTraceLogLevel(TraceLogLevel.Error);
@@ -31,21 +31,21 @@ class Program
                 "Test Button"
             );
             var checkbox = new UICheckbox(
-                new UIRect(160, 0, 50, 50),
-                anchor: ("top-left", button.GetPosition())
+                new UIRect(160, 0, 50, 50)
             );
+            checkbox.SetAnchor(AnchorPosition.TopLeft, button);
             var textInput = new UITextInput(
                 new UIRect(0, 60, 200, 24),
                 "",
-                255,
-                anchor: ("top-left", button.GetPosition())
+                255
             );
+            textInput.SetAnchor(AnchorPosition.TopLeft, button);
             var slider = new UISlider(
                 new UIRect(0, 60, 200, 50),
                 0, 100,
-                valueStep: 25,
-                anchor: ("top-left", textInput.GetPosition())
+                valueStep: 25
             );
+            slider.SetAnchor(AnchorPosition.TopLeft, textInput);
 
             // Decorative Elements
             var textbox = new UITextBox(
@@ -69,7 +69,7 @@ class Program
             );
             var dropdown = new UIDropdown(
                 new UIRect(310, 410, 200, 80),
-                ["option 1", "option 2"]
+                ["option 1", "option 2", "option 3", "option 4"]
             );
 
             // Graph Data
@@ -127,34 +127,35 @@ class Program
         
         // Audio Controls
         var pausePlay = new UIButton(
-            new UIRect(0, 0, 100, 100),
+            new UIRect(0, 40, 100, 100),
             "Pause",
-            origin: new Vector2(0.5f, 0.5f),
-            anchor: ("center", new Vector2(0, 40))
+            origin: new Vector2(0.5f, 0.5f)
         );
+        pausePlay.SetAnchor(AnchorPosition.Center);
+        Console.WriteLine(pausePlay.Anchor.AnchorPoint);
         var stopPlay = new UIButton(
             new UIRect(120, 0, 100, 100),
             "Stop"
         );
-        stopPlay.SetAnchor("top-left", pausePlay);
+        stopPlay.SetAnchor(AnchorPosition.TopLeft, pausePlay);
         var loop = new UICheckbox(
             new UIRect(-120, 0, 100, 100)
         );
-        loop.SetAnchor("top-left", pausePlay);
+        loop.SetAnchor(AnchorPosition.TopLeft, pausePlay);
         loop.Checked = songs[currentSong].Clip.Looping;
 
         var songPosition = new UISlider(
-            new UIRect(0, 120, 500, 24),
-            origin: new Vector2(0.5f, 0.5f),
-            anchor: ("center", new Vector2(0, 40))
+            new UIRect(0, 160, 500, 24),
+            origin: new Vector2(0.5f, 0.5f)
         );
+        songPosition.SetAnchor(AnchorPosition.Center);
         var songTime = new UITextBox(
-            new UIRect(0, 155, 800, 150),
+            new UIRect(0, 195, 800, 150),
             "00:00/00:00",
             origin: new Vector2(0.5f, 0),
-            anchor: ("center", new Vector2(0, 40)),
             id: "time-tracker"
         );
+        songTime.SetAnchor(AnchorPosition.Center);
         
         pausePlay.OnClick = (int mouseButton) =>
         {

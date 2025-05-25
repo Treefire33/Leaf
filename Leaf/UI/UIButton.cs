@@ -41,7 +41,7 @@ public class UIButton : UIElement, IUIClickable
 		IUIContainer? container = null,
 		string id = "",
 		string @class = "",
-		(string, Vector2) anchor = default,
+		Vector2 anchor = default,
 		Vector2 origin = default,
 		string? tooltip = null
 	) : base(posScale, visible, container, id, @class, "button", anchor, origin, tooltip)
@@ -175,16 +175,10 @@ public class UIButton : UIElement, IUIClickable
 			OnClick?.Invoke(2);
 		}
 	}
-
-	public override void SetAnchor(string anchorPosition, UIElement anchorElement)
+	
+	public override void SetAnchor(AnchorPosition anchorPosition, UIElement? target = null)
 	{
-		base.SetAnchor(anchorPosition, anchorElement);
-		_textPosition = AlignText(_text);
-	}
-
-	public override void SetAnchor(string anchorPosition, Vector2 anchorOffset)
-	{
-		base.SetAnchor(anchorPosition, anchorOffset);
+		base.SetAnchor(anchorPosition, target);
 		_textPosition = AlignText(_text);
 	}
 }

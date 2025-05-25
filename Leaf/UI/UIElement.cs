@@ -72,7 +72,7 @@ public class UIElement : IUIElement
 		string id = "",
 		string @class = "",
 		string element = "",
-		(string, Vector2) anchor = default,
+		Vector2 anchorPoint = default,
 		Vector2 origin = default,
 		string? tooltip = null,
 		bool isRootContainer = false
@@ -90,9 +90,9 @@ public class UIElement : IUIElement
 			Container = null;
 		}
 		Container?.AddElement(this);
-		if (anchor == default)
+		if (anchorPoint == default)
 		{
-			anchor = ("top-left", Vector2.Zero);
+			anchorPoint = Vector2.Zero;
 		}
 		Anchor = new Anchor();
 		if (origin == default)
@@ -100,7 +100,7 @@ public class UIElement : IUIElement
 			origin = Vector2.Zero;
 		}
 		Origin = origin;
-		SetAnchor(anchor.Item1!, anchor.Item2);
+		SetAnchor(anchorPoint);
 		Visible = visible;
 		if (tooltip != null)
 		{
@@ -168,28 +168,60 @@ public class UIElement : IUIElement
 
 	public virtual void ProcessEvent(Event evnt) { }
 
-	public virtual void SetAnchor(string anchorPosition, Vector2 anchorOffset)
+	public void SetAnchor(Vector2 anchorPoint)
 	{
-		Anchor.AnchorPosition = anchorPosition;
-		Anchor.Offset = anchorOffset;
+		Anchor.Set(anchorPoint);
 	}
-	
-	public virtual void SetAnchor(string anchorPosition, UIElement anchorElement)
+
+	public virtual void SetAnchor(AnchorPosition anchorPos, UIElement? target = null)
 	{
-		Anchor.AnchorPosition = anchorPosition;
-		Anchor.Offset = anchorElement.GetPosition();
+		Vector2 targetSize = target?.RelativeRect.Size ?? Container?.RelativeRect.Size ?? Vector2.Zero;
+		Vector2 targetPosition = target?.GetPosition() ?? Container?.GetPosition() ?? Vector2.Zero;
+		SetAnchor(anchorPos switch
+		{
+			AnchorPosition.TopLeft => targetPosition,
+			AnchorPosition.TopCenter => targetPosition with { X = targetPosition.X + targetSize.X / 2 },
+			AnchorPosition.TopRight => targetPosition with { X = targetPosition.X + targetSize.X },
+			AnchorPosition.Left => targetPosition with
+			{
+				Y = targetPosition.Y + targetSize.Y / 2
+			},
+			AnchorPosition.Center => targetPosition with
+			{
+				X = targetPosition.X + targetSize.X / 2,
+				Y = targetPosition.Y + targetSize.Y / 2
+			},
+			AnchorPosition.Right => targetPosition with
+			{
+				X = targetPosition.X + targetSize.X,
+				Y = targetPosition.Y + targetSize.Y / 2
+			},
+			AnchorPosition.BottomLeft => targetPosition with
+			{
+				Y = targetPosition.Y + targetSize.Y,
+			},
+			AnchorPosition.BottomCenter => targetPosition with
+			{
+				X = targetPosition.X + targetSize.X / 2,
+				Y = targetPosition.Y + targetSize.Y,
+			},
+			AnchorPosition.BottomRight => targetPosition with
+			{
+				X = targetPosition.X + targetSize.X,
+				Y = targetPosition.Y + targetSize.Y,
+			},
+			_ => targetPosition
+		});
 	}
 
 	public Vector2 GetPosition()
 	{
 		Vector2 containerOffset = Vector2.Zero;
-		Vector2 containerSize = UIManager.GameSize;
 		if (Container != null)
 		{
 			containerOffset = Container.GetPosition();
-			containerSize = Container.RelativeRect.Size;
 		}
-		return ((RelativeRect.Position + Anchor.GetAnchored(containerSize)) - RelativeRect.Size * Origin) + containerOffset;
+		return ((RelativeRect.Position + Anchor.GetAnchored()) - RelativeRect.Size * Origin) + containerOffset;
 	}
 
 	public void SetVisibility(bool visibilityState)

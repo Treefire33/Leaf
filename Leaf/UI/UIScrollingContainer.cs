@@ -28,7 +28,7 @@ public class UIScrollingContainer : UIContainer
         IUIContainer? container = null,
         string id = "",
         string @class = "",
-        (string, Vector2) anchor = default,
+        Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
     ) : base(posScale, visible, container, id, @class, anchor, origin, tooltip)
@@ -60,20 +60,21 @@ public class UIScrollingContainer : UIContainer
         _scrollSpeedY = scrollY;
     }
     
-    private void SetMaxScroll()
+    public void SetMaxScroll()
     {
+        _maxScroll = Vector2.Zero;
         foreach (var element in Elements)
         {
             if (element.GetPosition().Y + element.RelativeRect.Height > _maxScroll.Y)
             {
                 // Should this somehow not be negative, just set the max scroll to 0.
-                _maxScroll.Y = MathF.Min(-element.RelativeRect.Y + RelativeRect.Height, 0);
+                _maxScroll.Y = MathF.Min(-element.RelativeRect.BottomLeft.Y + RelativeRect.Height, 0);
                 if (_scrollBarY != null) _scrollBarY.MinValue = 0;
                 if (_scrollBarY != null) _scrollBarY.MaxValue = -_maxScroll.Y;
             }
             if (element.GetPosition().X + element.RelativeRect.Width > _maxScroll.X)
             {
-                _maxScroll.X = MathF.Max(element.RelativeRect.X - element.RelativeRect.Width, 0);
+                _maxScroll.X = MathF.Max(element.RelativeRect.X - RelativeRect.Width, 0);
                 if (_scrollBarX != null) _scrollBarX.MinValue = 0;
                 if (_scrollBarX != null) _scrollBarX.MaxValue = _maxScroll.X;
             }

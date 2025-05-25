@@ -20,7 +20,7 @@ public class UIAutoResizableContainer : UIContainer
         IUIContainer? container = null,
         string id = "",
         string @class = "",
-        (string, Vector2) anchor = default,
+        Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
     ) : base(posScale, visible, container, id, @class, anchor, origin, tooltip)

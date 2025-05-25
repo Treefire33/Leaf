@@ -46,7 +46,7 @@ public class UISlider : UIElement
         IUIContainer? container = null,
         string id = "",
         string @class = "",
-        (string, Vector2) anchor = default,
+        Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
     ) : base(posScale, visible, container, id, @class, "slider", anchor, origin, tooltip)
@@ -63,10 +63,12 @@ public class UISlider : UIElement
         }
         _handle = new UIPanel(
             handleRect,
-            origin: _scrollDirection is ScrollDirection.VerticalTop or ScrollDirection.VerticalBottom
-                ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0)
+            origin: new Vector2(0.5f)
         );
-        _handle.SetAnchor("top-left", this);
+        _handle.SetAnchor(
+            _scrollDirection is ScrollDirection.VerticalTop or ScrollDirection.VerticalBottom
+                ? AnchorPosition.TopCenter
+                : AnchorPosition.Left, this);
         ThemeElement();
     }
 
@@ -125,7 +127,7 @@ public class UISlider : UIElement
             case ScrollDirection.VerticalTop:
                 _handle!.RelativeRect = _handle!.RelativeRect with
                 {
-                    Y = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.Y),
+                    Y = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.Y)
                 };
                 fillRect.Height = RelativeRect.Size.Y * (Value / MaxValue);
                 break;
@@ -183,6 +185,15 @@ public class UISlider : UIElement
 
             Value = MathF.Floor(value / _step) * _step;
         }
+    }
+
+    public override void SetAnchor(AnchorPosition anchorPos, UIElement? target = null)
+    {
+        base.SetAnchor(anchorPos, target);
+        _handle!.SetAnchor(
+            _scrollDirection is ScrollDirection.VerticalTop or ScrollDirection.VerticalBottom
+                ? AnchorPosition.TopCenter
+                : AnchorPosition.Left, this);
     }
 }
 
