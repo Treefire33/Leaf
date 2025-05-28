@@ -9,7 +9,7 @@ namespace Leaf.Test;
 
 class Program
 {
-    private static int _testType = 1;
+    private static int _testType = 0;
     static void Main(string[] args)
     {
         SetTraceLogLevel(TraceLogLevel.Error);
@@ -114,11 +114,11 @@ class Program
         // Audio
         AudioManager.InitAudio();
         var musicGroup = new AudioGroup(0.85f);
-        List<Audio.Audio> songs =
-        [
-            AudioManager.LoadAudioFile("clouds_may_come.mp3"),
-            AudioManager.LoadAudioFile("buildings_have_eyes.mp3")
-        ];
+        List<Audio.Audio> songs = [];
+        foreach (var song in Directory.GetFiles(Resources.AudioRootPath))
+        {
+            songs.Add(AudioManager.LoadAudioFile(Path.GetFileName(song)));
+        }
         int currentSong = 0;
 
         songs[currentSong].AudioGroup = musicGroup;
@@ -131,7 +131,6 @@ class Program
             origin: new Vector2(0.5f, 0.5f)
         );
         pausePlay.SetAnchor(AnchorPosition.Center);
-        Console.WriteLine(pausePlay.Anchor.AnchorPoint);
         var stopPlay = new UIButton(
             new UIRect(120, 0, 100, 100),
             "Stop"
@@ -219,6 +218,16 @@ class Program
         {
             songs[currentSong].Seek(timeToSeekTo);
             timeToSeekTo = 0f;
+        };
+
+        var skipSong = new UIButton(
+            new UIRect(128, 128, 100, 100),
+            "Skip"
+        );
+
+        skipSong.OnClick = (int mouseButton) =>
+        {
+            songs[currentSong].State = AudioState.None;
         };
         
         while (!WindowShouldClose())

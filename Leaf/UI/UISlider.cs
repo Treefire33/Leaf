@@ -77,12 +77,7 @@ public class UISlider : UIElement
         base.ThemeElement();
         _fillColour = Theme.GetProperty("fill").AsColor();
     }
-
-    private void UpdateHandle()
-    {
-        
-    }
-
+    
     public override void Update()
     {
         base.Update();
@@ -101,22 +96,20 @@ public class UISlider : UIElement
 
         HandleElementInteraction();
         
-        UpdateHandle();
-        
         Rectangle fillRect = new(GetPosition(), RelativeRect.Size);
         switch (_scrollDirection)
         {
             case ScrollDirection.HorizontalLeft:
                 _handle!.RelativeRect = _handle!.RelativeRect with
                 {
-                    X = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.X),
+                    X = MathF.Abs(Value / MaxValue) * (RelativeRect.Size.X)
                 };
                 fillRect.Width = RelativeRect.Size.X * (Value / MaxValue);
                 break;
             case ScrollDirection.HorizontalRight:
                 _handle!.RelativeRect = _handle!.RelativeRect with
                 {
-                    X = (RelativeRect.Size.X) - MathF.Abs((Value * RelativeRect.Size.X) / MaxValue),
+                    X = (RelativeRect.Size.X) - MathF.Abs((Value * RelativeRect.Size.X) / MaxValue)
                 };
                 fillRect = fillRect with
                 { 
@@ -134,7 +127,7 @@ public class UISlider : UIElement
             case ScrollDirection.VerticalBottom:
                 _handle!.RelativeRect = _handle!.RelativeRect with
                 {
-                    Y = (RelativeRect.Size.Y) - MathF.Abs((Value * RelativeRect.Size.Y) / MaxValue),
+                    Y = (RelativeRect.Size.Y) - MathF.Abs((Value * RelativeRect.Size.Y) / MaxValue)
                 };
                 fillRect = fillRect with
                 { 

@@ -1,4 +1,6 @@
 using System.Numerics;
+using System.Runtime.Loader;
+using System.Text;
 using System.Xml;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
@@ -59,8 +61,8 @@ public static partial class Resources
                 break;
         }
     }
-    
-    public static void MoveDefaultAssets()
+
+    private static void MoveDefaultAssets()
     {
         void MoveDir(string dir)
         {
@@ -88,17 +90,12 @@ public static partial class Resources
 
             foreach (var file in curDir.GetFiles())
             {
-                /*if (File.Exists(copyTo + file.Name))
-                {
-                    file.Delete();
-                    continue;
-                }*/
                 file.MoveTo(copyTo+file.Name, true);
             }
             Directory.Delete(dir);
         }
         
-        if (Directory.Exists(".\\Assets\\") && RootPath != ".\\Assets\\")
+        if (Directory.Exists(".\\Assets\\") && RootPath != ".\\Assets\\" && Directory.Exists(RootPath))
         {
             MoveDir(".\\Assets\\");
         }
@@ -123,10 +120,59 @@ public static partial class Resources
         return LoadTexture($"{ImagesPath}{file}");
     }
 
-    /*public static Texture2D[] LoadSpritesheet(string file)
+    public static Texture2D[] LoadSpritesheet(string spritesheet)
     {
+        var spritesheetXml = new XmlDocument();
+        using StreamReader stream = new($"{SpritesheetsPath}{spritesheet}", Encoding.UTF8);
         
-    }*/
+        if (!File.Exists(spritesheet+".xml"))
+        { throw new Exception($"Spritesheet file with name: {spritesheet} does not exist."); }
+            
+        spritesheetXml.Load(stream.ReadToEnd());
+        stream.Close();
+        
+        if (spritesheetXml.DocumentElement!.Name == "SpriteAtlases")
+        {
+            foreach (XmlElement sprAtlas in spritesheetXml.DocumentElement!.GetElementsByTagName("SpriteAtlas"))
+            {
+                return LoadSpritesheetXml(sprAtlas);
+            }
+        }
+        else
+        {
+            return LoadSpritesheetXml((XmlElement)spritesheetXml.GetElementsByTagName("SpriteAtlas")[0]!);
+        }
+
+        return [];
+    }
+
+    private static Texture2D[] LoadSpritesheetXml(XmlElement spritesheetXml)
+    {
+        var imagePath = ImagesPath + spritesheetXml.GetAttribute("image");
+        var name = spritesheetXml.GetAttribute("name");
+        Vector2 cellSize = new(
+            float.Parse(spritesheetXml.GetAttribute("cellX")),
+            float.Parse(spritesheetXml.GetAttribute("cellY"))
+        );
+        
+        List<Texture2D> textures = [];
+        Image spritesheetImg = LoadImage(imagePath);
+        foreach (XmlNode subTex in spritesheetXml.GetElementsByTagName("SubTexture"))
+        {
+            var x = int.Parse(subTex.Attributes?["x"]?.Value ?? "0");
+            var y = int.Parse(subTex.Attributes?["y"]?.Value ?? "0");
+            var img = ImageFromImage(spritesheetImg, new Rectangle(
+                new Vector2(x, y) * cellSize,
+                cellSize
+            ));
+            textures.Add(LoadTextureFromImage(img));
+            UnloadImage(img);
+        }
+        
+        UnloadImage(spritesheetImg);
+
+        return textures.ToArray();
+    }
     
     private static unsafe Font LoadFont(string fontName)
     {

@@ -43,18 +43,18 @@ public static partial class Resources
                 {
                     foreach (XmlElement sprAtlas in spritesheetXml.DocumentElement!.GetElementsByTagName("SpriteAtlas"))
                     {
-                        LoadSpritesheetXml(sprAtlas);
+                        LoadSpritesheetButtons(sprAtlas);
                     }
                 }
                 else
                 {
-                    LoadSpritesheetXml((XmlElement)spritesheetXml.GetElementsByTagName("SpriteAtlas")[0]!);
+                    LoadSpritesheetButtons((XmlElement)spritesheetXml.GetElementsByTagName("SpriteAtlas")[0]!);
                 }
             }
         }
     }
-
-    private static void LoadSpritesheetXml(XmlElement spritesheetXml)
+    
+    private static void LoadSpritesheetButtons(XmlElement spritesheetXml)
     {
         var imagePath = UIButtonsPath + spritesheetXml.GetAttribute("image");
         var name = spritesheetXml.GetAttribute("name");
