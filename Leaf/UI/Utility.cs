@@ -1,4 +1,6 @@
 using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 
@@ -281,5 +283,67 @@ public static class Utility
             borderThickness,
             borderColour
         );
+    }
+
+    public static (FontStyle, string)[] ParseHTMLTagGroups(string source)
+    {
+        string pattern = @"(<.+?>)(.+?)?(<\\.+?>)|(?<nostyle>[^<>]+)";
+        var matches = Regex.Matches(source, pattern);
+        List<(FontStyle, string)> parsedString = [];
+
+        foreach (var match in matches.ToArray())
+        {
+            if (match.Groups["nostyle"].Length > 0)
+            {
+                parsedString.Add((FontStyle.Regular, match.Groups["nostyle"].Value));
+            }
+            else
+            {
+                FontStyle style = match.Groups[1].Value switch
+                {
+                    "<i>" =>  FontStyle.Italic,
+                    "<b>" =>  FontStyle.Bold,
+                    _ => FontStyle.Regular
+                };
+                parsedString.Add((style, match.Groups[2].Value));
+            }
+        }
+        
+        return parsedString.ToArray();
+    }
+
+    public static void DrawTextStyled(
+        LeafFont font,
+        [MarshalAs(UnmanagedType.LPUTF8Str)]string text,
+        Rectangle rec,
+        float fontSize,
+        float spacing,
+        bool wordWrap,
+        Color tint
+    )
+    {
+        var parsedGroups = ParseHTMLTagGroups(text);
+
+        Vector2 currentTextPosition = rec.Position;
+
+        foreach (var parsedGroup in parsedGroups)
+        {
+            Vector2 textSize = MeasureTextEx(font[parsedGroup.Item1],  parsedGroup.Item2, fontSize, spacing);
+            DrawTextBoxed(
+                font[parsedGroup.Item1], parsedGroup.Item2, 
+                new Rectangle(
+                    currentTextPosition,
+                    rec.Size
+                ), 
+                fontSize, spacing, wordWrap, tint
+            );
+            currentTextPosition.X += textSize.X;
+            Console.WriteLine(currentTextPosition);
+            if (currentTextPosition.X >= rec.Width)
+            {
+                currentTextPosition.X = rec.X;
+                currentTextPosition.Y += textSize.Y;
+            }
+        }
     }
 }

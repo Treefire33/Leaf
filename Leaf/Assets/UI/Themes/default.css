@@ -18,6 +18,18 @@
 	protected float _borderRadius = 0f;
 */
 
+/*
+    Nine Patch attribute:
+    nine-patch: type left-offset top-offset right-offset bottom-offset
+    nine-patch: type offset
+    type:
+        nine-patch
+        three-patch-vertical
+        three-patch-horizontal
+    offset:
+        number (px or %)
+*/
+
 * {
     font-family: m6x11plus;
     font-size: 18px;

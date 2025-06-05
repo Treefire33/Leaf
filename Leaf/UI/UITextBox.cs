@@ -62,14 +62,36 @@ public class UITextBox : UIElement
 	{
 		base.Update();
 		//Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, 0);
-		Utility.DrawTextBoxed(
-			_font,
-			_text,
-			new Rectangle(AlignText(_text), RelativeRect.Size),
-			_fontSize,
-			_textSpacing,
-			true,
-			_textColour
-		);
+		if (_text.Contains('\n'))
+		{
+			float offsetY = 0f;
+			foreach (string line in _text.Split('\n'))
+			{
+				var textSize = MeasureTextEx(_font, line, _fontSize, _textSpacing);
+				var alignedLine = AlignText(line);
+				Utility.DrawTextBoxed(
+					_font,
+					line,
+					new Rectangle(alignedLine with { Y = alignedLine.Y + offsetY }, RelativeRect.Size),
+					_fontSize,
+					_textSpacing,
+					true,
+					_textColour
+				);
+				offsetY += textSize.Y;
+			}
+		}
+		else
+		{
+			Utility.DrawTextBoxed(
+				_font,
+				_text,
+				new Rectangle(AlignText(_text), RelativeRect.Size),
+				_fontSize,
+				_textSpacing,
+				true,
+				_textColour
+			);
+		}
 	}
 }

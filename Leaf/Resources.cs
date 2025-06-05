@@ -25,11 +25,10 @@ public static partial class Resources
     
     private static string _audioRootPath = $@"Audio\";
     public static string AudioRootPath => $@"{RootPath}{_audioRootPath}";
-    
-    public static readonly Dictionary<string, Font> Fonts = new()
-    {
-        {"default", GetFontDefault()}
-    };
+
+    public static readonly List<LeafFont> Fonts = [
+        new("default", GetFontDefault())
+    ];
     
     public static void SetResourcesPath(ResourcesPath pathToSet, string path)
     {
@@ -90,7 +89,9 @@ public static partial class Resources
 
             foreach (var file in curDir.GetFiles())
             {
-                file.MoveTo(copyTo+file.Name, true);
+                //file.MoveTo(copyTo+file.Name, true);
+                file.CopyTo(copyTo + file.Name, true);
+                file.Delete();
             }
             Directory.Delete(dir);
         }
@@ -104,14 +105,13 @@ public static partial class Resources
     public static void InitResources()
     {
         MoveDefaultAssets();
-        if (Directory.Exists(FontsPath))
-        {
-            foreach (var file in Directory.GetFiles(FontsPath))
-            {
-                var name = Path.GetFileNameWithoutExtension(file);
-                Fonts[name] = LoadFont(file);
-            }
-        }
+        AddFont("m6x11plus", "m6x11plus.ttf", 18);
+        AddFont("clearsans", "clear_sans.ttf", 
+            64,
+            "clear_sans_italic.ttf",
+            "clear_sans_bold.ttf",
+            "clear_sans_bold_italic.ttf"
+        );
         LoadUIAssets();
     }
     
@@ -173,11 +173,35 @@ public static partial class Resources
 
         return textures.ToArray();
     }
-    
-    private static unsafe Font LoadFont(string fontName)
+
+    public static void AddFont(
+        string name, 
+        string regularFontPath, 
+        int pointSize = 16,
+        string italicFontPath = "", 
+        string boldFontPath = "", 
+        string boldItalicFontPath = ""
+    )
     {
-        Font loadedFont = LoadFontEx(fontName, 64, null, 0);
-        //GenTextureMipmaps(&loadedFont.Texture);
+        Fonts.Add(new LeafFont(
+            name,
+            pointSize,
+            regularFontPath,
+            italicFontPath,
+            boldFontPath,
+            boldItalicFontPath
+        ));
+    }
+
+    public static LeafFont GetFont(string? name)
+    {
+        return Fonts.FirstOrDefault(f => f.Name == name) ?? Fonts[0];
+    }
+    
+    public static Font LoadFont(string fontPath, int pointSize, int[]? extraCodepoints = null)
+    {
+        int[] codepoints = Enumerable.Range(0x0020, 0x00A0).Concat(extraCodepoints ?? []).ToArray();
+        Font loadedFont = LoadFontEx(fontPath, pointSize, codepoints, 256);
         SetTextureFilter(loadedFont.Texture, TextureFilter.Anisotropic8X);
         return loadedFont;
     }

@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
@@ -37,6 +38,7 @@ public class UIButton : UIElement, IUIClickable
 	public UIButton(
 		UIRect posScale, 
 		string text, 
+		NPatchInfo? nPatch = null,
 		bool visible = true, 
 		IUIContainer? container = null,
 		string id = "",
@@ -47,9 +49,9 @@ public class UIButton : UIElement, IUIClickable
 	) : base(posScale, visible, container, id, @class, "button", anchor, origin, tooltip)
 	{
 		_text = text;
-		ThemeElement();
 		_currentTexture = _normal;
-		_currentNPatch = Resources.GenerateNPatchInfoFromButton(_currentTexture);
+		_currentNPatch = nPatch ?? Resources.GenerateNPatchInfoFromButton(_currentTexture);
+		ThemeElement();
 		SetText(_text);
 	}
 
@@ -60,6 +62,7 @@ public class UIButton : UIElement, IUIClickable
 		_normal = images[0];
 		_hover = images[1];
 		_disabled = images[2];
+		_currentNPatch = Theme.GetProperty("nine-patch").AsNPatch(_normal);
 	}
 
 	public void SetText(string text)
@@ -101,6 +104,18 @@ public class UIButton : UIElement, IUIClickable
 			_textSpacing,
 			_textColour
 		);
+		/*Utility.DrawTextStyled(
+			_font,
+			_text,
+			new Rectangle(
+				_textPosition,
+				RelativeRect.Size
+			),
+			_fontSize,
+			_textSpacing,
+			true,
+			_textColour
+		);*/
 	}
 
 	public void ChangeTexture()

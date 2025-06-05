@@ -82,10 +82,9 @@ public partial struct ThemeProperty
         return int.Parse(ValueRegexPattern().Match(Value).Value);
     }
 
-    public Font AsFont()
+    public LeafFont AsFont()
     {
-        if (string.IsNullOrEmpty(Value)) { return Resources.Fonts["default"]; }
-        return Resources.Fonts.TryGetValue(Value, out Font font) ? font : Resources.Fonts["default"];
+        return Resources.GetFont(Value);
     }
 
     public List<Texture2D> AsButtonImages()
@@ -98,6 +97,83 @@ public partial struct ThemeProperty
     {
         if (string.IsNullOrEmpty(Value)) { return Resources.Buttons["checkbox"]; }
         return Resources.Buttons.TryGetValue(Value, out List<Texture2D> images) ? images : Resources.Buttons["checkbox"];
+    }
+
+    public NPatchInfo AsNPatch(Texture2D button)
+    {
+        if (string.IsNullOrEmpty(Value))
+        {
+            return Resources.GenerateNPatchInfoFromButton(button);
+        }
+
+        string[] npatchArgs = Value.Split(' ');
+        NPatchLayout layout = NPatchLayout.NinePatch;
+        int leftOffset = 0;
+        int topOffset = 0;
+        int rightOffset = 0;
+        int bottomOffset = 0;
+
+        int ConvertPercentage(string value, bool percentHeight = false)
+        {
+            float val = float.Parse(ValueRegexPattern().Match(value).Value);
+            if (value.Contains('%'))
+            {
+                return (int)((percentHeight ? button.Height : button.Width) * (val/100));
+            }
+            
+            return (int)val;
+        }
+
+        for (int i = 0; i < npatchArgs.Length; i++)
+        {
+            if (i == 0)
+            {
+                layout = npatchArgs[i] switch
+                {
+                    "nine-patch" => NPatchLayout.NinePatch,
+                    "three-patch-horizontal" =>  NPatchLayout.ThreePatchHorizontal,
+                    "three-patch-vertical" =>  NPatchLayout.ThreePatchVertical
+                };
+                continue;
+            }
+
+            if (npatchArgs.Length <= 2)
+            {
+                leftOffset = ConvertPercentage(Value);
+                topOffset = ConvertPercentage(Value, true);
+                rightOffset = ConvertPercentage(Value);
+                bottomOffset = ConvertPercentage(Value, true);
+                break;
+            }
+
+            switch (i)
+            {
+                case 1:
+                    leftOffset = ConvertPercentage(Value);
+                    break;
+                case 2:
+                    topOffset = ConvertPercentage(Value, true);
+                    break;
+                case 3:
+                    rightOffset = ConvertPercentage(Value);
+                    break;
+                case 4:
+                    bottomOffset = ConvertPercentage(Value, true);
+                    break;
+            }
+        }
+
+        NPatchInfo nInfo = new()
+        {
+            Source = new Rectangle(0, 0, button.Width, button.Height),
+            Left = leftOffset,
+            Top = topOffset,
+            Right = rightOffset,
+            Bottom = bottomOffset,
+            Layout = layout
+        };
+        
+        return nInfo;
     }
 
     [GeneratedRegex(@"[0-9]\w+|0")]

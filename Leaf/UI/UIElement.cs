@@ -37,7 +37,7 @@ public class UIElement : IUIElement
 	}
 	
 	// Theming parameters
-	protected Font _font;
+	protected LeafFont _font;
 	protected int _fontSize = 5;
 	protected int _textSpacing = 1;
 	protected Color _textColour = Color.White;
