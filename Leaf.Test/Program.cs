@@ -2,8 +2,10 @@
 using Leaf.Audio;
 using Leaf.UI;
 using Leaf.UI.GraphData;
+using Leaf.Utilities;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
+using BlendMode = Leaf.Utilities.BlendMode;
 
 namespace Leaf.Test;
 
@@ -56,9 +58,17 @@ class Program
                 new UIRect(0, 0, 800, 400)
             );
             panel.Layer = -1;
+            var meowmeow = Resources.LoadSprite("weird_cat_i_found_on_the_sidewalk.png");
+            Utilities.Utilities.BlendImage(
+                ref meowmeow, 
+                Utilities.Utilities.CreateEmptyImage(
+                    new Vector2(meowmeow.Width, meowmeow.Height),
+                    new Color(100, 100, 100, 100)
+                )
+            );
             var imageWithTooltip = new UIImage(
                 new UIRect(10, 410, 200, 200),
-                Resources.LoadSprite("weird_cat_i_found_on_the_sidewalk.png"),
+                meowmeow,
                 tooltip: "weird cat I found on the sidewalk"
             );
 
