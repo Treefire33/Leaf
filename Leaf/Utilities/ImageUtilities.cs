@@ -44,11 +44,30 @@ public partial class Utilities
             srcPixels[i] = blendMode switch
             {
                 BlendMode.Multiply => RgbaBlendMultiply(srcPixels[i], blendPixels[i]),
-                BlendMode.Add => RgbaBlendAdditive(srcPixels[i], blendPixels[i]),
+                BlendMode.Additive => RgbaBlendAdditive(srcPixels[i], blendPixels[i]),
                 BlendMode.Subtract => RgbaBlendSubtract(srcPixels[i], blendPixels[i]),
                 BlendMode.Divide => RgbaBlendDivide(srcPixels[i], blendPixels[i]),
                 BlendMode.Min => RgbaBlendMin(srcPixels[i], blendPixels[i]),
-                BlendMode.Max => RgbaBlendMax(srcPixels[i], blendPixels[i])
+                BlendMode.Max => RgbaBlendMax(srcPixels[i], blendPixels[i]),
+                BlendMode.Screen => RgbaBlendScreen(srcPixels[i], blendPixels[i]),
+                BlendMode.Overlay => RgbaBlendOverlay(srcPixels[i], blendPixels[i]),
+                BlendMode.ColourDodge => RgbaBlendColourDodge(srcPixels[i], blendPixels[i]),
+                BlendMode.ColourBurn => RgbaBlendColourBurn(srcPixels[i], blendPixels[i]),
+                BlendMode.Difference => RgbaBlendDifference(srcPixels[i], blendPixels[i]),
+                BlendMode.Negation => RgbaBlendNegation(srcPixels[i], blendPixels[i]),
+                
+                BlendMode.RgbMultiply => RgbBlendMultiply(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbAdditive => RgbBlendAdditive(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbSubtract => RgbBlendSubtract(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbDivide => RgbBlendDivide(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbMin => RgbBlendMin(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbMax => RgbBlendMax(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbScreen => RgbBlendScreen(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbOverlay => RgbBlendOverlay(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbColourDodge => RgbBlendColourDodge(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbColourBurn => RgbBlendColourBurn(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbDifference => RgbBlendDifference(srcPixels[i], blendPixels[i]),
+                BlendMode.RgbNegation => RgbBlendNegation(srcPixels[i], blendPixels[i])
             };
         }
         for (int i = 0; i < source.Width; i++)
@@ -73,14 +92,67 @@ public partial class Utilities
         Raylib.UnloadTexture(source);
         source = Raylib.LoadTextureFromImage(textureImage);
     }
+
+    public static Image BlendImage(Image source, Image blend, BlendMode blendMode = BlendMode.Multiply)
+    {
+        // This function just copies the source image.
+        Image sourceCopy = Raylib.ImageCopy(source);
+        BlendImage(ref sourceCopy, blend, blendMode);
+        return sourceCopy;
+    }
+    
+    public static Texture2D BlendImage(Texture2D source, Image blend, BlendMode blendMode = BlendMode.Multiply)
+    {
+        // This function just copies the source texture.
+        Image textureImage = Raylib.LoadImageFromTexture(source);
+        Texture2D copy = Raylib.LoadTextureFromImage(textureImage);
+        Raylib.UnloadImage(textureImage);
+        BlendImage(ref copy, blend, blendMode);
+        return copy;
+    }
+
+    public static void DrawTextOnTexture(ref Texture2D source, Vector2 position, string text, int fontSize, Color color)
+    {
+        Image textureImage = Raylib.LoadImageFromTexture(source);
+        Raylib.ImageDrawText(
+            ref textureImage,
+            text,
+            (int)position.X,
+            (int)position.Y,
+            fontSize,
+            color
+        );
+        Raylib.UnloadTexture(source);
+        source = Raylib.LoadTextureFromImage(textureImage);
+        Raylib.UnloadImage(textureImage);
+    }
 }
 
 public enum BlendMode
 {
     Multiply,
-    Add,
+    Additive,
     Subtract,
     Divide,
     Min,
-    Max
+    Max,
+    Screen,
+    Overlay,
+    ColourDodge,
+    ColourBurn,
+    Difference,
+    Negation,
+    
+    RgbMultiply,
+    RgbAdditive,
+    RgbSubtract,
+    RgbDivide,
+    RgbMin,
+    RgbMax,
+    RgbScreen,
+    RgbOverlay,
+    RgbColourDodge,
+    RgbColourBurn,
+    RgbDifference,
+    RgbNegation
 }
