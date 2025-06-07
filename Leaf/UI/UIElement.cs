@@ -37,7 +37,7 @@ public class UIElement : IUIElement
 	}
 	
 	// Theming parameters
-	protected LeafFont _font;
+	protected LeafFont _font = null!;
 	protected int _fontSize = 5;
 	protected int _textSpacing = 1;
 	protected Color _textColour = Color.White;
@@ -61,7 +61,7 @@ public class UIElement : IUIElement
 	/// <param name="id">The style ID of the element.</param>
 	/// <param name="class">The style class of the element.</param>
 	/// <param name="element">The base style for an element.</param>
-	/// <param name="anchor">The anchor point for an element.</param>
+	/// <param name="anchorPoint">The anchor point for an element.</param>
 	/// <param name="origin">A point in the element where positioning is based on.</param>
 	/// <param name="tooltip">A string that creates a tooltip.</param>
 	/// <param name="isRootContainer">Is the element the root container?</param>

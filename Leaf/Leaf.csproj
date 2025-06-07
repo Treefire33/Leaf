@@ -4,8 +4,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <!--<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>-->
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AssemblyName>Leaf</AssemblyName>
+        <RootNamespace>Leaf</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
@@ -22,6 +23,7 @@
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>LGPL-2.0-or-later</PackageLicenseExpression>
+        <PackProject>true</PackProject>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,9 +36,10 @@
         <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
             <PackagePath>Assets/</PackagePath>
             <Pack>true</Pack>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <None Include="../icon.png" Pack="true" PackagePath="\" />
-        <None Include="../README.md" Pack="true" PackagePath="\" />
+        <None Include="../icon.png" Pack="true" PackagePath="" />
+        <None Include="../README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>

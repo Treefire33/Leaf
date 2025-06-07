@@ -8,9 +8,8 @@ namespace Leaf.UI;
 
 public partial class UITextInput : UIElement
 {
-    private string _text;
+    private string _text = null!;
     private readonly int _maxCharacters;
-    private int _currentCharacters = 0;
 
     public bool Focused;
 
@@ -22,7 +21,6 @@ public partial class UITextInput : UIElement
             if (_text != value)
             {
                 _text = value;
-                _currentCharacters = _text.Length;
                 OnTextChanged?.Invoke();
             }
         }

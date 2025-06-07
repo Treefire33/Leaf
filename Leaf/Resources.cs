@@ -65,19 +65,21 @@ public static partial class Resources
     {
         void MoveDir(string dir)
         {
-            var curDir = new DirectoryInfo(dir);
-            var copyTo = dir switch
+            DirectoryInfo curDir = new(dir);
+            string copyTo = dir switch
             {
-                ".\\Assets\\" => RootPath,
-                ".\\Assets\\Fonts\\" => FontsPath,
-                ".\\Assets\\Images\\" => ImagesPath,
-                ".\\Assets\\Spritesheets\\" => SpritesheetsPath,
-                ".\\Assets\\Audio\\" => AudioRootPath,
-                ".\\Assets\\UI\\" => UIRootPath,
-                ".\\Assets\\UI\\Buttons\\" => UIButtonsPath,
-                ".\\Assets\\UI\\Themes\\" => UIThemesPath
+                @".\Assets\" => RootPath,
+                @".\Assets\Fonts\" => FontsPath,
+                @".\Assets\Images\" => ImagesPath,
+                @".\Assets\Spritesheets\" => SpritesheetsPath,
+                @".\Assets\Audio\" => AudioRootPath,
+                @".\Assets\UI\" => UIRootPath,
+                @".\Assets\UI\Buttons\" => UIButtonsPath,
+                @".\Assets\UI\Themes\" => UIThemesPath,
+                _ => RootPath
             };
-            foreach (var dirInfo in curDir.GetDirectories())
+            
+            foreach (DirectoryInfo dirInfo in curDir.GetDirectories())
             {
                 MoveDir(dir+dirInfo.Name+"\\");
             }
@@ -87,7 +89,7 @@ public static partial class Resources
                 Directory.CreateDirectory(copyTo);
             }
 
-            foreach (var file in curDir.GetFiles())
+            foreach (FileInfo file in curDir.GetFiles())
             {
                 //file.MoveTo(copyTo+file.Name, true);
                 file.CopyTo(copyTo + file.Name, true);
@@ -96,9 +98,9 @@ public static partial class Resources
             Directory.Delete(dir);
         }
         
-        if (Directory.Exists(".\\Assets\\") && RootPath != ".\\Assets\\" && Directory.Exists(RootPath))
+        if (Directory.Exists(@".\Assets\") && RootPath != @".\Assets\" && Directory.Exists(RootPath))
         {
-            MoveDir(".\\Assets\\");
+            MoveDir(@".\Assets\");
         }
     }
     
@@ -122,7 +124,7 @@ public static partial class Resources
 
     public static Texture2D[] LoadSpritesheet(string spritesheet)
     {
-        var spritesheetXml = new XmlDocument();
+        XmlDocument spritesheetXml = new();
         using StreamReader stream = new($"{SpritesheetsPath}{spritesheet}", Encoding.UTF8);
         
         if (!File.Exists(spritesheet+".xml"))
@@ -148,8 +150,8 @@ public static partial class Resources
 
     private static Texture2D[] LoadSpritesheetXml(XmlElement spritesheetXml)
     {
-        var imagePath = ImagesPath + spritesheetXml.GetAttribute("image");
-        var name = spritesheetXml.GetAttribute("name");
+        string imagePath = ImagesPath + spritesheetXml.GetAttribute("image");
+        string name = spritesheetXml.GetAttribute("name");
         Vector2 cellSize = new(
             float.Parse(spritesheetXml.GetAttribute("cellX")),
             float.Parse(spritesheetXml.GetAttribute("cellY"))

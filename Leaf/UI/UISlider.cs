@@ -21,19 +21,25 @@ public class UISlider : UIElement
             _value = Math.Clamp(value, MinValue, MaxValue);
         }
     }
-
+    
     private float _step;
+
+    public float Step
+    {
+        get => _step;
+        set => _step = Math.Clamp(value, MinValue, MaxValue);
+    }
     
     public bool Focused;
     private ScrollDirection _scrollDirection;
 
-    private UIPanel? _handle;
+    private readonly UIPanel? _handle;
     
     private Color _fillColour = Color.White;
     
     public Action? OnValueChanged;
-    public Action<int> OnMouseDown;
-    public Action<int> OnMouseUp;
+    public Action<int>? OnMouseDown;
+    public Action<int>? OnMouseUp;
  
     public UISlider(
         UIRect posScale, 

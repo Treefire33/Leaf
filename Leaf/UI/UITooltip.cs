@@ -9,10 +9,10 @@ namespace Leaf.UI;
 
 public class UITooltip : UIElement
 {
-	private string _tooltipText;
+	private string _tooltipText = null!;
 	private Vector2 _padding = new(5, 5);
 
-	private readonly UIElement _parentElement;
+	private readonly UIElement _parentElement = null!;
 
 	public UITooltip(
 		string? text, 
@@ -75,7 +75,7 @@ public class UITooltip : UIElement
 	{
 		if (_parentElement.Hovered)
 		{
-			var pos = Utility.GetVirtualMousePosition() - new Vector2(0, RelativeRect.Height + _padding.Y);
+			Vector2 pos = Utility.GetVirtualMousePosition() - new Vector2(0, RelativeRect.Height + _padding.Y);
 			Utility.DrawRectangle(
 				new Rectangle(pos, RelativeRect.Width, RelativeRect.Height),
 				_borderRadius,

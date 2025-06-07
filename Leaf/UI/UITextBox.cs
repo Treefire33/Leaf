@@ -22,11 +22,6 @@ public enum VerticalTextAlignment
 public class UITextBox : UIElement
 {
 	private string _text;
-
-	//Theme Attributes
-	private HorizontalTextAlignment _horizontalAlignment;
-	private VerticalTextAlignment _verticalAlignment;
-
 	private Vector2 _padding = new(0, 0);
 
 	public UITextBox(
@@ -67,8 +62,8 @@ public class UITextBox : UIElement
 			float offsetY = 0f;
 			foreach (string line in _text.Split('\n'))
 			{
-				var textSize = MeasureTextEx(_font, line, _fontSize, _textSpacing);
-				var alignedLine = AlignText(line);
+				Vector2 textSize = MeasureTextEx(_font, line, _fontSize, _textSpacing);
+				Vector2 alignedLine = AlignText(line);
 				Utility.DrawTextBoxed(
 					_font,
 					line,

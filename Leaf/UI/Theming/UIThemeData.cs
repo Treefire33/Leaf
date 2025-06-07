@@ -7,7 +7,7 @@ namespace Leaf.UI.Theming;
 
 public struct UIThemeData
 {
-    public static StyleRule DefaultRule;
+    public static StyleRule DefaultRule { get; set; } = null!;
     private StyleRule? _elementRule;
     private StyleRule? _classRule;
     private StyleRule? _idRule;
@@ -21,16 +21,16 @@ public struct UIThemeData
 
     public ThemeProperty GetProperty(string propertyName, string defaultValue = "")
     {
-        var idProperty = _idRule?.Style.GetPropertyValue(propertyName);
+        string? idProperty = _idRule?.Style.GetPropertyValue(propertyName);
         if (idProperty == string.Empty) { idProperty = null; }
-        var classProperty = _classRule?.Style.GetPropertyValue(propertyName);
+        string? classProperty = _classRule?.Style.GetPropertyValue(propertyName);
         if (classProperty == string.Empty) { classProperty = null; }
-        var elementProperty = _elementRule?.Style.GetPropertyValue(propertyName);
+        string? elementProperty = _elementRule?.Style.GetPropertyValue(propertyName);
         if (elementProperty == string.Empty) { elementProperty = null; }
-        var defaultProperty = DefaultRule.Style.GetPropertyValue(propertyName);
+        string? defaultProperty = DefaultRule.Style.GetPropertyValue(propertyName);
         if (defaultProperty == string.Empty) { defaultProperty = null; }
 
-        var property = idProperty ?? classProperty ?? elementProperty ?? defaultProperty ?? defaultValue;
+        string property = idProperty ?? classProperty ?? elementProperty ?? defaultProperty ?? defaultValue;
         return property;
     }
 
@@ -42,71 +42,72 @@ public struct UIThemeData
 
 public partial struct ThemeProperty
 {
-    public string? Value;
+    private string _value;
 
     public static implicit operator ThemeProperty(string value)
     {
-        return new ThemeProperty { Value = value };
+        return new ThemeProperty { _value = value };
     }
     
     public static implicit operator string(ThemeProperty value)
     {
-        return value.Value;
+        return value._value;
     }
     
     public Color AsColor()
     {
-        if (string.IsNullOrEmpty(Value)) { return Color.White; }
+        if (string.IsNullOrEmpty(_value)) { return Color.White; }
 
-        var numbers = ColorRegexPattern().Matches(Value);
+        MatchCollection numbers = ColorRegexPattern().Matches(_value);
         List<float> colors = [];
         foreach (Match match in numbers)
         {
             colors.Add(float.Parse(match.Value));
         }
         
-        var color = new Color(colors[0]/255f, colors[1]/255f, colors[2]/255f, colors.Count == 4 ? colors[3]/255f : 1);
+        Color color = new(
+            colors[0]/255f, 
+            colors[1]/255f, 
+            colors[2]/255f, 
+            colors.Count == 4 ? colors[3]/255f : 1
+        );
         
         return color;
     }
 
     public float AsFloat()
     {
-        if (string.IsNullOrEmpty(Value)) { return 1; }
-        return float.Parse(ValueRegexPattern().Match(Value).Value);
+        return string.IsNullOrEmpty(_value) ?
+            1f
+            : float.Parse(ValueRegexPattern().Match(_value).Value);
     }
     
     public int AsInt()
     {
-        if (string.IsNullOrEmpty(Value)) { return 1; }
-        return int.Parse(ValueRegexPattern().Match(Value).Value);
+        return string.IsNullOrEmpty(_value) ? 
+            1 
+            : int.Parse(ValueRegexPattern().Match(_value).Value);
     }
 
     public LeafFont AsFont()
     {
-        return Resources.GetFont(Value);
+        return Resources.GetFont(_value);
     }
 
-    public List<Texture2D> AsButtonImages()
+    public List<Texture2D> AsButtonImages(string fallback = "default")
     {
-        if (string.IsNullOrEmpty(Value)) { return Resources.Buttons["default"]; }
-        return Resources.Buttons.TryGetValue(Value, out List<Texture2D> images) ? images : Resources.Buttons["default"];
-    }
-    
-    public List<Texture2D> AsCheckboxImages()
-    {
-        if (string.IsNullOrEmpty(Value)) { return Resources.Buttons["checkbox"]; }
-        return Resources.Buttons.TryGetValue(Value, out List<Texture2D> images) ? images : Resources.Buttons["checkbox"];
+        if (string.IsNullOrEmpty(_value)) { return Resources.Buttons[fallback]; }
+        return Resources.Buttons.TryGetValue(_value, out List<Texture2D>? images) ? images : Resources.Buttons[fallback];
     }
 
     public NPatchInfo AsNPatch(Texture2D button)
     {
-        if (string.IsNullOrEmpty(Value))
+        if (string.IsNullOrEmpty(_value))
         {
             return Resources.GenerateNPatchInfoFromButton(button);
         }
 
-        string[] npatchArgs = Value.Split(' ');
+        string[] npatchArgs = _value.Split(' ');
         NPatchLayout layout = NPatchLayout.NinePatch;
         int leftOffset = 0;
         int topOffset = 0;
@@ -132,33 +133,34 @@ public partial struct ThemeProperty
                 {
                     "nine-patch" => NPatchLayout.NinePatch,
                     "three-patch-horizontal" =>  NPatchLayout.ThreePatchHorizontal,
-                    "three-patch-vertical" =>  NPatchLayout.ThreePatchVertical
+                    "three-patch-vertical" =>  NPatchLayout.ThreePatchVertical,
+                    _ =>  NPatchLayout.NinePatch
                 };
                 continue;
             }
 
             if (npatchArgs.Length <= 2)
             {
-                leftOffset = ConvertPercentage(Value);
-                topOffset = ConvertPercentage(Value, true);
-                rightOffset = ConvertPercentage(Value);
-                bottomOffset = ConvertPercentage(Value, true);
+                leftOffset = ConvertPercentage(_value);
+                topOffset = ConvertPercentage(_value, true);
+                rightOffset = ConvertPercentage(_value);
+                bottomOffset = ConvertPercentage(_value, true);
                 break;
             }
 
             switch (i)
             {
                 case 1:
-                    leftOffset = ConvertPercentage(Value);
+                    leftOffset = ConvertPercentage(_value);
                     break;
                 case 2:
-                    topOffset = ConvertPercentage(Value, true);
+                    topOffset = ConvertPercentage(_value, true);
                     break;
                 case 3:
-                    rightOffset = ConvertPercentage(Value);
+                    rightOffset = ConvertPercentage(_value);
                     break;
                 case 4:
-                    bottomOffset = ConvertPercentage(Value, true);
+                    bottomOffset = ConvertPercentage(_value, true);
                     break;
             }
         }
@@ -175,6 +177,13 @@ public partial struct ThemeProperty
         
         return nInfo;
     }
+    
+    // Implicit conversions
+    public static implicit operator Color(ThemeProperty property) => property.AsColor();
+    public static implicit operator int(ThemeProperty property) => property.AsInt();
+    public static implicit operator float(ThemeProperty property) => property.AsFloat();
+    public static implicit operator LeafFont(ThemeProperty property) => property.AsFont();
+    public static implicit operator List<Texture2D>(ThemeProperty property) => property.AsButtonImages();
 
     [GeneratedRegex(@"[0-9]\w+|0")]
     private static partial Regex ColorRegexPattern();
