@@ -4,10 +4,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <AssemblyName>Leaf</AssemblyName>
         <RootNamespace>Leaf</RootNamespace>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -18,13 +17,18 @@
         <Authors>treefire33</Authors>
 
         <RepositoryUrl>https://github.com/Treefire33/Leaf</RepositoryUrl>
-        <Version>0.2.9</Version>
+        <Version>0.3.0</Version>
 
         <PackageIcon>icon.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>LGPL-2.0-or-later</PackageLicenseExpression>
         <PackProject>true</PackProject>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="../icon.png" Pack="true" PackagePath="" />
+        <None Include="../README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="ExCSS" Version="4.3.0" />
@@ -33,13 +37,15 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="treefire33.Leaf.targets">
+            <PackagePath>build/treefire33.Leaf.targets</PackagePath>
+        </Content>
+        
         <Content Include="Assets/**" Link="Assets/%(RecursiveDir)/%(Filename)%(Extension)">
-            <PackagePath>Assets/</PackagePath>
+            <PackagePath>contentFiles/Assets/</PackagePath>
             <Pack>true</Pack>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <None Include="../icon.png" Pack="true" PackagePath="" />
-        <None Include="../README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>
