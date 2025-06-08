@@ -53,7 +53,7 @@ public class UIManager
 		Container!.Update();
 	}
 
-	private void ProcessEvents()
+	public void ProcessEvents()
 	{
 		foreach (Event evnt in UIEvents)
 			Container!.ProcessEvent(evnt);

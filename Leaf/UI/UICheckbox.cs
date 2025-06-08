@@ -156,6 +156,6 @@ public class UICheckbox : UIElement, IUIClickable
 
     private void ChangeTexture()
     {
-	    
+	    _currentTexture = !Active ? _disabled : Hovered ? _hover  : _normal;
     }
 }

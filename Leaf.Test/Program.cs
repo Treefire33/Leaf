@@ -11,7 +11,7 @@ namespace Leaf.Test;
 
 class Program
 {
-    private static int _testType = 3;
+    private static int _testType = 0;
     static void Main(string[] args)
     {
         SetTraceLogLevel(TraceLogLevel.Error);
