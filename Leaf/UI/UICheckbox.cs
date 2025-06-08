@@ -45,7 +45,7 @@ public class UICheckbox : UIElement, IUIClickable
 
     public override void ThemeElement()
     {
-	    List<Texture2D> images = Theme.GetProperty("checkbox-style").AsButtonImages("checkbox");
+	    List<Texture2D> images = Theme.GetProperty("button-style").AsButtonImages("checkbox");
 	    _normal = images[0];
 	    _hover = images[1];
 	    _disabled = images[2];
