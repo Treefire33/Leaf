@@ -21,7 +21,7 @@ public class UIGraphNode : UIElement
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, "graph_node", anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, @class, "graph-node", anchor, origin, tooltip)
     {
         _graphData = graphData;
     }

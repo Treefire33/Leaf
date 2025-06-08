@@ -11,7 +11,7 @@ namespace Leaf.Test;
 
 class Program
 {
-    private static int _testType = 2;
+    private static int _testType = 3;
     static void Main(string[] args)
     {
         SetTraceLogLevel(TraceLogLevel.Error);
@@ -27,6 +27,7 @@ class Program
         var uiTest = new UIElementTest();
         var audioTest = new AudioTest();
         var imageTest = new ImageTest();
+        var fontTest = new FontTest();
         
         // Tests for UIElements
         switch (_testType)
@@ -39,6 +40,9 @@ class Program
                 break;
             case 2:
                 imageTest.Test(ref manager);
+                break;
+            case 3:
+                fontTest.Test(ref manager);
                 break;
         }
     }

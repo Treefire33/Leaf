@@ -6,32 +6,71 @@
 */
 
 /*
-    Default props:
-    protected Font _font;
-	protected int _fontSize = 5;
-	protected int _textSpacing = 1;
-	protected Color _textColour = Color.White;
-	protected HorizontalTextAlignment _horizontalTextAlignment = HorizontalTextAlignment.Left;
-	protected VerticalTextAlignment _verticalTextAlignment = VerticalTextAlignment.Top;
-	protected Color _backgroundColour = Color.White;
-	protected Color _borderColour = Color.White;
-	protected float _borderRadius = 0f;
+    All properties that can be assigned to:
+    
+    All Elements:
+        font-family: *name of loaded font*;
+            Example: 
+                Leaf.Resources.AddFont("clearsans", "clearsans.ttf");
+                In CSS file: font-family: clearsans;
+        font-size: *size of font in px*;
+        spacing: *letter spacing in px*;
+        color: *CSS colour name, rgb value, or hex colour of text*;
+        text-align: *left|center|right*; (horizontal alignment)
+        text-align-vertical: *top|center|bottom*; (vertical alignment)
+        background-color: *CSS colour name, rgb value, or hex colour of fill*;
+        border-color: *CSS colour name, rgb value, or hex colour of border*;
+        border-width: *width of border in px*;
+        border-radius: *radius of border in px*;
+        
+    Specific Elements:
+        UIButton and UICheckbox:
+            button-style: *name of loaded style*;
+                Example:
+                    In XML file: <SpriteAtlas ... name="default" ...>
+                    In CSS file: button-style: default;
+            (UICheckbox only):
+                checkmark-style: *name of loaded style*;
+                    Example:
+                        In XML file: <SpriteAtlas ... name="checkmarks" type="checkmarks" ...>
+                        In CSS file: checkmark-style: checkmarks;
+            nine-patch: 
+                *nine-patch|three-patch-vertical|three-patch-horizontal* 
+                *left-offset in px or %* 
+                *top-offset in px or %*
+                *right-offset in px or %* 
+                *bottom-offset in px or %*;
+                OR
+                *nine-patch|three-patch-vertical|three-patch-horizontal*
+                *offset in px or % for all sides*;
+        UISlider:
+            fill: *CSS colour name, rgb value, or hex colour of the slider fill*;
+        UITextBox:
+            padding: 
+                *x-padding in px* *y-padding in px* 
+                OR 
+                *padding in px*;
 */
 
 /*
-    Nine Patch attribute:
-    nine-patch: type left-offset top-offset right-offset bottom-offset
-    nine-patch: type offset
-    type:
-        nine-patch
-        three-patch-vertical
-        three-patch-horizontal
-    offset:
-        number (px or %)
+    All element rules:
+    * - applies to all elements (default rule)
+    button
+    checkbox
+    container (does not use theming)
+    dropdown (does not use theming, inherits from button for dropdown elements.)
+    element (does not use theming)
+    graph-node (does not use theming)
+    image (does not use theming)
+    panel
+    slider
+    textbox
+    text-input (does not use theming)
+    tooltip
 */
 
 * {
-    font-family: m6x11plus;
+    font-family: clearsans;
     font-size: 18px;
     spacing: 1px;
     color: white;

@@ -52,8 +52,8 @@ public class ImageTest : ILeafTest
         {
             var currentImageRgba = blendedImagesRgba[i];
             var currentImageRgb = blendedImagesRgb[i];
-            DrawTextOnTexture(ref currentImageRgba, new(0, 0), blendModes[i], 20, Color.Black);
-            DrawTextOnTexture(ref currentImageRgb, new(0, 0), blendModes[i], 20, Color.Black);
+            DrawTextOnTexture(ref currentImageRgba, new(0, 0), blendModes[i], 20*(strangeCatBase.Width/250), Color.Black);
+            DrawTextOnTexture(ref currentImageRgb, new(0, 0), blendModes[i], 20*(strangeCatBase.Width/250), Color.Black);
             
             rgbaImages.Add(new UIImage(
                 new UIRect(offsetX, offsetY, 200, 200),

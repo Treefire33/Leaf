@@ -49,9 +49,9 @@ public class UIButton : UIElement, IUIClickable
 	) : base(posScale, visible, container, id, @class, "button", anchor, origin, tooltip)
 	{
 		_text = text;
+		ThemeElement();
 		_currentTexture = _normal;
 		_currentNPatch = nPatch ?? Resources.GenerateNPatchInfoFromButton(_currentTexture);
-		ThemeElement();
 		SetText(_text);
 	}
 

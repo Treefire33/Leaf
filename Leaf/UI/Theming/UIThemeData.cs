@@ -74,19 +74,49 @@ public partial struct ThemeProperty
         
         return color;
     }
-
-    public float AsFloat()
+    
+    private static float AsFloat(string value)
     {
-        return string.IsNullOrEmpty(_value) ?
+        return string.IsNullOrEmpty(value) ?
             1f
-            : float.Parse(ValueRegexPattern().Match(_value).Value);
+            : float.Parse(ValueRegexPattern().Match(value).Value);
     }
     
-    public int AsInt()
+    private static int AsInt(string value)
     {
-        return string.IsNullOrEmpty(_value) ? 
-            1 
-            : int.Parse(ValueRegexPattern().Match(_value).Value);
+        return string.IsNullOrEmpty(value) ?
+            1
+            : int.Parse(ValueRegexPattern().Match(value).Value);
+    }
+    
+    public float AsFloat() => AsFloat(_value);
+    
+    public float[] AsFloats()
+    {
+        string[] splits = _value.Split(' ');
+        float[] finalFloats = new float[splits.Length];
+        
+        for (int i = 0; i < splits.Length; i++)
+        {
+            finalFloats[i] = AsFloat(splits[i]);
+        }
+
+        return finalFloats;
+    }
+    
+    public int AsInt() => AsInt(_value);
+    
+    public int[] AsInts()
+    {
+        string[] splits = _value.Split(' ');
+        int[] finalFloats = new int[splits.Length];
+        
+        for (int i = 0; i < splits.Length; i++)
+        {
+            finalFloats[i] = AsInt(splits[i]);
+        }
+
+        return finalFloats;
     }
 
     public LeafFont AsFont()
@@ -98,6 +128,12 @@ public partial struct ThemeProperty
     {
         if (string.IsNullOrEmpty(_value)) { return Resources.Buttons[fallback]; }
         return Resources.Buttons.TryGetValue(_value, out List<Texture2D>? images) ? images : Resources.Buttons[fallback];
+    }
+    
+    public List<Texture2D> AsCheckmarks(string fallback = "checkmarks")
+    {
+        if (string.IsNullOrEmpty(_value)) { return Resources.CheckmarkStyles[fallback]; }
+        return Resources.CheckmarkStyles.TryGetValue(_value, out List<Texture2D>? images) ? images : Resources.CheckmarkStyles[fallback];
     }
 
     public NPatchInfo AsNPatch(Texture2D button)

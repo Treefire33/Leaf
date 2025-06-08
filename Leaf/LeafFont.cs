@@ -12,22 +12,23 @@ public class LeafFont
 
     public LeafFont(
        string name,
-       int pointSize = 16,
+       int fontSize = 16,
        string regularFontPath = "",
        string italicFontPath = "",
        string boldFontPath = "",
-       string boldItalicFontPath = ""
+       string boldItalicFontPath = "",
+       int[]? extraCodepoints = null
     )
     { 
         Name = name;
         if (!string.IsNullOrEmpty(regularFontPath))
-            _regular = Resources.LoadFont(Resources.FontsPath+regularFontPath, pointSize);
+            _regular = Resources.LoadFont(Resources.FontsPath+regularFontPath, fontSize, extraCodepoints);
         if (!string.IsNullOrEmpty(italicFontPath))
-            _italic = Resources.LoadFont(Resources.FontsPath+italicFontPath, pointSize);
+            _italic = Resources.LoadFont(Resources.FontsPath+italicFontPath, fontSize, extraCodepoints);
         if (!string.IsNullOrEmpty(boldFontPath))
-            _bold = Resources.LoadFont(Resources.FontsPath+boldFontPath, pointSize);
+            _bold = Resources.LoadFont(Resources.FontsPath+boldFontPath, fontSize, extraCodepoints);
         if (!string.IsNullOrEmpty(boldItalicFontPath))
-            _boldItalic = Resources.LoadFont(Resources.FontsPath+boldItalicFontPath, pointSize);
+            _boldItalic = Resources.LoadFont(Resources.FontsPath+boldItalicFontPath, fontSize, extraCodepoints);
     }
 
     public LeafFont(string name, Font font)

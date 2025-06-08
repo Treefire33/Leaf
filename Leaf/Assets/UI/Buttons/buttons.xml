@@ -25,4 +25,8 @@
         <SubTexture name="hovered" x="1" y="0"/>
         <SubTexture name="disabled" x="0" y="1"/>
     </SpriteAtlas>
+    <SpriteAtlas image="checkmarks.png" name="checkmarks" type="checkmarks" cellX="96" cellY="96">
+        <SubTexture name="checked" x="0" y="0"/>
+        <SubTexture name="unchecked" x="1" y="0"/>
+    </SpriteAtlas>
 </SpriteAtlases>

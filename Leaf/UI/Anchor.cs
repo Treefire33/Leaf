@@ -27,13 +27,22 @@ public struct Anchor
 
 public enum AnchorPosition
 {
+    /// <summary>Top left of target element</summary>
     TopLeft,
+    /// <summary>Top center of target element</summary>
     TopCenter,
+    /// <summary>Top right of target element</summary>
     TopRight,
+    /// <summary>Center left of target element</summary>
     Left,
+    /// <summary>Center of target element</summary>
     Center,
+    /// <summary>Center right of target element</summary>
     Right,
+    /// <summary>Bottom left of target element</summary>
     BottomLeft,
+    /// <summary>Bottom center of target element</summary>
     BottomCenter,
-    BottomRight,
+    /// <summary>Bottom right of target element</summary>
+    BottomRight
 }

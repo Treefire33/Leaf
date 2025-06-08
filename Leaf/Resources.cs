@@ -179,19 +179,21 @@ public static partial class Resources
     public static void AddFont(
         string name, 
         string regularFontPath, 
-        int pointSize = 16,
+        int fontSize = 16,
         string italicFontPath = "", 
         string boldFontPath = "", 
-        string boldItalicFontPath = ""
+        string boldItalicFontPath = "",
+        int[]? extraCodepoints = null
     )
     {
         Fonts.Add(new LeafFont(
             name,
-            pointSize,
+            fontSize,
             regularFontPath,
             italicFontPath,
             boldFontPath,
-            boldItalicFontPath
+            boldItalicFontPath,
+            extraCodepoints
         ));
     }
 
@@ -200,11 +202,19 @@ public static partial class Resources
         return Fonts.FirstOrDefault(f => f.Name == name) ?? Fonts[0];
     }
     
-    public static Font LoadFont(string fontPath, int pointSize, int[]? extraCodepoints = null)
+    public static Font LoadFont(string fontPath, int fontSize, int[]? extraCodepoints = null)
     {
         int[] codepoints = Enumerable.Range(0x0020, 0x00A0).Concat(extraCodepoints ?? []).ToArray();
-        Font loadedFont = LoadFontEx(fontPath, pointSize, codepoints, 256);
-        SetTextureFilter(loadedFont.Texture, TextureFilter.Anisotropic8X);
+        Font loadedFont = LoadFontEx(fontPath, fontSize, codepoints, 256);
+        TextureFilter fontSizeFilter = fontSize switch
+        {
+            > 0 and < 19 => TextureFilter.Point,
+            >= 19 and < 32 => TextureFilter.Bilinear,
+            >= 32 and < 64 => TextureFilter.Trilinear,
+            >= 64 => TextureFilter.Anisotropic4X
+        };
+        SetTextureFilter(loadedFont.Texture, fontSizeFilter);
+        //GenTextureMipmaps(ref loadedFont.Texture);
         return loadedFont;
     }
 }

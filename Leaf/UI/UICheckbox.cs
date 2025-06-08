@@ -21,12 +21,14 @@ public class UICheckbox : UIElement, IUIClickable
     private Texture2D _normal;
     private Texture2D _hover;
     private Texture2D _disabled;
+    private Texture2D[] _checkmarks;
     
     public Action<int>? OnClick { get; set; }
 
     public UICheckbox(
         UIRect posScale,
         bool visible = true, 
+        NPatchInfo? nPatch = null,
         IUIContainer? container = null,
         string id = "",
         string @class = "",
@@ -37,7 +39,8 @@ public class UICheckbox : UIElement, IUIClickable
     {
         ThemeElement();
         _currentTexture = _normal;
-        _currentNPatch = Resources.GenerateNPatchInfoFromButton(_normal);
+        if (nPatch != null)
+			_currentNPatch = nPatch.Value;
     }
 
     public override void ThemeElement()
@@ -46,6 +49,9 @@ public class UICheckbox : UIElement, IUIClickable
 	    _normal = images[0];
 	    _hover = images[1];
 	    _disabled = images[2];
+	    _currentNPatch = Theme.GetProperty("nine-patch").AsNPatch(_normal);
+	    List<Texture2D> checkmarks = Theme.GetProperty("checkmark-style").AsCheckmarks();
+	    _checkmarks = checkmarks.ToArray();
     }
 
     public override void Update()
@@ -62,14 +68,20 @@ public class UICheckbox : UIElement, IUIClickable
 		    0,
 		    Color.White
 	    );
-	    if (Checked)
-	    {
-		    DrawCircleV(
-			    (GetPosition() + RelativeRect.Size / 2),
-			    RelativeRect.Size.Y / 4,
-			    Color.White
-			);
-	    }
+	    DrawTexturePro(
+		    _checkmarks[Checked ? 0 : 1],
+		    new Rectangle(
+			    Vector2.Zero,
+			    new Vector2(_checkmarks[Checked ? 0 : 1].Width, _checkmarks[Checked ? 0 : 1].Height)
+		    ),
+		    new Rectangle(
+			    GetPosition(),
+			    RelativeRect.Size
+		    ),
+		    Vector2.Zero,
+		    0,
+		    Color.White
+	    );
     }
     
     public override void ProcessEvent(Event evnt)

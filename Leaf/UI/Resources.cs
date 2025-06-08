@@ -16,6 +16,7 @@ public static partial class Resources
     
 
     public static readonly Dictionary<string, List<Texture2D>> Buttons = [];
+    public static readonly Dictionary<string, List<Texture2D>> CheckmarkStyles = [];
     
     public static NPatchInfo GenerateNPatchInfoFromButton(Texture2D button)
     {
@@ -78,6 +79,15 @@ public static partial class Resources
         }
         
         UnloadImage(spritesheet);
+        
+        if (
+            spritesheetXml.HasAttribute("type") 
+            && spritesheetXml.GetAttribute("type") == "checkmarks"
+        )
+        {
+            CheckmarkStyles[name] = buttonTextures;
+            return;
+        }
 
         Buttons[name] = buttonTextures;
     }

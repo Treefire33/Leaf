@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
@@ -39,15 +40,19 @@ public class UITextBox : UIElement
 		_text = text;
 	}
 
+	public override void ThemeElement()
+	{
+		base.ThemeElement();
+		float[] paddings = Theme.GetProperty("padding").AsFloats();
+		_padding.X = paddings[0];
+		_padding.Y = paddings.Length > 1 ? paddings[1] : paddings[0];
+	}
+
 	public void SetPadding(Vector2 padding)
 	{
 		_padding = padding;
 	}
 	
-	/// <summary>
-	/// Sets the text of the button.
-	/// </summary>
-	/// <param name="text">The text to set the button text to.</param>
 	public void SetText(string text)
 	{
 		_text = text;
@@ -67,7 +72,10 @@ public class UITextBox : UIElement
 				Utility.DrawTextBoxed(
 					_font,
 					line,
-					new Rectangle(alignedLine with { Y = alignedLine.Y + offsetY }, RelativeRect.Size),
+					new Rectangle(
+						alignedLine with { Y = alignedLine.Y + offsetY } + _padding, 
+						RelativeRect.Size
+					),
 					_fontSize,
 					_textSpacing,
 					true,
@@ -81,7 +89,10 @@ public class UITextBox : UIElement
 			Utility.DrawTextBoxed(
 				_font,
 				_text,
-				new Rectangle(AlignText(_text), RelativeRect.Size),
+				new Rectangle(
+					AlignText(_text) + _padding, 
+					RelativeRect.Size
+				),
 				_fontSize,
 				_textSpacing,
 				true,
