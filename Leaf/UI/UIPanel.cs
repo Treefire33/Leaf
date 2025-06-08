@@ -11,11 +11,11 @@ public class UIPanel : UIElement
         bool visible = true, 
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, "panel", anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, classes, "panel", anchor, origin, tooltip)
     { }
 
     public override void Update()

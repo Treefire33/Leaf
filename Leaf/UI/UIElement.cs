@@ -59,7 +59,7 @@ public class UIElement : IUIElement
 	/// <param name="visible">The visibility of the element.</param>
 	/// <param name="container">The parent container of the element, defaults to the default container.</param>
 	/// <param name="id">The style ID of the element.</param>
-	/// <param name="class">The style class of the element.</param>
+	/// <param name="classes">The style classes of the element.</param>
 	/// <param name="element">The base style for an element.</param>
 	/// <param name="anchorPoint">The anchor point for an element.</param>
 	/// <param name="origin">A point in the element where positioning is based on.</param>
@@ -70,7 +70,7 @@ public class UIElement : IUIElement
 		bool visible = true, 
 		IUIContainer? container = null,
 		string id = "",
-		string @class = "",
+		string[]? classes = null,
 		string element = "",
 		Vector2 anchorPoint = default,
 		Vector2 origin = default,
@@ -80,7 +80,14 @@ public class UIElement : IUIElement
 	{
 		Manager = UIManager.GetDefaultManager();
 		RelativeRect = posScale;
-		Theme = Manager.Theme.GetThemeDataFromObject($"#{id}", $".{@class}", element);
+		
+		classes ??= [];
+		for (int i = 0; i < classes.Length; i++)
+		{
+			classes[i] = $".{classes[i]}";
+		}
+		Theme = Manager.Theme.GetThemeDataFromObject($"#{id}", classes, element);
+		
 		if (!isRootContainer)
 		{
 			Container = container ?? Manager.GetDefaultContainer();

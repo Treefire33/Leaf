@@ -17,11 +17,11 @@ public class UIDropdown : UIElement
         bool visible = true,
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, "dropdown", anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, classes, "dropdown", anchor, origin, tooltip)
     {
         _optionsContainer = new UIScrollingContainer(
             posScale with { Y = posScale.Height + posScale.Y, Height = posScale.Height * 2},

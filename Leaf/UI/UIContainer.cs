@@ -13,12 +13,12 @@ public class UIContainer : UIElement, IUIContainer
         bool visible = true,
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null,
         bool isRootContainer = false
-    ) : base(posScale, visible, container, id, @class, "container", anchor, origin, tooltip:tooltip, isRootContainer: isRootContainer)
+    ) : base(posScale, visible, container, id, classes, "container", anchor, origin, tooltip:tooltip, isRootContainer: isRootContainer)
     {
         
     }

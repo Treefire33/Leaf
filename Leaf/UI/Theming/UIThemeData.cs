@@ -11,11 +11,21 @@ public struct UIThemeData
     private StyleRule? _elementRule;
     private StyleRule? _classRule;
     private StyleRule? _idRule;
-
-    public UIThemeData(StyleRule? elementRule, StyleRule? classRule, StyleRule? idRule)
+    
+    public UIThemeData(StyleRule? elementRule, StyleRule[]? classRule, StyleRule? idRule)
     {
         _elementRule = elementRule;
-        _classRule = classRule;
+        if (classRule is { Length: > 0 })
+        {
+            _classRule = classRule[0];
+            foreach (StyleRule styleRule in classRule)
+            {
+                foreach (IProperty prop in styleRule.Style.ToArray())
+                {
+                    _classRule.Style.SetProperty(prop.Name, prop.Value);
+                }
+            }
+        }
         _idRule = idRule;
     }
 

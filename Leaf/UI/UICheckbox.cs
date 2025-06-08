@@ -31,11 +31,11 @@ public class UICheckbox : UIElement, IUIClickable
         NPatchInfo? nPatch = null,
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, "checkbox", anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, classes, "checkbox", anchor, origin, tooltip)
     {
         ThemeElement();
         _currentTexture = _normal;

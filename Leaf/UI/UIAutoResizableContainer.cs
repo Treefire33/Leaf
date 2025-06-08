@@ -19,11 +19,11 @@ public class UIAutoResizableContainer : UIContainer
         bool visible = true,
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, classes, anchor, origin, tooltip)
     {
         _scaleLeft = scaleLeft;
         _scaleRight = scaleRight;

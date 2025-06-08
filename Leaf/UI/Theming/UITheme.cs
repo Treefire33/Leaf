@@ -6,15 +6,15 @@ public class UITheme
 {
     private Stylesheet Stylesheet { get; init; } = null!;
     
-    public UIThemeData GetThemeDataFromObject(string id, string @class, string element)
+    public UIThemeData GetThemeDataFromObject(string id, string[] classes, string element)
     {
         IEnumerable<IStyleRule> idRules = Stylesheet.StyleRules.Where(x => x.SelectorText == id);
-        IEnumerable<IStyleRule> classRules = Stylesheet.StyleRules.Where(x => x.SelectorText == @class);
+        IEnumerable<IStyleRule> classRules = Stylesheet.StyleRules.Where(x => classes.Contains(x.SelectorText));
         IEnumerable<IStyleRule> elementRules = Stylesheet.StyleRules.Where(x => x.SelectorText == element);
         StyleRule? idRule = idRules.FirstOrDefault() as StyleRule;
-        StyleRule? classRule = classRules.FirstOrDefault() as StyleRule;
+        StyleRule[] classStyles = classRules.Cast<StyleRule>().ToArray();
         StyleRule? elementRule = elementRules.FirstOrDefault() as StyleRule;
-        UIThemeData themeData = new(elementRule, classRule, idRule);
+        UIThemeData themeData = new(elementRule, classStyles, idRule);
         return themeData;
     }
     

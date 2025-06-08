@@ -20,10 +20,10 @@ public class UITooltip : UIElement
 		bool visible = true, 
 		IUIContainer? container = null,
 		string id = "",
-		string @class = "",
+		string[]? classes = null,
 		Vector2 anchor = default,
 		Vector2 origin = default
-	) : base(new UIRect(), visible, container, id, @class, "tooltip", anchor, origin, tooltip:null)
+	) : base(new UIRect(), visible, container, id, classes, "tooltip", anchor, origin, tooltip:null)
 	{
 		if (text == null)
 		{

@@ -20,11 +20,11 @@ public class UIImage : UIElement
         bool visible = true, 
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ) : base(posScale, visible, container, id, @class, "image", anchor, origin, tooltip)
+    ) : base(posScale, visible, container, id, classes, "image", anchor, origin, tooltip)
     {
         _image = image;
         _ninePatch = ninePatch;

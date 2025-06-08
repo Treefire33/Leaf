@@ -37,11 +37,11 @@ public partial class UITextInput : UIElement
         bool visible = true, 
         IUIContainer? container = null,
         string id = "",
-        string @class = "",
+        string[]? classes = null,
         Vector2 anchor = default,
         Vector2 origin = default,
         string? tooltip = null
-    ): base(posScale, visible, container, id, @class, "text-input", anchor, origin, tooltip)
+    ): base(posScale, visible, container, id, classes, "text-input", anchor, origin, tooltip)
     {
         Text = defaultText;
         _maxCharacters = maxCharacters;
