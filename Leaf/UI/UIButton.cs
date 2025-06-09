@@ -109,7 +109,6 @@ public class UIButton : UIElement, IUIClickable
 	public void ChangeTexture()
 	{
 		_currentTexture = !Active ? _disabled : Hovered ? _hover  : _normal;
-		SetMouseCursor(!Active ? MouseCursor.NotAllowed : Hovered ? MouseCursor.PointingHand : MouseCursor.Arrow);
 	}
 
 	public void HandleElementInteraction()

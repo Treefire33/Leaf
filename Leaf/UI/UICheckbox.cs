@@ -123,6 +123,10 @@ public class UICheckbox : UIElement, IUIClickable
 			else if (IsMouseButtonReleased(MouseButton.Left))
 			{
 				newEvent.EventType = _pressed ? EventType.LeftMouseClick : EventType.LeftMouseUp;
+				if (newEvent.EventType == EventType.LeftMouseClick)
+				{
+					Checked = !Checked;
+				}
 				_pressed = false;
 			}
 			else if (IsMouseButtonDown(MouseButton.Right))

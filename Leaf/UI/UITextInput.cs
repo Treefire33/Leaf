@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Text.RegularExpressions;
+using Leaf.Events;
 using Leaf.UI.Interfaces;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
@@ -60,8 +61,6 @@ public partial class UITextInput : UIElement
         {
             Focused = false;
         }
-
-        SetMouseCursor(Hovered ? MouseCursor.IBeam : MouseCursor.Default);
 
         HandleElementInteraction();
         
@@ -124,12 +123,19 @@ public partial class UITextInput : UIElement
                 key = GetCharPressed();
             }
             
-            if (IsKeyPressed(KeyboardKey.Backspace) && Text.Length - 1 >= 0)
+            Text = _inputRegex.Replace(Text, string.Empty);
+        }
+    }
+
+    public override void ProcessEvent(Event evnt)
+    {
+        base.ProcessEvent(evnt);
+        if (Focused && evnt is { EventType: EventType.KeyDown, KeyCode: KeyboardKey.Backspace })
+        {
+            if (Text.Length - 1 >= 0)
             {
                 Text = Text.Remove(Text.Length - 1, 1);
             }
-            
-            Text = _inputRegex.Replace(Text, string.Empty);
         }
     }
 
