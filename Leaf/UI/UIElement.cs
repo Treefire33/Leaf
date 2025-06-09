@@ -135,16 +135,16 @@ public class UIElement : IUIElement
 
 	public virtual void ThemeElement()
 	{
-		_font = Theme.GetProperty("font-family").AsFont();
-		_fontSize = Theme.GetProperty("font-size").AsInt();
-		_textSpacing = Theme.GetProperty("spacing").AsInt();
-		_textColour = Theme.GetProperty("color").AsColor();
+		_font = Theme.GetProperty("font-family");
+		_fontSize = Theme.GetProperty("font-size");
+		_textSpacing = Theme.GetProperty("spacing");
+		_textColour = Theme.GetProperty("color");
 		_horizontalTextAlignment = Utility.GetHorizontalAlignmentFromString(Theme.GetProperty("text-align", "left"));
 		_verticalTextAlignment = Utility.GetVerticalAlignmentFromString(Theme.GetProperty("text-align-vertical", "top"));
-		_backgroundColour = Theme.GetProperty("background-color").AsColor();
-		_borderColour = Theme.GetProperty("border-top-color").AsColor();
-		_borderThickness = Theme.GetProperty("border-top-width").AsFloat();
-		_borderRadius = Theme.GetProperty("border-top-left-radius").AsFloat()/100;
+		_backgroundColour = Theme.GetProperty("background-color");
+		_borderColour = Theme.GetProperty("border-top-color");
+		_borderThickness = Theme.GetProperty("border-top-width");
+		_borderRadius = Theme.GetProperty("border-top-left-radius")/100f;
 	}
 	
 	public Vector2 AlignText(string text)

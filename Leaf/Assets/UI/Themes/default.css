@@ -103,6 +103,8 @@ slider {
 
 textbox {
     color: black;
+    background-color: #00000000;
+    border-color: #00000000;
     text-align: left;
     text-align-vertical: top;
     spacing: 1px;

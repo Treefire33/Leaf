@@ -64,12 +64,12 @@ public class UIManager
 		foreach (Event evnt in UIEvents)
 			Container!.ProcessEvent(evnt);
 	}
-
+	
+	private int _lastKey;
 	/// <summary>
 	/// Processes various keyboard events and pushes them to the events list.
 	/// </summary>
-	private int _lastKey;
-	public void PushKeyEvents()
+	public void PushInputEvents()
 	{
 		int keyPressed = Raylib.GetKeyPressed();
 		while (keyPressed != 0)
@@ -99,7 +99,7 @@ public class UIManager
 	{
 		DrawUI();
 		
-		PushKeyEvents();
+		PushInputEvents();
 
 		ProcessEvents();
 

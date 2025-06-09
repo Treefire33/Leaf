@@ -109,6 +109,7 @@ public class UIButton : UIElement, IUIClickable
 	public void ChangeTexture()
 	{
 		_currentTexture = !Active ? _disabled : Hovered ? _hover  : _normal;
+		SetMouseCursor(!Active ? MouseCursor.NotAllowed : Hovered ? MouseCursor.PointingHand : MouseCursor.Arrow);
 	}
 
 	public void HandleElementInteraction()
@@ -150,10 +151,51 @@ public class UIButton : UIElement, IUIClickable
 				newEvent.EventType = _pressed ? EventType.MiddleMouseClick : EventType.MiddleMouseUp;
 				_pressed = false;
 			}
+			else if (IsMouseButtonDown(MouseButton.Side))
+			{
+				newEvent.EventType = EventType.SideMouseDown;
+				_pressed = true;
+			}
+			else if (IsMouseButtonReleased(MouseButton.Side))
+			{
+				newEvent.EventType = _pressed ? EventType.SideMouseClick : EventType.SideMouseUp;
+				_pressed = false;
+			}
+			else if (IsMouseButtonDown(MouseButton.Extra))
+			{
+				newEvent.EventType = EventType.ExtraMouseDown;
+				_pressed = true;
+			}
+			else if (IsMouseButtonReleased(MouseButton.Extra))
+			{
+				newEvent.EventType = _pressed ? EventType.ExtraMouseClick : EventType.ExtraMouseUp;
+				_pressed = false;
+			}
+			else if (IsMouseButtonDown(MouseButton.Forward))
+			{
+				newEvent.EventType = EventType.ExtraMouseDown;
+				_pressed = true;
+			}
+			else if (IsMouseButtonReleased(MouseButton.Forward))
+			{
+				newEvent.EventType = _pressed ? EventType.ForwardMouseClick : EventType.ForwardMouseUp;
+				_pressed = false;
+			}
+			else if (IsMouseButtonDown(MouseButton.Back))
+			{
+				newEvent.EventType = EventType.ExtraMouseDown;
+				_pressed = true;
+			}
+			else if (IsMouseButtonReleased(MouseButton.Back))
+			{
+				newEvent.EventType = _pressed ? EventType.BackMouseClick : EventType.BackMouseUp;
+				_pressed = false;
+			}
 			else
 			{
 				_pressed = false;
 			}
+			
 			
 			if (newEvent.EventType != EventType.None)
 			{
@@ -165,17 +207,21 @@ public class UIButton : UIElement, IUIClickable
 	public override void ProcessEvent(Event evnt)
 	{
 		base.ProcessEvent(evnt);
-		if (evnt.Element == this && evnt.EventType == EventType.LeftMouseClick)
+		
+		// All click events happen to land on a multiple of 3.
+		if (evnt.Element == this && (int)evnt.EventType % 3 == 0)
 		{
-			OnClick?.Invoke(0);
-		}
-		if (evnt.Element == this && evnt.EventType == EventType.RightMouseClick)
-		{
-			OnClick?.Invoke(1);
-		}
-		if (evnt.Element == this && evnt.EventType == EventType.MiddleMouseClick)
-		{
-			OnClick?.Invoke(2);
+			OnClick?.Invoke(evnt.EventType switch
+			{
+				EventType.LeftMouseClick => 0,
+				EventType.RightMouseClick => 1,
+				EventType.MiddleMouseClick => 2,
+				EventType.SideMouseClick => 3,
+				EventType.ExtraMouseClick => 4,
+				EventType.ForwardMouseClick => 5,
+				EventType.BackMouseClick => 6,
+				_ => -1
+			});
 		}
 	}
 	

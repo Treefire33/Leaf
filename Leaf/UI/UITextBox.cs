@@ -62,6 +62,13 @@ public class UITextBox : UIElement
 	{
 		base.Update();
 		//Vector2 textSize = MeasureTextEx(_font, _text, _fontSize, 0);
+		Utility.DrawRectangle(
+			new Rectangle(GetPosition(), RelativeRect.Size),
+			_borderRadius,
+			_borderThickness,
+			_backgroundColour,
+			_borderColour
+		);
 		if (_text.Contains('\n'))
 		{
 			float offsetY = 0f;
