@@ -285,9 +285,9 @@ public static class Utility
         );
     }
 
-    public static (FontStyle, string)[] ParseHTMLTagGroups(string source)
+    public static (FontStyle, string)[] ParseHtml(string source)
     {
-        string pattern = @"(<.+?>)(.+?)?(<\\.+?>)|(?<nostyle>[^<>]+)";
+        string pattern = @"(<.+?>)(.+?)?(<\/.+?>)|(?<nostyle>[^<>]+)";
         var matches = Regex.Matches(source, pattern);
         List<(FontStyle, string)> parsedString = [];
 
@@ -310,40 +310,5 @@ public static class Utility
         }
         
         return parsedString.ToArray();
-    }
-
-    public static void DrawTextStyled(
-        LeafFont font,
-        [MarshalAs(UnmanagedType.LPUTF8Str)]string text,
-        Rectangle rec,
-        float fontSize,
-        float spacing,
-        bool wordWrap,
-        Color tint
-    )
-    {
-        var parsedGroups = ParseHTMLTagGroups(text);
-
-        Vector2 currentTextPosition = rec.Position;
-
-        foreach (var parsedGroup in parsedGroups)
-        {
-            Vector2 textSize = MeasureTextEx(font[parsedGroup.Item1],  parsedGroup.Item2, fontSize, spacing);
-            DrawTextBoxed(
-                font[parsedGroup.Item1], parsedGroup.Item2, 
-                new Rectangle(
-                    currentTextPosition,
-                    rec.Size
-                ), 
-                fontSize, spacing, wordWrap, tint
-            );
-            currentTextPosition.X += textSize.X;
-            Console.WriteLine(currentTextPosition);
-            if (currentTextPosition.X >= rec.Width)
-            {
-                currentTextPosition.X = rec.X;
-                currentTextPosition.Y += textSize.Y;
-            }
-        }
     }
 }

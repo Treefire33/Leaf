@@ -92,7 +92,15 @@ public static partial class Resources
             foreach (FileInfo file in curDir.GetFiles())
             {
                 //file.MoveTo(copyTo+file.Name, true);
-                file.CopyTo(copyTo + file.Name, true);
+                try
+                {
+                    file.CopyTo(copyTo + file.Name);
+                }
+                catch
+                {
+                    // ignored
+                }
+
                 file.Delete();
             }
             Directory.Delete(dir);

@@ -104,18 +104,6 @@ public class UIButton : UIElement, IUIClickable
 			_textSpacing,
 			_textColour
 		);
-		/*Utility.DrawTextStyled(
-			_font,
-			_text,
-			new Rectangle(
-				_textPosition,
-				RelativeRect.Size
-			),
-			_fontSize,
-			_textSpacing,
-			true,
-			_textColour
-		);*/
 	}
 
 	public void ChangeTexture()
