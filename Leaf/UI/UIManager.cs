@@ -47,33 +47,59 @@ public class UIManager
 		}	
 		GetDefaultContainer();
 	}
-
+	
+	/// <summary>
+	/// Draws the default container, which then draws all ui elements.
+	/// </summary>
 	public void DrawUI()
 	{
 		Container!.Update();
 	}
-
+	
+	/// <summary>
+	/// Calls the event processor for the default container, which then calls the event processor for all ui elements.
+	/// </summary>
 	public void ProcessEvents()
 	{
 		foreach (Event evnt in UIEvents)
 			Container!.ProcessEvent(evnt);
 	}
+
+	/// <summary>
+	/// Processes various keyboard events and pushes them to the events list.
+	/// </summary>
+	private int _lastKey;
+	public void PushKeyEvents()
+	{
+		int keyPressed = Raylib.GetKeyPressed();
+		while (keyPressed != 0)
+		{
+			PushEvent(new Event(keyPressed, EventType.KeyPressed));
+			_lastKey = keyPressed;
+			
+			keyPressed = Raylib.GetKeyPressed();
+		}
+		
+		if (_lastKey != 0 && Raylib.IsKeyDown((KeyboardKey)_lastKey))
+		{
+			PushEvent(new Event(_lastKey, EventType.KeyDown));
+		}
+		else if (_lastKey != 0 && Raylib.IsKeyReleased((KeyboardKey)_lastKey))
+		{
+			PushEvent(new Event(_lastKey, EventType.KeyUp));
+		}
+	}
 	
-	private int _lastKey = 0;
+	/// <summary>
+	/// Combines DrawUI, PushKeyEvents, and ProcessEvents together.
+	/// Typically used in cases where processing events is not needed.
+	/// </summary>
+	/// <param name="flushEvents">Should the events list be cleared at the end of the frame.</param>
 	public void Update(bool flushEvents = false)
 	{
 		DrawUI();
 		
-		int keyPressed = Raylib.GetKeyPressed();
-		if (keyPressed != 0 && !Raylib.IsKeyDown((KeyboardKey)_lastKey))
-		{
-			PushEvent(new Event(keyPressed, EventType.KeyPressed));
-			_lastKey = keyPressed;
-		}
-		else
-		{
-			PushEvent(new Event(_lastKey, EventType.KeyDown));
-		}
+		PushKeyEvents();
 
 		ProcessEvents();
 
