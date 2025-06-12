@@ -16,6 +16,7 @@ class Program
     {
         SetTraceLogLevel(TraceLogLevel.Error);
         InitWindow(800, 800, "Leaf UI Testing");
+        SetWindowState(ConfigFlags.ResizableWindow);
         
         SetTargetFPS(60);
         

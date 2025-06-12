@@ -11,6 +11,8 @@ public class UIManager
 {
 	public static UIManager? DefaultManager;
 	public static Vector2 GameSize;
+	public static Vector2 GamePosition;
+	public static Vector2 ScaleFactor;
 	public static bool DebugMode = false;
 	
 	private static void SetDefaultManager(UIManager manager)
@@ -28,13 +30,22 @@ public class UIManager
 	public List<Event> UIEvents = [];
 	public UITheme Theme;
 
-	public UIManager(Vector2 gameSize = default, params string[] themes)
+	public UIManager(
+		Vector2 gameSize = default, 
+		Vector2 gamePosition = default,
+		params string[] themes
+	)
 	{
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
+		if (gamePosition == default)
+		{
+			gamePosition = Vector2.Zero;
+		}
 		GameSize = gameSize;
+		GamePosition = gamePosition;
 		UITheme.LoadDefaultTheme(); // Load default theme
 		if (themes.Length > 0)
 			foreach (var theme in themes)

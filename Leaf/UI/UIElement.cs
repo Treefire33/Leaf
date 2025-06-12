@@ -130,7 +130,13 @@ public class UIElement : IUIElement
 	
 	public virtual void Update()
 	{
-		Hovered = CheckCollisionPointRec(Utility.GetVirtualMousePosition(), new Rectangle(GetPosition(), RelativeRect.Size));
+		Hovered = CheckCollisionPointRec(
+			Utility.GetVirtualMousePosition(), 
+			new Rectangle(
+				GetPosition() * UIManager.ScaleFactor, 
+				RelativeRect.Size * UIManager.ScaleFactor
+			)
+		);
 	}
 
 	public virtual void ThemeElement()
