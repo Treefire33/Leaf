@@ -13,6 +13,7 @@ public class UIElementTest : ILeafTest
 {
     public void Test(ref UIManager manager)
     {
+        var renderTexture = LoadRenderTexture(800, 800);
         // Interactable Elements
         var button = new UIButton(
             new UIRect(10, 10, 150, 50),
@@ -87,13 +88,32 @@ public class UIElementTest : ILeafTest
             }
         };
         
+        //ToggleBorderlessWindowed();
+        
         while (!WindowShouldClose())
         {
-            BeginDrawing();
+            BeginTextureMode(renderTexture);
                 ClearBackground(Color.White);
                 textboxText = $"Last clicked button with: {lastMouseButton}\nSlider value: {slider.Value}";
                 manager.Update(true);
                 textbox.SetText(textboxText);
+            EndTextureMode();
+            
+            BeginDrawing();
+                ClearBackground(Color.Black);
+                UIManager.GamePosition =
+                    new Vector2(GetScreenWidth(), GetScreenHeight()) / 2 - (UIManager.GameSize / 2);
+                DrawTexturePro(
+                    renderTexture.Texture,
+                    new Rectangle(0, 0, renderTexture.Texture.Width, -renderTexture.Texture.Height),
+                    new Rectangle(
+                        (new Vector2(GetScreenWidth(), GetScreenHeight()))/2-(UIManager.GameSize/2), 
+                        UIManager.GameSize
+                    ),
+                    Vector2.Zero,
+                    0,
+                    Color.White
+                );
             EndDrawing();
         }
     }
