@@ -133,8 +133,8 @@ public class UIElement : IUIElement
 		Hovered = CheckCollisionPointRec(
 			Utility.GetVirtualMousePosition(), 
 			new Rectangle(
-				GetPosition() * UIManager.ScaleFactor, 
-				RelativeRect.Size * UIManager.ScaleFactor
+				GetPosition(), 
+				RelativeRect.Size
 			)
 		);
 	}

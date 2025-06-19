@@ -88,7 +88,7 @@ public class UIElementTest : ILeafTest
             }
         };
         
-        ToggleBorderlessWindowed();
+        //ToggleBorderlessWindowed();
         
         while (!WindowShouldClose())
         {
@@ -102,7 +102,7 @@ public class UIElementTest : ILeafTest
             BeginDrawing();
                 ClearBackground(Color.Black);
                 UIManager.GamePosition =
-                    (new Vector2(GetScreenWidth(), GetScreenHeight())) / 2 - (UIManager.GameSize / 2);
+                    new Vector2(GetScreenWidth(), GetScreenHeight()) / 2 - (UIManager.GameSize / 2);
                 DrawTexturePro(
                     renderTexture.Texture,
                     new Rectangle(0, 0, renderTexture.Texture.Width, -renderTexture.Texture.Height),
