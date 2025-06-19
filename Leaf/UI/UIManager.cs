@@ -10,7 +10,19 @@ namespace Leaf.UI;
 public class UIManager
 {
 	public static UIManager? DefaultManager;
+	/// <summary>
+	/// Refers to the size of a render texture, ignore if you aren't rendering to one.
+	/// If ignored, defaults to the size of the window.
+	/// </summary>
 	public static Vector2 GameSize;
+	/// <summary>
+	/// Refers to the position of a render texture, ignore if you aren't rendering to one
+	/// If ignored, defaults to (0, 0).
+	/// </summary>
+	public static Vector2 GamePosition;
+	/// <summary>
+	/// When enabled, all elements will have a red outline drawn around them.
+	/// </summary>
 	public static bool DebugMode = false;
 	
 	private static void SetDefaultManager(UIManager manager)
@@ -28,13 +40,22 @@ public class UIManager
 	public List<Event> UIEvents = [];
 	public UITheme Theme;
 
-	public UIManager(Vector2 gameSize = default, params string[] themes)
+	public UIManager(
+		Vector2 gameSize = default, 
+		Vector2 gamePosition = default,
+		params string[] themes
+	)
 	{
 		if (gameSize == default)
 		{
 			gameSize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 		}
+		if (gamePosition == default)
+		{
+			gamePosition = Vector2.Zero;
+		}
 		GameSize = gameSize;
+		GamePosition = gamePosition;
 		UITheme.LoadDefaultTheme(); // Load default theme
 		if (themes.Length > 0)
 			foreach (var theme in themes)
