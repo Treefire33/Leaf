@@ -252,19 +252,19 @@ public static class Utility
 	{
 		Vector2 mousePos = GetMousePosition();
         
-        UIManager.ScaleFactor = new Vector2(GetScreenWidth(), GetScreenHeight()) / UIManager.GameSize;
+        Vector2 scaleFactor = new Vector2(GetScreenWidth(), GetScreenHeight()) / UIManager.GameSize;
 		Vector2 virtualMouse = new(0)
 		{
 			X = (
                 GetScreenWidth() * (
                     (mousePos.X - UIManager.GamePosition.X) 
                     / UIManager.GameSize.X)
-                ) / UIManager.ScaleFactor.X,
+                ) / scaleFactor.X,
 			Y = (
                 GetScreenHeight() * (
                     (mousePos.Y - UIManager.GamePosition.Y) 
                     / UIManager.GameSize.Y)
-                ) / UIManager.ScaleFactor.Y
+                ) / scaleFactor.Y
 		};
 
 		return virtualMouse;

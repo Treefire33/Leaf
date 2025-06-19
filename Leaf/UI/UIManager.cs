@@ -10,9 +10,19 @@ namespace Leaf.UI;
 public class UIManager
 {
 	public static UIManager? DefaultManager;
+	/// <summary>
+	/// Refers to the size of a render texture, ignore if you aren't rendering to one.
+	/// If ignored, defaults to the size of the window.
+	/// </summary>
 	public static Vector2 GameSize;
+	/// <summary>
+	/// Refers to the position of a render texture, ignore if you aren't rendering to one
+	/// If ignored, defaults to (0, 0).
+	/// </summary>
 	public static Vector2 GamePosition;
-	public static Vector2 ScaleFactor;
+	/// <summary>
+	/// When enabled, all elements will have a red outline drawn around them.
+	/// </summary>
 	public static bool DebugMode = false;
 	
 	private static void SetDefaultManager(UIManager manager)
