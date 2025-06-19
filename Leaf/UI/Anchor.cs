@@ -46,3 +46,13 @@ public enum AnchorPosition
     /// <summary>Bottom right of target element</summary>
     BottomRight
 }
+
+public enum AnchorTarget
+{
+    /// <summary>Default mode, anchors both X and Y</summary>
+    XY,
+    /// <summary>Only anchor the X position</summary>
+    X,
+    /// <summary>Only anchor the Y position</summary>
+    Y
+}

@@ -224,9 +224,9 @@ public class UIButton : UIElement, IUIClickable
 		}
 	}
 	
-	public override void SetAnchor(AnchorPosition anchorPosition, UIElement? target = null)
+	public override void SetAnchor(AnchorPosition anchorPosition, UIElement? target = null, AnchorTarget targetMode = AnchorTarget.XY)
 	{
-		base.SetAnchor(anchorPosition, target);
+		base.SetAnchor(anchorPosition, target, targetMode);
 		_textPosition = AlignText(_text);
 	}
 }

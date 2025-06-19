@@ -186,9 +186,9 @@ public class UISlider : UIElement
         }
     }
 
-    public override void SetAnchor(AnchorPosition anchorPos, UIElement? target = null)
+    public override void SetAnchor(AnchorPosition anchorPos, UIElement? target = null, AnchorTarget targetMode = AnchorTarget.XY)
     {
-        base.SetAnchor(anchorPos, target);
+        base.SetAnchor(anchorPos, target, targetMode);
         _handle!.SetAnchor(
             _scrollDirection is ScrollDirection.VerticalTop or ScrollDirection.VerticalBottom
                 ? AnchorPosition.TopCenter

@@ -180,11 +180,11 @@ public class UIElement : IUIElement
 		Anchor.Set(anchorPoint);
 	}
 
-	public virtual void SetAnchor(AnchorPosition anchorPos, UIElement? target = null)
+	public virtual void SetAnchor(AnchorPosition anchorPos, UIElement? target = null, AnchorTarget targetMode = AnchorTarget.XY)
 	{
 		Vector2 targetSize = target?.RelativeRect.Size ?? Container?.RelativeRect.Size ?? Vector2.Zero;
 		Vector2 targetPosition = target?.GetPosition() ?? Container?.GetPosition() ?? Vector2.Zero;
-		SetAnchor(anchorPos switch
+		Vector2 anchored = anchorPos switch
 		{
 			AnchorPosition.TopLeft => targetPosition,
 			AnchorPosition.TopCenter => targetPosition with { X = targetPosition.X + targetSize.X / 2 },
@@ -218,6 +218,13 @@ public class UIElement : IUIElement
 				Y = targetPosition.Y + targetSize.Y,
 			},
 			_ => targetPosition
+		};
+		SetAnchor(targetMode switch
+		{
+			AnchorTarget.XY => anchored,
+			AnchorTarget.X => anchored with { Y = 0 },
+			AnchorTarget.Y => anchored with { X = 0 },
+			_ => anchored
 		});
 	}
 
