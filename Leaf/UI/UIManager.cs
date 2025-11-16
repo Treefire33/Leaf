@@ -57,6 +57,7 @@ public class UIManager
 		GameSize = gameSize;
 		GamePosition = gamePosition;
 		UITheme.LoadDefaultTheme(); // Load default theme
+		Theme = UITheme.LoadTheme(); // Loads a blank theme
 		if (themes.Length > 0)
 			foreach (var theme in themes)
 			{
