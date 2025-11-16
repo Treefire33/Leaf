@@ -29,6 +29,7 @@ class Program
         var audioTest = new AudioTest();
         var imageTest = new ImageTest();
         var fontTest = new FontTest();
+        var animTest = new AnimationTest();
         
         // Tests for UIElements
         switch (_testType)
@@ -44,6 +45,9 @@ class Program
                 break;
             case 3:
                 fontTest.Test(ref manager);
+                break;
+            case 4:
+                animTest.Test(ref manager);
                 break;
         }
     }
