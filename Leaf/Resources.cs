@@ -121,31 +121,51 @@ public static partial class Resources
     {
         return LoadTexture($"{ImagesPath}{file}");
     }
-
-    public static Texture2D[] LoadSpritesheet(string spritesheet)
+    
+    /// <summary>
+    /// Loads and yields each spritesheet defined in a spritesheet XML where the root element is "SpriteAtlases"
+    /// </summary>
+    /// <param name="spritesheet">The spritesheet (ending in .xml) to load. Must be located in the Spritesheets folder of Assets.</param>
+    /// <returns>An array of textures as defined in the spritesheet file.</returns>
+    /// <exception cref="FileNotFoundException">The spritesheet file doesn't exist.</exception>
+    public static IEnumerator<Texture2D[]> LoadSpritesheets(string spritesheet)
     {
         XmlDocument spritesheetXml = new();
-        using StreamReader stream = new($"{SpritesheetsPath}{spritesheet}", Encoding.UTF8);
         
-        if (!File.Exists(spritesheet+".xml"))
-        { throw new Exception($"Spritesheet file with name: {spritesheet} does not exist."); }
+        if (!File.Exists($"{SpritesheetsPath}{spritesheet}"))
+        { throw new FileNotFoundException($"Spritesheet file with name {spritesheet} does not exist."); }
             
-        spritesheetXml.Load(stream.ReadToEnd());
-        stream.Close();
+        spritesheetXml.Load($"{SpritesheetsPath}{spritesheet}");
         
         if (spritesheetXml.DocumentElement!.Name == "SpriteAtlases")
         {
             foreach (XmlElement sprAtlas in spritesheetXml.DocumentElement!.GetElementsByTagName("SpriteAtlas"))
             {
-                return LoadSpritesheetXml(sprAtlas);
+                yield return LoadSpritesheetXml(sprAtlas);
             }
         }
-        else
-        {
-            return LoadSpritesheetXml((XmlElement)spritesheetXml.GetElementsByTagName("SpriteAtlas")[0]!);
-        }
+    }
 
-        return [];
+    /// <summary>
+    /// Loads a spritesheet where the root element is a "SpriteAtlas"
+    /// </summary>
+    /// <param name="spritesheet">The spritesheet (ending in .xml) to load. Must be located in the Spritesheets folder of Assets.</param>
+    /// <returns>An array of textures as defined in the spritesheet file.</returns>
+    /// <exception cref="FileNotFoundException">The spritesheet file doesn't exist.</exception>
+    /// <exception cref="Exception">The spritesheet's root element is "SpriteAtlases".</exception>
+    public static Texture2D[] LoadSpritesheet(string spritesheet)
+    {
+        XmlDocument spritesheetXml = new();
+        
+        if (!File.Exists($"{SpritesheetsPath}{spritesheet}"))
+        { throw new FileNotFoundException($"Spritesheet file with name {spritesheet} does not exist."); }
+            
+        spritesheetXml.Load($"{SpritesheetsPath}{spritesheet}");
+        if (spritesheetXml.DocumentElement!.Name == "SpriteAtlases")
+        {
+            throw new Exception("LoadSpritesheet can not load SpriteAtlases, use LoadSpritesheets instead.");
+        }
+        return LoadSpritesheetXml((XmlElement)spritesheetXml.GetElementsByTagName("SpriteAtlas")[0]!);
     }
 
     private static Texture2D[] LoadSpritesheetXml(XmlElement spritesheetXml)

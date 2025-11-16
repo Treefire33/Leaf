@@ -87,8 +87,10 @@ public class UIElementTest : ILeafTest
                 );
             }
         };
+
+        var textures = Resources.LoadSpritesheet("test_spritesheet.xml");
         
-        //ToggleBorderlessWindowed();
+        // ToggleBorderlessWindowed();
         
         while (!WindowShouldClose())
         {
