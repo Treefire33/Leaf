@@ -12,9 +12,9 @@ public class UIElement : IUIElement
 {
 	protected readonly UIManager Manager;
 	protected UIThemeData Theme;
-	//all positions are, by default, based on the top left
+	// All positions are, by default, based on the top left
 	public Anchor Anchor;
-	public Vector2 Origin = Vector2.Zero;
+	public Vector2 Origin;
 	public UIRect RelativeRect { get; set; }
 	public int Layer = 0;
 
